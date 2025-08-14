@@ -22,6 +22,7 @@ default-theme = "navy"
 preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/vibheksoni/axiomtrade-rs"
 edit-url-template = "https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/{path}"
+site-url = "https://vibheksoni.github.io/axiomtrade-rs/"
 
 [output.html.search]
 enable = true
