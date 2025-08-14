@@ -1,0 +1,169 @@
+[package]
+name = "axiomtrade-rs"
+version = "0.1.0"
+edition = "2024"
+authors = ["vibheksoni <vibheksoni@engineer.com>"]
+license = "MIT"
+description = "High-performance Rust SDK for Axiom Trade - the fastest decentralized exchange aggregator on Solana and Hyperliquid"
+repository = "https://github.com/vibheksoni/axiomtrade-rs"
+homepage = "https://github.com/vibheksoni/axiomtrade-rs"
+documentation = "https://docs.rs/axiomtrade-rs"
+readme = "README.md"
+keywords = ["solana", "trading", "defi", "blockchain", "crypto"]
+categories = ["api-bindings", "finance", "web-programming"]
+exclude = [
+    "oldstuff/",
+    ".axiom_*.json",
+    ".env*",
+    "CHECKLIST.md",
+    "COMPLETE-ARCHITECTURE-ANALYSIS.md",
+    "PYTHON-VS-RUST-ANALYSIS.md",
+    "TRADING-ARCHITECTURE.md",
+    "LIVE-API-DOCUMENTATION.md",
+    "test_*.py",
+    "axiom-trade-site/"
+]
+
+[[example]]
+name = "setup_env"
+path = "setup_env.rs"
+
+[lib]
+name = "axiomtrade_rs"
+crate-type = ["rlib", "cdylib"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+# Authentication examples
+[[example]]
+name = "basic_login"
+path = "examples/authentication/basic_login.rs"
+
+[[example]]
+name = "otp_verification"
+path = "examples/authentication/otp_verification.rs"
+
+[[example]]
+name = "session_management"
+path = "examples/authentication/session_management.rs"
+
+[[example]]
+name = "cookie_auth"
+path = "examples/authentication/cookie_auth.rs"
+
+# Portfolio examples
+[[example]]
+name = "get_portfolio"
+path = "examples/portfolio/get_portfolio.rs"
+
+[[example]]
+name = "batch_balances"
+path = "examples/portfolio/batch_balances.rs"
+
+[[example]]
+name = "portfolio_monitoring"
+path = "examples/portfolio/portfolio_monitoring.rs"
+
+[[example]]
+name = "token_accounts"
+path = "examples/portfolio/token_accounts.rs"
+
+# Trading examples
+[[example]]
+name = "simple_trade"
+path = "examples/trading/simple_trade.rs"
+
+# Market data examples
+[[example]]
+name = "trending_tokens"
+path = "examples/market_data/trending_tokens.rs"
+
+# WebSocket examples
+[[example]]
+name = "basic_websocket"
+path = "examples/websocket/basic_websocket.rs"
+
+[[example]]
+name = "price_subscriptions"
+path = "examples/websocket/price_subscriptions.rs"
+
+# Turnkey examples
+[[example]]
+name = "turnkey_auth"
+path = "examples/turnkey/turnkey_auth.rs"
+
+# Notification examples
+[[example]]
+name = "price_alerts"
+path = "examples/notifications/price_alerts.rs"
+
+[[example]]
+name = "system_alerts"
+path = "examples/notifications/system_alerts.rs"
+
+[[example]]
+name = "email_notifications"
+path = "examples/notifications/email_notifications.rs"
+
+# Infrastructure examples
+[[example]]
+name = "health_checks"
+path = "examples/infrastructure/health_checks.rs"
+
+# Advanced examples
+[[example]]
+name = "multi_chain_portfolio"
+path = "examples/advanced/multi_chain_portfolio.rs"
+
+[[example]]
+name = "automated_trading_bot"
+path = "examples/advanced/automated_trading_bot.rs"
+
+[[example]]
+name = "high_frequency_trading"
+path = "examples/advanced/high_frequency_trading.rs"
+
+# Setup examples
+[[example]]
+name = "environment_setup"
+path = "examples/setup/environment_setup.rs"
+
+[[example]]
+name = "test_auto_otp"
+path = "examples/setup/test_auto_otp.rs"
+
+[dependencies]
+async-trait = "0.1"
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+fastrand = "2.0"
+fastwebsockets = { version = "0.10.0", features = ["upgrade"] }
+futures-util = "0.3"
+http = "1.1"
+hex = "0.4"
+hmac = "0.12"
+http-body-util = "0.1"
+hyper = { version = "1.5", features = ["client", "http1"] }
+imap = "2.4"
+native-tls = "0.2"
+num-bigint = "0.4"
+num-traits = "0.2"
+p256 = { version = "0.13", features = ["ecdsa"] }
+pbkdf2 = "0.12"
+rand = "0.8"
+regex = "1.10"
+reqwest = { version = "0.12", features = ["json", "cookies"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+thiserror = "1.0"
+tokio = { version = "1.40", features = ["full"] }
+tokio-rustls = "0.26"
+tokio-tungstenite = { version = "0.24", features = ["native-tls"] }
+tungstenite = "0.24"
+url = "2.5"
+urlencoding = "2.1"
+webpki-roots = "0.26"
