@@ -18,7 +18,7 @@ create-missing = true
 [output.html]
 additional-css = ["theme/custom.css"]
 additional-js = ["theme/custom.js"]
-default-theme = "navy"
+default-theme = "light"
 preferred-dark-theme = "navy"
 git-repository-url = "https://github.com/vibheksoni/axiomtrade-rs"
 edit-url-template = "https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/{path}"
