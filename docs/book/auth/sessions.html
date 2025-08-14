@@ -1,0 +1,675 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Session Management - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/auth/sessions.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="session-management"><a class="header" href="#session-management">Session Management</a></h1>
+<p>This document covers the comprehensive session management system in axiomtrade-rs, which handles authentication state, persistence, and multi-session support.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The <code>SessionManager</code> provides a centralized system for managing authentication sessions that include:</p>
+<ul>
+<li>JWT tokens (access and refresh)</li>
+<li>HTTP cookies for browser-like authentication</li>
+<li>Turnkey wallet integration sessions</li>
+<li>Session metadata and tracking</li>
+<li>Persistent storage capabilities</li>
+</ul>
+<h2 id="session-lifecycle"><a class="header" href="#session-lifecycle">Session Lifecycle</a></h2>
+<h3 id="1-session-creation"><a class="header" href="#1-session-creation">1. Session Creation</a></h3>
+<p>Sessions are created after successful authentication through multiple pathways:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::auth::{SessionManager, AuthTokens, UserInfo};
+use std::path::PathBuf;
+
+// Create session manager with persistent storage
+let storage_path = Some(PathBuf::from(".axiom_session.json"));
+let session_manager = SessionManager::new(storage_path, true);
+
+// Method 1: Basic session creation
+let tokens = AuthTokens {
+    access_token: "jwt_access_token".to_string(),
+    refresh_token: "jwt_refresh_token".to_string(),
+    expires_at: Some(chrono::Utc::now() + chrono::Duration::hours(1)),
+};
+
+session_manager.create_session(tokens, user_info, cookies).await?;
+
+// Method 2: Session from complete login result
+let login_result = auth_client.login_with_otp(&amp;credentials, &amp;otp_code).await?;
+session_manager.create_session_from_login_result(login_result, cookies).await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-session-validation"><a class="header" href="#2-session-validation">2. Session Validation</a></h3>
+<p>The session manager provides multiple validation levels:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check if session exists and is valid
+if session_manager.is_session_valid().await {
+    println!("Session is active and valid");
+}
+
+// Check if session needs token refresh
+if session_manager.needs_refresh().await {
+    println!("Session needs token refresh");
+    // Trigger token refresh process
+}
+
+// Get detailed session summary
+let summary = session_manager.get_session_summary().await;
+println!("Session status: {}", summary);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-session-updates"><a class="header" href="#3-session-updates">3. Session Updates</a></h3>
+<p>Sessions are automatically updated during API operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Update tokens after refresh
+let new_tokens = auth_client.refresh_tokens().await?;
+session_manager.update_tokens(new_tokens).await?;
+
+// Update cookies from API responses
+let new_cookies = AuthCookies::parse_from_headers(&amp;response.headers());
+session_manager.update_cookies(new_cookies).await?;
+
+// Track API calls
+session_manager.mark_api_call(Some("api.axiom.trade")).await;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="4-session-termination"><a class="header" href="#4-session-termination">4. Session Termination</a></h3>
+<p>Sessions can be cleared manually or automatically:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Manual session cleanup
+session_manager.clear_session().await;
+
+// Automatic cleanup on token expiration
+// Sessions become invalid when tokens expire beyond refresh window
+<span class="boring">}</span></code></pre></pre>
+<h2 id="session-persistence"><a class="header" href="#session-persistence">Session Persistence</a></h2>
+<h3 id="automatic-persistence"><a class="header" href="#automatic-persistence">Automatic Persistence</a></h3>
+<p>When <code>auto_save</code> is enabled, sessions are automatically saved after modifications:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Enable auto-save during manager creation
+let session_manager = SessionManager::new(
+    Some(PathBuf::from(".axiom_session.json")),
+    true  // auto_save enabled
+);
+
+// All session updates are automatically persisted
+session_manager.update_tokens(new_tokens).await?;  // Auto-saved
+session_manager.update_cookies(new_cookies).await?;  // Auto-saved
+<span class="boring">}</span></code></pre></pre>
+<h3 id="manual-persistence"><a class="header" href="#manual-persistence">Manual Persistence</a></h3>
+<p>For fine-grained control over when sessions are saved:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Disable auto-save for manual control
+let session_manager = SessionManager::new(storage_path, false);
+
+// Make multiple changes
+session_manager.update_tokens(new_tokens).await?;
+session_manager.update_cookies(new_cookies).await?;
+
+// Save manually when ready
+session_manager.save_session().await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="session-loading"><a class="header" href="#session-loading">Session Loading</a></h3>
+<p>Sessions are automatically loaded from storage on manager creation:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sessions are loaded automatically if storage file exists
+let session_manager = SessionManager::new(
+    Some(PathBuf::from(".axiom_session.json")),
+    true
+);
+
+// Manual loading (if needed)
+session_manager.load_session().await?;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="multi-session-support"><a class="header" href="#multi-session-support">Multi-Session Support</a></h2>
+<h3 id="session-isolation"><a class="header" href="#session-isolation">Session Isolation</a></h3>
+<p>Each <code>SessionManager</code> instance manages one authentication session:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Multiple isolated sessions
+let trading_session = SessionManager::new(
+    Some(PathBuf::from(".axiom_trading_session.json")),
+    true
+);
+
+let monitoring_session = SessionManager::new(
+    Some(PathBuf::from(".axiom_monitoring_session.json")),
+    true
+);
+
+// Each session maintains independent state
+trading_session.create_session(trading_tokens, None, None).await?;
+monitoring_session.create_session(monitoring_tokens, None, None).await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="session-switching"><a class="header" href="#session-switching">Session Switching</a></h3>
+<p>For applications needing multiple concurrent sessions:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::collections::HashMap;
+
+struct MultiSessionManager {
+    sessions: HashMap&lt;String, SessionManager&gt;,
+    active_session: Option&lt;String&gt;,
+}
+
+impl MultiSessionManager {
+    pub async fn switch_session(&amp;mut self, session_id: &amp;str) -&gt; Result&lt;(), AuthError&gt; {
+        if self.sessions.contains_key(session_id) {
+            self.active_session = Some(session_id.to_string());
+            Ok(())
+        } else {
+            Err(AuthError::NotAuthenticated)
+        }
+    }
+    
+    pub async fn get_active_session(&amp;self) -&gt; Option&lt;&amp;SessionManager&gt; {
+        self.active_session
+            .as_ref()
+            .and_then(|id| self.sessions.get(id))
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="session-validation"><a class="header" href="#session-validation">Session Validation</a></h2>
+<h3 id="token-validation"><a class="header" href="#token-validation">Token Validation</a></h3>
+<p>The session manager implements intelligent token validation:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl AuthTokens {
+    // Checks if token is expired with 5-minute buffer
+    pub fn is_expired(&amp;self) -&gt; bool {
+        match self.expires_at {
+            Some(expires_at) =&gt; {
+                let buffer = chrono::Duration::minutes(5);
+                chrono::Utc::now() &gt;= (expires_at - buffer)
+            }
+            None =&gt; false,
+        }
+    }
+    
+    // Checks if token needs refresh with 15-minute buffer
+    pub fn needs_refresh(&amp;self) -&gt; bool {
+        match self.expires_at {
+            Some(expires_at) =&gt; {
+                let buffer = chrono::Duration::minutes(15);
+                chrono::Utc::now() &gt;= (expires_at - buffer)
+            }
+            None =&gt; false,
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="cookie-validation"><a class="header" href="#cookie-validation">Cookie Validation</a></h3>
+<p>HTTP cookies are validated for completeness:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl AuthSession {
+    pub fn has_valid_cookies(&amp;self) -&gt; bool {
+        self.cookies.auth_access_token.is_some() 
+            &amp;&amp; self.cookies.auth_refresh_token.is_some()
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="turnkey-session-validation"><a class="header" href="#turnkey-session-validation">Turnkey Session Validation</a></h3>
+<p>Turnkey integration sessions have separate validation:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl AuthSession {
+    pub fn turnkey_needs_refresh(&amp;self) -&gt; bool {
+        if let Some(turnkey) = &amp;self.turnkey_session {
+            if let Some(expires_at) = turnkey.expires_at {
+                let buffer = chrono::Duration::hours(1);
+                chrono::Utc::now() &gt;= (expires_at - buffer)
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="logout-and-cleanup"><a class="header" href="#logout-and-cleanup">Logout and Cleanup</a></h2>
+<h3 id="immediate-cleanup"><a class="header" href="#immediate-cleanup">Immediate Cleanup</a></h3>
+<p>Clear session data immediately:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Clear session from memory and optionally delete storage file
+session_manager.clear_session().await;
+
+// Session is now invalid
+assert!(!session_manager.is_session_valid().await);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="secure-cleanup"><a class="header" href="#secure-cleanup">Secure Cleanup</a></h3>
+<p>For security-sensitive applications:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 1. Revoke tokens on server (if supported)
+if let Some(refresh_token) = session_manager.get_refresh_token().await {
+    auth_client.revoke_token(&amp;refresh_token).await?;
+}
+
+// 2. Clear local session
+session_manager.clear_session().await;
+
+// 3. Clear any cached credentials
+// (Application-specific cleanup)
+<span class="boring">}</span></code></pre></pre>
+<h3 id="automatic-cleanup"><a class="header" href="#automatic-cleanup">Automatic Cleanup</a></h3>
+<p>Sessions automatically become invalid when tokens expire:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sessions with expired tokens return false
+let is_valid = session_manager.is_session_valid().await;
+
+// Cleanup expired sessions periodically
+async fn cleanup_expired_sessions(managers: &amp;[SessionManager]) {
+    for manager in managers {
+        if !manager.is_session_valid().await {
+            manager.clear_session().await;
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="session-metadata"><a class="header" href="#session-metadata">Session Metadata</a></h2>
+<h3 id="tracking-information"><a class="header" href="#tracking-information">Tracking Information</a></h3>
+<p>Sessions include comprehensive metadata:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SessionMetadata {
+    pub created_at: chrono::DateTime&lt;chrono::Utc&gt;,
+    pub last_refreshed_at: Option&lt;chrono::DateTime&lt;chrono::Utc&gt;&gt;,
+    pub last_api_call_at: Option&lt;chrono::DateTime&lt;chrono::Utc&gt;&gt;,
+    pub current_api_server: Option&lt;String&gt;,
+    pub user_agent: String,
+    pub ip_address: Option&lt;String&gt;,
+    pub client_fingerprint: Option&lt;String&gt;,
+}
+
+// Usage examples
+let session = session_manager.get_session().await.unwrap();
+let age_minutes = session.session_metadata.session_age_minutes();
+let last_api_call = session.session_metadata.minutes_since_last_api_call();
+<span class="boring">}</span></code></pre></pre>
+<h3 id="usage-analytics"><a class="header" href="#usage-analytics">Usage Analytics</a></h3>
+<p>Track session usage patterns:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Mark API calls for analytics
+session_manager.mark_api_call(Some("api.axiom.trade")).await;
+
+// Get session summary with timing information
+let summary = session_manager.get_session_summary().await;
+// Output: "Session: VALID | Tokens: VALID | Cookies: PRESENT | Turnkey: ACTIVE | Age: 45m | Last API: 2m ago"
+<span class="boring">}</span></code></pre></pre>
+<h2 id="integration-examples"><a class="header" href="#integration-examples">Integration Examples</a></h2>
+<h3 id="http-client-integration"><a class="header" href="#http-client-integration">HTTP Client Integration</a></h3>
+<p>Use sessions with HTTP requests:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use reqwest::Client;
+
+async fn make_authenticated_request(
+    session_manager: &amp;SessionManager,
+    client: &amp;Client,
+    url: &amp;str,
+) -&gt; Result&lt;reqwest::Response, Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut request = client.get(url);
+    
+    // Add authorization header
+    if let Some(token) = session_manager.get_access_token().await {
+        request = request.header("Authorization", format!("Bearer {}", token));
+    }
+    
+    // Add cookie header
+    if let Some(cookies) = session_manager.get_cookie_header().await {
+        request = request.header("Cookie", cookies);
+    }
+    
+    // Add user agent from session
+    if let Some(session) = session_manager.get_session().await {
+        request = request.header("User-Agent", session.get_user_agent());
+    }
+    
+    let response = request.send().await?;
+    
+    // Track API call
+    session_manager.mark_api_call(Some("api.axiom.trade")).await;
+    
+    Ok(response)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="websocket-integration"><a class="header" href="#websocket-integration">WebSocket Integration</a></h3>
+<p>Use sessions for WebSocket authentication:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio_tungstenite::{connect_async, tungstenite::Message};
+
+async fn connect_websocket(
+    session_manager: &amp;SessionManager,
+) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    if !session_manager.is_session_valid().await {
+        return Err("Invalid session for WebSocket connection".into());
+    }
+    
+    let access_token = session_manager.get_access_token().await
+        .ok_or("No access token available")?;
+    
+    let ws_url = format!("wss://ws.axiom.trade?token={}", access_token);
+    let (ws_stream, _) = connect_async(&amp;ws_url).await?;
+    
+    // WebSocket connection established with session authentication
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h3>
+<p>Handle session-related errors gracefully:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::auth::error::AuthError;
+
+async fn handle_session_error(
+    result: Result&lt;(), AuthError&gt;,
+    session_manager: &amp;SessionManager,
+) -&gt; Result&lt;(), AuthError&gt; {
+    match result {
+        Err(AuthError::NotAuthenticated) =&gt; {
+            // Session invalid, clear and require re-authentication
+            session_manager.clear_session().await;
+            Err(AuthError::NotAuthenticated)
+        }
+        Err(AuthError::TokenExpired) =&gt; {
+            // Try to refresh tokens
+            if session_manager.needs_refresh().await {
+                // Implement token refresh logic
+                Ok(())
+            } else {
+                session_manager.clear_session().await;
+                Err(AuthError::TokenExpired)
+            }
+        }
+        other =&gt; other,
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<ol>
+<li><strong>Use HTTPS only</strong> - Never transmit session data over unencrypted connections</li>
+<li><strong>Secure storage</strong> - Store session files with appropriate file permissions</li>
+<li><strong>Token rotation</strong> - Refresh tokens before expiration</li>
+<li><strong>Cleanup on exit</strong> - Clear sessions when application terminates</li>
+</ol>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<ol>
+<li><strong>Auto-save carefully</strong> - Consider performance impact of frequent saves</li>
+<li><strong>Session reuse</strong> - Reuse sessions across requests instead of recreating</li>
+<li><strong>Batch updates</strong> - Disable auto-save for bulk operations, save manually</li>
+<li><strong>Memory management</strong> - Clear unused sessions promptly</li>
+</ol>
+<h3 id="reliability"><a class="header" href="#reliability">Reliability</a></h3>
+<ol>
+<li><strong>Handle network failures</strong> - Implement retry logic for session operations</li>
+<li><strong>Validate before use</strong> - Always check session validity before API calls</li>
+<li><strong>Graceful degradation</strong> - Handle missing or corrupted session files</li>
+<li><strong>Monitor session health</strong> - Track session age and usage patterns</li>
+</ol>
+<p>This comprehensive session management system provides robust, secure, and efficient handling of authentication state for the axiomtrade-rs client library.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../auth/tokens.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../auth/otp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../auth/tokens.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../auth/otp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Common Issues - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/troubleshooting/common-issues.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="common-issues"><a class="header" href="#common-issues">Common Issues</a></h1>
+<p>This guide covers the most frequently encountered issues when using the Axiom Trade Rust client and their solutions.</p>
+<h2 id="authentication-failures"><a class="header" href="#authentication-failures">Authentication Failures</a></h2>
+<h3 id="invalid-login-credentials"><a class="header" href="#invalid-login-credentials">Invalid Login Credentials</a></h3>
+<p><strong>Problem</strong>: Login fails with "Invalid credentials" error.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Verify credentials</strong>: Double-check your email and password</li>
+<li><strong>Check password hashing</strong>: Ensure you're using the correct PBKDF2 implementation with 600,000 iterations</li>
+<li><strong>Account status</strong>: Verify your account is active and not suspended</li>
+<li><strong>Case sensitivity</strong>: Email addresses are case-sensitive in some systems</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Correct password hashing example
+use pbkdf2::{password_hash::{PasswordHasher, SaltString}, Pbkdf2};
+
+let salt = SaltString::generate(&amp;mut OsRng);
+let password_hash = Pbkdf2.hash_password_customized(
+    password.as_bytes(),
+    Some(pbkdf2::password_hash::Ident::new("pbkdf2")?),
+    None,
+    pbkdf2::Params {
+        rounds: 600_000,
+        output_length: 32,
+    },
+    &amp;salt,
+)?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="otp-verification-issues"><a class="header" href="#otp-verification-issues">OTP Verification Issues</a></h3>
+<p><strong>Problem</strong>: OTP verification fails or times out.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Time synchronization</strong>: Ensure your system clock is accurate</li>
+<li><strong>OTP expiration</strong>: Use the OTP within 5 minutes of receipt</li>
+<li><strong>Email delivery</strong>: Check spam folder for OTP emails</li>
+<li><strong>Automated OTP setup</strong>: Configure inbox.lv automation for seamless OTP handling</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Enable automated OTP fetching
+std::env::set_var("INBOX_LV_EMAIL", "your_email@inbox.lv");
+std::env::set_var("INBOX_LV_PASSWORD", "your_imap_password");
+<span class="boring">}</span></code></pre></pre>
+<h3 id="token-expiration"><a class="header" href="#token-expiration">Token Expiration</a></h3>
+<p><strong>Problem</strong>: API calls fail with "Token expired" error.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Automatic refresh</strong>: Implement token refresh logic</li>
+<li><strong>Token storage</strong>: Persist tokens securely between sessions</li>
+<li><strong>Expiration monitoring</strong>: Check token expiry before making API calls</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Token refresh example
+if token_manager.is_expired() {
+    token_manager.refresh_token().await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="connection-issues"><a class="header" href="#connection-issues">Connection Issues</a></h2>
+<h3 id="network-timeouts"><a class="header" href="#network-timeouts">Network Timeouts</a></h3>
+<p><strong>Problem</strong>: Requests timeout or fail to connect.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Increase timeout</strong>: Set appropriate timeout values for your network</li>
+<li><strong>Retry logic</strong>: Implement exponential backoff for failed requests</li>
+<li><strong>Network connectivity</strong>: Check internet connection and DNS resolution</li>
+<li><strong>Firewall settings</strong>: Ensure Axiom Trade endpoints are not blocked</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Configure client with proper timeouts
+let client = reqwest::Client::builder()
+    .timeout(Duration::from_secs(30))
+    .connect_timeout(Duration::from_secs(10))
+    .build()?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="ssltls-errors"><a class="header" href="#ssltls-errors">SSL/TLS Errors</a></h3>
+<p><strong>Problem</strong>: SSL certificate verification failures.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Certificate validation</strong>: Ensure system certificates are up to date</li>
+<li><strong>TLS version</strong>: Use TLS 1.2 or higher</li>
+<li><strong>Corporate proxies</strong>: Configure proxy settings if behind corporate firewall</li>
+<li><strong>Certificate pinning</strong>: Implement certificate pinning for enhanced security</li>
+</ol>
+<h3 id="dns-resolution-issues"><a class="header" href="#dns-resolution-issues">DNS Resolution Issues</a></h3>
+<p><strong>Problem</strong>: Cannot resolve Axiom Trade domain names.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>DNS servers</strong>: Try different DNS servers (8.8.8.8, 1.1.1.1)</li>
+<li><strong>Hosts file</strong>: Check for incorrect entries in hosts file</li>
+<li><strong>Network configuration</strong>: Verify network adapter settings</li>
+<li><strong>VPN interference</strong>: Disable VPN temporarily to test connectivity</li>
+</ol>
+<h2 id="rate-limit-errors"><a class="header" href="#rate-limit-errors">Rate Limit Errors</a></h2>
+<h3 id="http-429-too-many-requests"><a class="header" href="#http-429-too-many-requests">HTTP 429 Too Many Requests</a></h3>
+<p><strong>Problem</strong>: API returns rate limit exceeded errors.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Request spacing</strong>: Implement delays between API calls</li>
+<li><strong>Rate limiter</strong>: Use built-in rate limiting functionality</li>
+<li><strong>Batch operations</strong>: Combine multiple operations into batch requests</li>
+<li><strong>Retry-After header</strong>: Respect the Retry-After header in responses</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Rate limiting example
+use std::time::{Duration, Instant};
+
+struct RateLimiter {
+    last_request: Instant,
+    min_interval: Duration,
+}
+
+impl RateLimiter {
+    fn wait_if_needed(&amp;mut self) {
+        let elapsed = self.last_request.elapsed();
+        if elapsed &lt; self.min_interval {
+            std::thread::sleep(self.min_interval - elapsed);
+        }
+        self.last_request = Instant::now();
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="burst-rate-limits"><a class="header" href="#burst-rate-limits">Burst Rate Limits</a></h3>
+<p><strong>Problem</strong>: Hitting burst limits with rapid successive requests.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Queue requests</strong>: Implement request queuing system</li>
+<li><strong>Parallel limits</strong>: Limit concurrent requests</li>
+<li><strong>Request prioritization</strong>: Prioritize critical operations</li>
+<li><strong>Caching</strong>: Cache frequently requested data</li>
+</ol>
+<h3 id="api-quota-exhaustion"><a class="header" href="#api-quota-exhaustion">API Quota Exhaustion</a></h3>
+<p><strong>Problem</strong>: Daily or monthly API quotas exceeded.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Usage monitoring</strong>: Track API usage against quotas</li>
+<li><strong>Efficient queries</strong>: Optimize queries to reduce API calls</li>
+<li><strong>Data caching</strong>: Cache responses to avoid repeated requests</li>
+<li><strong>Upgrade plan</strong>: Consider upgrading to higher tier plan</li>
+</ol>
+<h2 id="websocket-disconnections"><a class="header" href="#websocket-disconnections">WebSocket Disconnections</a></h2>
+<h3 id="connection-drops"><a class="header" href="#connection-drops">Connection Drops</a></h3>
+<p><strong>Problem</strong>: WebSocket connections frequently disconnect.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Keepalive</strong>: Implement ping/pong keepalive mechanism</li>
+<li><strong>Reconnection logic</strong>: Automatic reconnection with exponential backoff</li>
+<li><strong>Connection monitoring</strong>: Monitor connection health</li>
+<li><strong>Network stability</strong>: Check network connection stability</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024">// WebSocket reconnection example
+async fn maintain_websocket_connection(mut ws: WebSocket) -&gt; Result&lt;()&gt; {
+    let mut reconnect_attempts = 0;
+    const MAX_RECONNECT_ATTEMPTS: u32 = 5;
+    
+    loop {
+        match ws.next().await {
+            Some(Ok(message)) =&gt; {
+                // Handle message
+                reconnect_attempts = 0; // Reset on successful message
+            }
+            Some(Err(e)) =&gt; {
+                log::error!("WebSocket error: {}", e);
+                if reconnect_attempts &lt; MAX_RECONNECT_ATTEMPTS {
+                    let delay = Duration::from_secs(2_u64.pow(reconnect_attempts));
+                    tokio::time::sleep(delay).await;
+                    ws = reconnect_websocket().await?;
+                    reconnect_attempts += 1;
+                } else {
+                    return Err(e.into());
+                }
+            }
+            None =&gt; {
+                // Connection closed
+                break;
+            }
+        }
+    }
+    Ok(())
+}</code></pre></pre>
+<h3 id="authentication-timeout"><a class="header" href="#authentication-timeout">Authentication Timeout</a></h3>
+<p><strong>Problem</strong>: WebSocket authentication times out.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Token validation</strong>: Ensure tokens are valid before connecting</li>
+<li><strong>Authentication timing</strong>: Send auth message immediately after connection</li>
+<li><strong>Connection timeout</strong>: Increase authentication timeout</li>
+<li><strong>Session management</strong>: Maintain valid session tokens</li>
+</ol>
+<h3 id="message-processing-delays"><a class="header" href="#message-processing-delays">Message Processing Delays</a></h3>
+<p><strong>Problem</strong>: WebSocket messages arrive with delays or out of order.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Message buffering</strong>: Implement proper message buffering</li>
+<li><strong>Sequence numbers</strong>: Use sequence numbers for message ordering</li>
+<li><strong>Timestamp validation</strong>: Validate message timestamps</li>
+<li><strong>Processing optimization</strong>: Optimize message processing speed</li>
+</ol>
+<h2 id="environment-configuration-problems"><a class="header" href="#environment-configuration-problems">Environment Configuration Problems</a></h2>
+<h3 id="missing-environment-variables"><a class="header" href="#missing-environment-variables">Missing Environment Variables</a></h3>
+<p><strong>Problem</strong>: Application fails to start due to missing configuration.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Environment file</strong>: Create <code>.env</code> file with required variables</li>
+<li><strong>Variable validation</strong>: Check all required variables at startup</li>
+<li><strong>Default values</strong>: Provide sensible defaults where possible</li>
+<li><strong>Configuration templates</strong>: Use configuration templates</li>
+</ol>
+<pre><code class="language-bash"># Required environment variables
+AXIOM_EMAIL=your_email@example.com
+AXIOM_PASSWORD=your_password
+INBOX_LV_EMAIL=your_email@inbox.lv
+INBOX_LV_PASSWORD=your_imap_password
+RUST_LOG=info
+</code></pre>
+<h3 id="incorrect-api-endpoints"><a class="header" href="#incorrect-api-endpoints">Incorrect API Endpoints</a></h3>
+<p><strong>Problem</strong>: API calls fail due to wrong endpoint URLs.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>Environment configuration</strong>: Use environment variables for endpoints</li>
+<li><strong>Endpoint validation</strong>: Validate endpoints at startup</li>
+<li><strong>Version compatibility</strong>: Ensure using correct API version</li>
+<li><strong>Documentation reference</strong>: Check latest API documentation</li>
+</ol>
+<h3 id="permission-issues"><a class="header" href="#permission-issues">Permission Issues</a></h3>
+<p><strong>Problem</strong>: File system permission errors.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>File permissions</strong>: Set correct permissions for config files</li>
+<li><strong>Directory access</strong>: Ensure application has access to required directories</li>
+<li><strong>User privileges</strong>: Run with appropriate user privileges</li>
+<li><strong>Security contexts</strong>: Configure security contexts properly</li>
+</ol>
+<h3 id="configuration-file-issues"><a class="header" href="#configuration-file-issues">Configuration File Issues</a></h3>
+<p><strong>Problem</strong>: Configuration files not loading or parsing errors.</p>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li><strong>File format</strong>: Verify correct TOML/JSON/YAML format</li>
+<li><strong>File location</strong>: Check configuration file paths</li>
+<li><strong>Encoding</strong>: Ensure files are UTF-8 encoded</li>
+<li><strong>Syntax validation</strong>: Validate configuration syntax</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Configuration validation example
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Deserialize, Serialize)]
+struct Config {
+    #[serde(default = "default_timeout")]
+    timeout: u64,
+    #[serde(default = "default_retries")]
+    max_retries: u32,
+    api_endpoint: String,
+}
+
+fn default_timeout() -&gt; u64 { 30 }
+fn default_retries() -&gt; u32 { 3 }
+
+impl Config {
+    fn validate(&amp;self) -&gt; Result&lt;(), ConfigError&gt; {
+        if self.api_endpoint.is_empty() {
+            return Err(ConfigError::MissingApiEndpoint);
+        }
+        if self.timeout == 0 {
+            return Err(ConfigError::InvalidTimeout);
+        }
+        Ok(())
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="general-troubleshooting-tips"><a class="header" href="#general-troubleshooting-tips">General Troubleshooting Tips</a></h2>
+<h3 id="enable-debug-logging"><a class="header" href="#enable-debug-logging">Enable Debug Logging</a></h3>
+<p>Set the <code>RUST_LOG</code> environment variable to get detailed logs:</p>
+<pre><code class="language-bash">export RUST_LOG=debug
+# or for specific modules
+export RUST_LOG=axiomtrade_rs=debug,reqwest=info
+</code></pre>
+<h3 id="check-system-requirements"><a class="header" href="#check-system-requirements">Check System Requirements</a></h3>
+<p>Ensure your system meets the minimum requirements:</p>
+<ul>
+<li>Rust 1.70 or higher</li>
+<li>OpenSSL development libraries</li>
+<li>Stable internet connection</li>
+<li>Sufficient disk space for logs and cache</li>
+</ul>
+<h3 id="update-dependencies"><a class="header" href="#update-dependencies">Update Dependencies</a></h3>
+<p>Keep dependencies updated to the latest compatible versions:</p>
+<pre><code class="language-bash">cargo update
+cargo audit
+</code></pre>
+<h3 id="monitor-resource-usage"><a class="header" href="#monitor-resource-usage">Monitor Resource Usage</a></h3>
+<p>Monitor system resources during operation:</p>
+<ul>
+<li>Memory usage</li>
+<li>CPU utilization</li>
+<li>Network bandwidth</li>
+<li>Disk I/O</li>
+</ul>
+<h3 id="contact-support"><a class="header" href="#contact-support">Contact Support</a></h3>
+<p>If issues persist after following this guide:</p>
+<ol>
+<li>Collect relevant logs with debug level enabled</li>
+<li>Document exact error messages and reproduction steps</li>
+<li>Include system information and version details</li>
+<li>Contact support through official channels</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../best-practices/performance.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../troubleshooting/debugging.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../best-practices/performance.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../troubleshooting/debugging.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

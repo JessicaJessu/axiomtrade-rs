@@ -1,0 +1,665 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Turnkey Integration - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/api/turnkey.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="turnkey-integration"><a class="header" href="#turnkey-integration">Turnkey Integration</a></h1>
+<p>The Turnkey integration provides enterprise-grade hardware wallet management with P256 cryptographic operations for secure trading on Axiom Trade. This integration handles key management, authentication, and secure signing through Turnkey's infrastructure.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Turnkey is a secure wallet infrastructure that provides:</p>
+<ul>
+<li>Hardware-level key security</li>
+<li>P256 elliptic curve cryptography</li>
+<li>API key management</li>
+<li>Session-based authentication</li>
+<li>Enterprise-grade access controls</li>
+</ul>
+<h2 id="turnkey-setup"><a class="header" href="#turnkey-setup">Turnkey Setup</a></h2>
+<h3 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h3>
+<p>Before using the Turnkey integration, ensure you have:</p>
+<ol>
+<li><strong>Turnkey Organization Account</strong>: A registered organization on Turnkey</li>
+<li><strong>User Credentials</strong>: Valid user account within the organization</li>
+<li><strong>Environment Variables</strong>: Properly configured authentication details</li>
+</ol>
+<h3 id="initial-configuration"><a class="header" href="#initial-configuration">Initial Configuration</a></h3>
+<p>The Turnkey client requires minimal setup:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::api::turnkey::TurnkeyClient;
+
+// Create a new Turnkey client
+let mut turnkey_client = TurnkeyClient::new();
+
+// Set credentials for authenticated operations
+turnkey_client.set_credentials(
+    organization_id,
+    user_id,
+    password  // Raw password for P256 key derivation
+);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="session-management"><a class="header" href="#session-management">Session Management</a></h3>
+<p>Turnkey sessions are automatically managed through the authentication flow:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Load existing session from file
+let session_content = std::fs::read_to_string(".axiom_turnkey_session.json")?;
+let session: AuthSession = serde_json::from_str(&amp;session_content)?;
+
+if let Some(turnkey_session) = session.turnkey_session {
+    // Use existing session
+    println!("Organization: {}", turnkey_session.organization_id);
+    println!("User: {}", turnkey_session.username);
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="hardware-wallet-authentication"><a class="header" href="#hardware-wallet-authentication">Hardware Wallet Authentication</a></h2>
+<h3 id="authentication-flow"><a class="header" href="#authentication-flow">Authentication Flow</a></h3>
+<p>The Turnkey authentication process involves several steps:</p>
+<ol>
+<li><strong>Identity Verification</strong>: Confirm user identity with the organization</li>
+<li><strong>API Key Retrieval</strong>: Fetch available API keys for operations</li>
+<li><strong>Session Creation</strong>: Establish secure session for trading operations</li>
+</ol>
+<h4 id="step-1-identity-verification"><a class="header" href="#step-1-identity-verification">Step 1: Identity Verification</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Verify user identity
+let whoami = turnkey_client.whoami(
+    &amp;organization_id,
+    &amp;client_secret
+).await?;
+
+println!("Authenticated as: {}", whoami.username);
+println!("Organization: {}", whoami.organization_name);
+<span class="boring">}</span></code></pre></pre>
+<h4 id="step-2-api-key-management"><a class="header" href="#step-2-api-key-management">Step 2: API Key Management</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Retrieve API keys for the user
+let api_keys = turnkey_client.get_api_keys(
+    &amp;user_id,
+    &amp;organization_id,
+    &amp;client_secret
+).await?;
+
+println!("Available API keys: {}", api_keys.api_keys.len());
+
+for key in &amp;api_keys.api_keys {
+    println!("Key: {} (Type: {})", key.api_key_name, key.credential.credential_type);
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="step-3-session-creation"><a class="header" href="#step-3-session-creation">Step 3: Session Creation</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Create read/write session for trading operations
+let success = turnkey_client.create_read_write_session(
+    organization_id,
+    user_id,
+    target_public_key,
+    "trading-session"
+).await?;
+
+if success {
+    println!("Trading session created successfully");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="session-validation"><a class="header" href="#session-validation">Session Validation</a></h3>
+<p>The client provides methods to validate and monitor session health:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check service health
+let is_healthy = turnkey_client.health_check().await?;
+
+// Parse and validate session
+let parsed_session = turnkey_client.parse_session(
+    &amp;whoami,
+    &amp;api_keys,
+    &amp;client_secret
+);
+
+// Get session summary
+let summary = turnkey_client.session_summary(&amp;parsed_session);
+println!("Session status: {}", summary);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="p256-cryptography"><a class="header" href="#p256-cryptography">P256 Cryptography</a></h2>
+<h3 id="key-generation"><a class="header" href="#key-generation">Key Generation</a></h3>
+<p>The integration uses P256 elliptic curve cryptography for secure operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::utils::p256_crypto;
+
+// Generate P256 keypair from password
+let keypair = p256_crypto::generate_p256_keypair_from_password(
+    password,
+    None  // Random salt, or provide specific salt
+)?;
+
+println!("Public key: {}", keypair.public_key);
+println!("Private key length: {}", keypair.private_key.len());
+<span class="boring">}</span></code></pre></pre>
+<h3 id="deterministic-key-recreation"><a class="header" href="#deterministic-key-recreation">Deterministic Key Recreation</a></h3>
+<p>Keys can be recreated deterministically using the client secret:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Recreate keypair from stored client secret
+let keypair = p256_crypto::recreate_keypair_from_client_secret(
+    password,
+    client_secret
+)?;
+
+// Keys will be identical to original generation
+<span class="boring">}</span></code></pre></pre>
+<h3 id="key-security-features"><a class="header" href="#key-security-features">Key Security Features</a></h3>
+<ul>
+<li><strong>PBKDF2 with SHA256</strong>: 600,000 iterations for key derivation</li>
+<li><strong>P256 Curve</strong>: NIST P-256 elliptic curve (secp256r1)</li>
+<li><strong>Compressed Public Keys</strong>: Space-efficient key representation</li>
+<li><strong>Secure Salt Generation</strong>: Cryptographically secure random salts</li>
+</ul>
+<h2 id="secure-signing"><a class="header" href="#secure-signing">Secure Signing</a></h2>
+<h3 id="message-signing"><a class="header" href="#message-signing">Message Signing</a></h3>
+<p>The client handles request signing automatically:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sign arbitrary message
+let message = b"transaction_data";
+let signature = p256_crypto::sign_message(message, &amp;private_key)?;
+
+println!("Signature length: {} bytes", signature.len());
+println!("Format: DER encoded");
+<span class="boring">}</span></code></pre></pre>
+<h3 id="webauthn-compatible-signing"><a class="header" href="#webauthn-compatible-signing">WebAuthn Compatible Signing</a></h3>
+<p>For WebAuthn and browser-compatible operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Generate WebAuthn-compatible signature (raw r,s format)
+let webauthn_signature = p256_crypto::sign_message_webauthn(
+    message,
+    &amp;private_key
+)?;
+
+// Signature is exactly 64 bytes (32-byte r + 32-byte s)
+assert_eq!(webauthn_signature.len(), 64);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="signature-verification"><a class="header" href="#signature-verification">Signature Verification</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Verify signature authenticity
+let is_valid = p256_crypto::verify_signature(
+    message,
+    &amp;signature,
+    &amp;public_key
+)?;
+
+if is_valid {
+    println!("Signature verified successfully");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="request-authentication"><a class="header" href="#request-authentication">Request Authentication</a></h3>
+<p>Turnkey requests are automatically signed with the X-Stamp header:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Internal signing process (handled automatically)
+let signature = self.sign_request(payload_json.as_bytes(), client_secret)?;
+
+// Headers include authentication stamp
+.header("X-Stamp", signature)
+.header("x-client-version", "@turnkey/sdk-server@1.7.3")
+<span class="boring">}</span></code></pre></pre>
+<h2 id="api-methods"><a class="header" href="#api-methods">API Methods</a></h2>
+<h3 id="core-operations"><a class="header" href="#core-operations">Core Operations</a></h3>
+<h4 id="identity-and-authentication"><a class="header" href="#identity-and-authentication">Identity and Authentication</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get current user identity
+let whoami: TurnkeyWhoAmI = turnkey_client.whoami(
+    organization_id,
+    client_secret
+).await?;
+
+// Fields available:
+// - organization_id: String
+// - organization_name: String  
+// - user_id: String
+// - username: String
+<span class="boring">}</span></code></pre></pre>
+<h4 id="api-key-management"><a class="header" href="#api-key-management">API Key Management</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Retrieve all API keys for user
+let api_keys: GetApiKeysResponse = turnkey_client.get_api_keys(
+    user_id,
+    organization_id,
+    client_secret
+).await?;
+
+// Access key information
+for key in api_keys.api_keys {
+    println!("Key ID: {}", key.api_key_id);
+    println!("Name: {}", key.api_key_name);
+    println!("Public Key: {}", key.credential.public_key);
+    println!("Type: {}", key.credential.credential_type);
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="session-management-1"><a class="header" href="#session-management-1">Session Management</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Create secure session for operations
+let success: bool = turnkey_client.create_read_write_session(
+    organization_id,
+    user_id,
+    target_public_key,
+    api_key_name
+).await?;
+
+// Sessions expire after 30 days by default
+<span class="boring">}</span></code></pre></pre>
+<h3 id="utility-methods"><a class="header" href="#utility-methods">Utility Methods</a></h3>
+<h4 id="session-information"><a class="header" href="#session-information">Session Information</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get specific API key by type
+let session_key = turnkey_client.get_session_key(
+    &amp;session,
+    "CREDENTIAL_TYPE_READ_WRITE_SESSION_KEY_P256"
+);
+
+// Generate human-readable session summary
+let summary = turnkey_client.session_summary(&amp;session);
+println!("{}", summary);
+// Output: "Turnkey Session - User: alice, Keys: 2/3 active, Age: 45m, Expires: 120m"
+<span class="boring">}</span></code></pre></pre>
+<h4 id="health-monitoring"><a class="header" href="#health-monitoring">Health Monitoring</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check Turnkey service availability
+let is_healthy: bool = turnkey_client.health_check().await?;
+
+if !is_healthy {
+    println!("Turnkey service may be experiencing issues");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h3>
+<p>The integration provides comprehensive error handling:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match turnkey_client.whoami(org_id, client_secret).await {
+    Ok(whoami) =&gt; {
+        println!("Authentication successful: {}", whoami.username);
+    }
+    Err(AxiomError::Api { message, .. }) if message.contains("PUBLIC_KEY_NOT_FOUND") =&gt; {
+        println!("Public key not registered with Turnkey organization");
+    }
+    Err(AxiomError::Api { message, .. }) if message.contains("unauthorized") =&gt; {
+        println!("Invalid authentication credentials");
+    }
+    Err(AxiomError::Network { .. }) =&gt; {
+        println!("Network connectivity issue");
+    }
+    Err(e) =&gt; {
+        println!("Unexpected error: {}", e);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="integration-with-axiom-trade"><a class="header" href="#integration-with-axiom-trade">Integration with Axiom Trade</a></h2>
+<h3 id="session-storage"><a class="header" href="#session-storage">Session Storage</a></h3>
+<p>Turnkey sessions are integrated with the main authentication system:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sessions are stored in .axiom_turnkey_session.json
+let auth_session = AuthSession {
+    tokens: auth_tokens,
+    cookies: auth_cookies,
+    turnkey_session: Some(turnkey_session),
+    user_info: user_info,
+    session_metadata: metadata,
+};
+<span class="boring">}</span></code></pre></pre>
+<h3 id="automatic-session-management"><a class="header" href="#automatic-session-management">Automatic Session Management</a></h3>
+<p>The client automatically handles:</p>
+<ul>
+<li><strong>Session expiration checking</strong></li>
+<li><strong>Key rotation</strong></li>
+<li><strong>Error recovery</strong></li>
+<li><strong>Health monitoring</strong></li>
+</ul>
+<h3 id="trading-integration"><a class="header" href="#trading-integration">Trading Integration</a></h3>
+<p>Turnkey sessions enable secure trading operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Session provides cryptographic signing for trades
+if let Some(turnkey) = &amp;session.turnkey_session {
+    // Use Turnkey session for secure trade signing
+    let trade_signature = sign_trade_request(&amp;trade_data, &amp;turnkey.client_secret)?;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="security-considerations"><a class="header" href="#security-considerations">Security Considerations</a></h2>
+<h3 id="key-security"><a class="header" href="#key-security">Key Security</a></h3>
+<ul>
+<li><strong>Hardware-backed</strong>: Keys are protected by Turnkey's hardware infrastructure</li>
+<li><strong>Never exposed</strong>: Private keys never leave the secure environment</li>
+<li><strong>P256 cryptography</strong>: Industry-standard elliptic curve cryptography</li>
+<li><strong>Secure derivation</strong>: PBKDF2 with high iteration count</li>
+</ul>
+<h3 id="session-security"><a class="header" href="#session-security">Session Security</a></h3>
+<ul>
+<li><strong>Limited lifetime</strong>: Sessions expire automatically (30 days default)</li>
+<li><strong>Activity tracking</strong>: All operations are logged and monitored</li>
+<li><strong>Secure transmission</strong>: All communications use TLS encryption</li>
+<li><strong>Authentication required</strong>: Every request requires cryptographic signature</li>
+</ul>
+<h3 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h3>
+<ol>
+<li><strong>Store passwords securely</strong>: Use OS keychain or secure storage</li>
+<li><strong>Monitor session health</strong>: Regular health checks and renewal</li>
+<li><strong>Handle errors gracefully</strong>: Implement proper error recovery</li>
+<li><strong>Rotate keys regularly</strong>: Follow organizational key rotation policies</li>
+<li><strong>Validate responses</strong>: Always verify API responses and signatures</li>
+</ol>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="common-issues"><a class="header" href="#common-issues">Common Issues</a></h3>
+<h4 id="authentication-failures"><a class="header" href="#authentication-failures">Authentication Failures</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Handle common authentication issues
+fn handle_auth_failure(error: AxiomError) -&gt; Result&lt;()&gt; {
+    match error {
+        AxiomError::Api { message, .. } if message.contains("PUBLIC_KEY_NOT_FOUND") =&gt; {
+            println!("Solution: Ensure public key is registered in Turnkey organization");
+        }
+        AxiomError::Api { message, .. } if message.contains("unauthorized") =&gt; {
+            println!("Solution: Check password and client secret are correct");
+        }
+        AxiomError::Network { .. } =&gt; {
+            println!("Solution: Check internet connection");
+        }
+        _ =&gt; {
+            println!("Unknown error: {}", error);
+        }
+    }
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="session-issues"><a class="header" href="#session-issues">Session Issues</a></h4>
+<ul>
+<li><strong>Expired sessions</strong>: Re-authenticate to refresh session</li>
+<li><strong>Invalid keys</strong>: Verify key registration in Turnkey organization</li>
+<li><strong>Network issues</strong>: Check connectivity and retry with backoff</li>
+</ul>
+<h4 id="key-generation-problems"><a class="header" href="#key-generation-problems">Key Generation Problems</a></h4>
+<ul>
+<li><strong>Invalid salt</strong>: Ensure client secret is properly base64 encoded</li>
+<li><strong>Wrong password</strong>: Verify password matches original key generation</li>
+<li><strong>Curve validation</strong>: Ensure derived key is valid for P256 curve</li>
+</ul>
+<h3 id="debug-information"><a class="header" href="#debug-information">Debug Information</a></h3>
+<p>Enable detailed logging for troubleshooting:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get comprehensive session information
+let summary = turnkey_client.session_summary(&amp;session);
+println!("Debug: {}", summary);
+
+// Check individual key status
+for key in &amp;session.api_keys {
+    if let Some(expires_at) = key.expires_at {
+        let remaining = expires_at - chrono::Utc::now();
+        println!("Key {} expires in {} minutes", key.api_key_name, remaining.num_minutes());
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This integration provides enterprise-grade security for cryptocurrency trading operations while maintaining ease of use and robust error handling.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/notifications.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../examples/authentication.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/notifications.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../examples/authentication.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

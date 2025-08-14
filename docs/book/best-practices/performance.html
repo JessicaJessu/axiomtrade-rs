@@ -1,0 +1,980 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Performance - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/best-practices/performance.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="performance-optimization-guide"><a class="header" href="#performance-optimization-guide">Performance Optimization Guide</a></h1>
+<p>This comprehensive guide covers performance best practices for high-frequency trading applications, based on patterns observed in the axiomtrade-rs codebase.</p>
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ol>
+<li><a href="#asyncawait-best-practices">Async/Await Best Practices</a></li>
+<li><a href="#connection-pooling-and-management">Connection Pooling and Management</a></li>
+<li><a href="#batch-operations">Batch Operations</a></li>
+<li><a href="#memory-management">Memory Management</a></li>
+<li><a href="#rate-limiting-and-throttling">Rate Limiting and Throttling</a></li>
+<li><a href="#benchmarking-and-monitoring">Benchmarking and Monitoring</a></li>
+<li><a href="#high-frequency-trading-optimizations">High-Frequency Trading Optimizations</a></li>
+<li><a href="#network-optimization">Network Optimization</a></li>
+</ol>
+<h2 id="asyncawait-best-practices"><a class="header" href="#asyncawait-best-practices">Async/Await Best Practices</a></h2>
+<h3 id="1-efficient-task-spawning"><a class="header" href="#1-efficient-task-spawning">1. Efficient Task Spawning</a></h3>
+<p>Use <code>tokio::spawn</code> for CPU-intensive tasks and concurrent operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Good: Spawn independent tasks
+let handles: Vec&lt;_&gt; = wallet_addresses.iter().map(|address| {
+    let client = client.clone();
+    let address = address.clone();
+    tokio::spawn(async move {
+        client.get_balance(&amp;address).await
+    })
+}).collect();
+
+// Wait for all tasks to complete
+let results = futures_util::future::try_join_all(handles).await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-avoid-blocking-in-async-context"><a class="header" href="#2-avoid-blocking-in-async-context">2. Avoid Blocking in Async Context</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Bad: Blocking I/O in async context
+async fn bad_example() {
+    std::fs::read_to_string("file.json").unwrap(); // Blocks entire runtime
+}
+
+// Good: Use async I/O
+async fn good_example() {
+    tokio::fs::read_to_string("file.json").await.unwrap();
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-strategic-use-of-arc-and-rwlock"><a class="header" href="#3-strategic-use-of-arc-and-rwlock">3. Strategic Use of Arc and RwLock</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EnhancedClient {
+    auth_client: Arc&lt;RwLock&lt;AuthClient&gt;&gt;,
+    rate_limiter: EndpointRateLimiter,
+    global_rate_limiter: RateLimiter,
+}
+
+// Minimize lock contention
+impl EnhancedClient {
+    pub async fn make_request(&amp;self, method: Method, url: &amp;str) -&gt; Result&lt;Response&gt; {
+        // Check rate limits first (no lock needed)
+        self.global_rate_limiter.wait_if_needed().await;
+        
+        // Only acquire lock when needed
+        let auth_client = Arc::clone(&amp;self.auth_client);
+        let result = retry_with_config(self.retry_config.clone(), || {
+            let auth_client = Arc::clone(&amp;auth_client);
+            async move {
+                auth_client.write().await
+                    .make_authenticated_request(method, url, body)
+                    .await
+            }
+        }).await?;
+        
+        result
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="4-efficient-error-handling"><a class="header" href="#4-efficient-error-handling">4. Efficient Error Handling</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl RetryableError for EnhancedClientError {
+    fn is_retryable(&amp;self) -&gt; bool {
+        match self {
+            EnhancedClientError::NetworkError(e) =&gt; e.is_timeout() || e.is_connect(),
+            EnhancedClientError::RateLimitExceeded =&gt; true,
+            _ =&gt; false,
+        }
+    }
+}
+
+// Use custom retry logic for better performance
+pub async fn retry_with_backoff&lt;F, Fut, T, E&gt;(
+    config: RetryConfig,
+    mut operation: F,
+) -&gt; Result&lt;T, E&gt;
+where
+    F: FnMut() -&gt; Fut,
+    Fut: Future&lt;Output = Result&lt;T, E&gt;&gt;,
+    E: RetryableError,
+{
+    for attempt in 0..=config.max_retries {
+        match operation().await {
+            Ok(result) =&gt; return Ok(result),
+            Err(error) =&gt; {
+                if !error.is_retryable() || attempt == config.max_retries {
+                    return Err(error);
+                }
+                
+                let delay = config.calculate_delay(attempt);
+                tokio::time::sleep(delay).await;
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="connection-pooling-and-management"><a class="header" href="#connection-pooling-and-management">Connection Pooling and Management</a></h2>
+<h3 id="1-http-client-reuse"><a class="header" href="#1-http-client-reuse">1. HTTP Client Reuse</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Good: Reuse client with connection pooling
+lazy_static! {
+    static ref HTTP_CLIENT: reqwest::Client = {
+        reqwest::Client::builder()
+            .pool_max_idle_per_host(10)
+            .pool_idle_timeout(Duration::from_secs(30))
+            .timeout(Duration::from_secs(30))
+            .tcp_keepalive(Duration::from_secs(60))
+            .tcp_nodelay(true)
+            .build()
+            .expect("Failed to create HTTP client")
+    };
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-websocket-connection-management"><a class="header" href="#2-websocket-connection-management">2. WebSocket Connection Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct WebSocketClient {
+    region: Region,
+    handler: Arc&lt;dyn MessageHandler&gt;,
+    is_connected: Arc&lt;RwLock&lt;bool&gt;&gt;,
+    reconnect_on_expire: bool,
+}
+
+impl WebSocketClient {
+    // Use multiple endpoints for redundancy
+    fn get_random_url(&amp;self) -&gt; &amp;'static str {
+        let urls = match self.region {
+            Region::USWest =&gt; vec!["socket8.axiom.trade", "cluster-usw2.axiom.trade"],
+            Region::USCentral =&gt; vec!["cluster3.axiom.trade", "cluster-usc2.axiom.trade"],
+            // ...
+        };
+        urls[fastrand::usize(0..urls.len())]
+    }
+    
+    // Automatic token refresh
+    fn spawn_token_refresh_task(&amp;self) {
+        let auth_client = Arc::clone(&amp;self.auth_client);
+        let is_connected = Arc::clone(&amp;self.is_connected);
+        
+        tokio::spawn(async move {
+            let mut refresh_interval = interval(Duration::from_secs(600));
+            
+            loop {
+                refresh_interval.tick().await;
+                
+                if !*is_connected.read().await {
+                    break;
+                }
+                
+                if let Err(e) = auth_client.write().await.ensure_valid_authentication().await {
+                    *is_connected.write().await = false;
+                    break;
+                }
+            }
+        });
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-session-management"><a class="header" href="#3-session-management">3. Session Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SessionManager {
+    session: Arc&lt;RwLock&lt;Option&lt;AuthSession&gt;&gt;&gt;,
+    storage_path: Option&lt;PathBuf&gt;,
+    auto_save: bool,
+}
+
+impl SessionManager {
+    // Efficient session validation
+    pub async fn is_session_valid(&amp;self) -&gt; bool {
+        let guard = self.session.read().await;
+        guard.as_ref().map_or(false, |session| session.is_valid())
+    }
+    
+    // Batch operations for session updates
+    pub async fn update_session_data(
+        &amp;self, 
+        tokens: Option&lt;AuthTokens&gt;,
+        cookies: Option&lt;AuthCookies&gt;
+    ) -&gt; Result&lt;(), AuthError&gt; {
+        {
+            let mut guard = self.session.write().await;
+            if let Some(session) = guard.as_mut() {
+                if let Some(tokens) = tokens {
+                    session.update_tokens(tokens);
+                }
+                if let Some(cookies) = cookies {
+                    session.cookies.merge_with(&amp;cookies);
+                }
+            }
+        }
+        
+        if self.auto_save {
+            self.save_session().await?;
+        }
+        
+        Ok(())
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="batch-operations"><a class="header" href="#batch-operations">Batch Operations</a></h2>
+<h3 id="1-efficient-batch-balance-queries"><a class="header" href="#1-efficient-batch-balance-queries">1. Efficient Batch Balance Queries</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Instead of individual queries
+pub async fn get_balances_inefficient(
+    &amp;self, 
+    addresses: &amp;[String]
+) -&gt; Result&lt;Vec&lt;Balance&gt;, PortfolioError&gt; {
+    let mut balances = Vec::new();
+    for address in addresses {
+        let balance = self.get_balance(address).await?; // N API calls
+        balances.push(balance);
+    }
+    Ok(balances)
+}
+
+// Use batch endpoint
+pub async fn get_batch_balance(
+    &amp;self,
+    wallet_addresses: &amp;[String],
+) -&gt; Result&lt;BatchBalanceResponse, PortfolioError&gt; {
+    let request_body = json!({
+        "wallets": wallet_addresses
+    });
+    
+    self.client
+        .make_json_request(Method::POST, "/portfolio/batch-balance", Some(request_body))
+        .await
+        .map_err(PortfolioError::from)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-concurrent-processing"><a class="header" href="#2-concurrent-processing">2. Concurrent Processing</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn process_batch_concurrent&lt;T, F, Fut&gt;(
+    items: Vec&lt;T&gt;,
+    concurrency_limit: usize,
+    processor: F,
+) -&gt; Vec&lt;Result&lt;F::Output, F::Error&gt;&gt;
+where
+    F: Fn(T) -&gt; Fut + Clone + Send + 'static,
+    Fut: Future&lt;Output = Result&lt;F::Output, F::Error&gt;&gt; + Send,
+    T: Send + 'static,
+{
+    let semaphore = Arc::new(Semaphore::new(concurrency_limit));
+    let tasks: Vec&lt;_&gt; = items.into_iter().map(|item| {
+        let semaphore = Arc::clone(&amp;semaphore);
+        let processor = processor.clone();
+        
+        tokio::spawn(async move {
+            let _permit = semaphore.acquire().await.unwrap();
+            processor(item).await
+        })
+    }).collect();
+    
+    futures_util::future::join_all(tasks).await
+        .into_iter()
+        .map(|result| result.unwrap())
+        .collect()
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h2>
+<h3 id="1-efficient-data-structures"><a class="header" href="#1-efficient-data-structures">1. Efficient Data Structures</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Use bounded collections for streaming data
+struct MarketDataBuffer {
+    ticks: VecDeque&lt;MarketTick&gt;,
+    max_size: usize,
+}
+
+impl MarketDataBuffer {
+    fn new() -&gt; Self {
+        Self {
+            ticks: VecDeque::with_capacity(10000),
+            max_size: 10000,
+        }
+    }
+    
+    fn add_tick(&amp;mut self, tick: MarketTick) {
+        if self.ticks.len() &gt;= self.max_size {
+            self.ticks.pop_front(); // Remove oldest
+        }
+        self.ticks.push_back(tick);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-zero-copy-patterns"><a class="header" href="#2-zero-copy-patterns">2. Zero-Copy Patterns</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Use references instead of cloning
+pub fn process_market_data(data: &amp;[MarketTick]) -&gt; MarketState {
+    let mut total_volume = 0.0;
+    let mut price_sum = 0.0;
+    
+    for tick in data.iter() {  // Iterator over references
+        total_volume += tick.quantity;
+        price_sum += tick.price;
+    }
+    
+    MarketState {
+        avg_price: price_sum / data.len() as f64,
+        total_volume,
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-memory-pool-usage"><a class="header" href="#3-memory-pool-usage">3. Memory Pool Usage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Pre-allocate frequently used objects
+pub struct OrderPool {
+    orders: Vec&lt;Order&gt;,
+    free_indices: Vec&lt;usize&gt;,
+}
+
+impl OrderPool {
+    pub fn new(capacity: usize) -&gt; Self {
+        let orders = (0..capacity)
+            .map(|_| Order::default())
+            .collect();
+        let free_indices = (0..capacity).collect();
+        
+        Self { orders, free_indices }
+    }
+    
+    pub fn acquire(&amp;mut self) -&gt; Option&lt;&amp;mut Order&gt; {
+        self.free_indices.pop()
+            .map(|idx| &amp;mut self.orders[idx])
+    }
+    
+    pub fn release(&amp;mut self, order: &amp;Order) {
+        if let Some(idx) = self.orders.iter().position(|o| std::ptr::eq(o, order)) {
+            self.orders[idx].reset();
+            self.free_indices.push(idx);
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="rate-limiting-and-throttling"><a class="header" href="#rate-limiting-and-throttling">Rate Limiting and Throttling</a></h2>
+<h3 id="1-token-bucket-rate-limiter"><a class="header" href="#1-token-bucket-rate-limiter">1. Token Bucket Rate Limiter</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BucketRateLimiter {
+    tokens: Arc&lt;RwLock&lt;f64&gt;&gt;,
+    max_tokens: f64,
+    refill_rate: f64,
+    last_refill: Arc&lt;RwLock&lt;Instant&gt;&gt;,
+}
+
+impl BucketRateLimiter {
+    pub async fn try_consume(&amp;self, tokens_needed: f64) -&gt; Option&lt;Duration&gt; {
+        let mut tokens = self.tokens.write().await;
+        let mut last_refill = self.last_refill.write().await;
+        let now = Instant::now();
+        
+        // Refill tokens based on elapsed time
+        let elapsed = now.duration_since(*last_refill).as_secs_f64();
+        let tokens_to_add = (elapsed * self.refill_rate).min(self.max_tokens - *tokens);
+        *tokens = (*tokens + tokens_to_add).min(self.max_tokens);
+        *last_refill = now;
+        
+        if *tokens &gt;= tokens_needed {
+            *tokens -= tokens_needed;
+            None
+        } else {
+            let tokens_deficit = tokens_needed - *tokens;
+            let wait_time = Duration::from_secs_f64(tokens_deficit / self.refill_rate);
+            Some(wait_time)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-endpoint-specific-rate-limiting"><a class="header" href="#2-endpoint-specific-rate-limiting">2. Endpoint-Specific Rate Limiting</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct EndpointRateLimiter {
+    limiters: Arc&lt;RwLock&lt;HashMap&lt;String, RateLimiter&gt;&gt;&gt;,
+    default_limiter: RateLimiter,
+}
+
+impl EndpointRateLimiter {
+    pub async fn wait_for_endpoint(&amp;self, endpoint: &amp;str) {
+        let limiters = self.limiters.read().await;
+        
+        if let Some(limiter) = limiters.get(endpoint) {
+            limiter.wait_if_needed().await;
+        } else {
+            drop(limiters); // Release read lock
+            self.default_limiter.wait_if_needed().await;
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="benchmarking-and-monitoring"><a class="header" href="#benchmarking-and-monitoring">Benchmarking and Monitoring</a></h2>
+<h3 id="1-performance-metrics-collection"><a class="header" href="#1-performance-metrics-collection">1. Performance Metrics Collection</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LatencyTracker {
+    execution_latencies: VecDeque&lt;Duration&gt;,
+    max_samples: usize,
+}
+
+impl LatencyTracker {
+    pub fn record_execution_latency(&amp;mut self, latency: Duration) {
+        if self.execution_latencies.len() &gt;= self.max_samples {
+            self.execution_latencies.pop_front();
+        }
+        self.execution_latencies.push_back(latency);
+    }
+    
+    pub fn get_percentiles(&amp;self) -&gt; LatencyPercentiles {
+        let mut sorted: Vec&lt;_&gt; = self.execution_latencies.iter().collect();
+        sorted.sort();
+        
+        let len = sorted.len();
+        LatencyPercentiles {
+            p50: *sorted[len * 50 / 100],
+            p95: *sorted[len * 95 / 100],
+            p99: *sorted[len * 99 / 100],
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-real-time-performance-monitoring"><a class="header" href="#2-real-time-performance-monitoring">2. Real-time Performance Monitoring</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn monitor_performance(
+    &amp;self,
+    interval: Duration
+) -&gt; tokio::task::JoinHandle&lt;()&gt; {
+    let latency_tracker = Arc::clone(&amp;self.latency_tracker);
+    
+    tokio::spawn(async move {
+        let mut monitoring_interval = tokio::time::interval(interval);
+        
+        loop {
+            monitoring_interval.tick().await;
+            
+            let tracker = latency_tracker.lock().await;
+            let avg_latency = tracker.get_average_latency();
+            let percentiles = tracker.get_percentiles();
+            
+            if avg_latency &gt; Duration::from_millis(10) {
+                println!("⚠️  High average latency: {:.2}ms", 
+                    avg_latency.as_secs_f64() * 1000.0);
+            }
+            
+            if percentiles.p99 &gt; Duration::from_millis(50) {
+                println!("🚨 P99 latency spike: {:.2}ms", 
+                    percentiles.p99.as_secs_f64() * 1000.0);
+            }
+        }
+    })
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-benchmarking-framework"><a class="header" href="#3-benchmarking-framework">3. Benchmarking Framework</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(test)]
+mod benchmarks {
+    use super::*;
+    use std::time::Instant;
+    
+    #[tokio::test]
+    async fn benchmark_batch_vs_individual() {
+        let client = setup_test_client().await;
+        let addresses = generate_test_addresses(100);
+        
+        // Benchmark individual requests
+        let start = Instant::now();
+        for address in &amp;addresses {
+            client.get_balance(address).await.unwrap();
+        }
+        let individual_time = start.elapsed();
+        
+        // Benchmark batch request
+        let start = Instant::now();
+        client.get_batch_balance(&amp;addresses).await.unwrap();
+        let batch_time = start.elapsed();
+        
+        println!("Individual: {:.2}ms", individual_time.as_secs_f64() * 1000.0);
+        println!("Batch: {:.2}ms", batch_time.as_secs_f64() * 1000.0);
+        println!("Speedup: {:.2}x", individual_time.as_secs_f64() / batch_time.as_secs_f64());
+        
+        assert!(batch_time &lt; individual_time / 5); // At least 5x faster
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="high-frequency-trading-optimizations"><a class="header" href="#high-frequency-trading-optimizations">High-Frequency Trading Optimizations</a></h2>
+<h3 id="1-ultra-low-latency-execution"><a class="header" href="#1-ultra-low-latency-execution">1. Ultra-Low Latency Execution</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ExecutionEngine {
+    config: ExecutionConfig,
+}
+
+impl ExecutionEngine {
+    pub async fn execute_order_ultra_fast(
+        &amp;self,
+        client: &amp;EnhancedClient,
+        signal: &amp;HftSignal,
+    ) -&gt; Result&lt;ExecutionResult&gt; {
+        let execution_start = Instant::now();
+        
+        // Pre-validate signal (avoid blocking operations)
+        if signal.confidence &lt; self.config.min_confidence {
+            return Err(ExecutionError::LowConfidence);
+        }
+        
+        // Use IOC (Immediate or Cancel) orders for speed
+        let order_request = self.build_order_request(signal, OrderTimeInForce::IOC);
+        
+        // Execute with timeout
+        let result = tokio::time::timeout(
+            self.config.max_latency_tolerance,
+            client.submit_order(order_request)
+        ).await??;
+        
+        let execution_latency = execution_start.elapsed();
+        
+        // Record metrics
+        self.metrics.record_execution_latency(execution_latency);
+        
+        if execution_latency &gt; self.config.max_latency_tolerance {
+            println!("⚠️  Execution exceeded latency budget: {:.3}ms", 
+                execution_latency.as_secs_f64() * 1000.0);
+        }
+        
+        Ok(ExecutionResult {
+            execution_latency,
+            ..result
+        })
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-market-microstructure-analysis"><a class="header" href="#2-market-microstructure-analysis">2. Market Microstructure Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MicrostructureAnalyzer {
+    order_flow_buffer: VecDeque&lt;OrderFlowEvent&gt;,
+    tick_buffer: VecDeque&lt;MarketTick&gt;,
+}
+
+impl MicrostructureAnalyzer {
+    pub fn analyze_market_impact(&amp;self, order_size: f64) -&gt; f64 {
+        let recent_ticks: Vec&lt;_&gt; = self.tick_buffer
+            .iter()
+            .rev()
+            .take(100)
+            .collect();
+        
+        if recent_ticks.is_empty() {
+            return 0.0;
+        }
+        
+        // Calculate volume-weighted average price
+        let total_volume: f64 = recent_ticks.iter().map(|t| t.quantity).sum();
+        let vwap: f64 = recent_ticks.iter()
+            .map(|t| t.price * t.quantity)
+            .sum::&lt;f64&gt;() / total_volume;
+        
+        // Estimate impact based on order size vs recent volume
+        let avg_volume = total_volume / recent_ticks.len() as f64;
+        let impact_factor = (order_size / avg_volume).min(1.0);
+        
+        impact_factor * 0.001 // Convert to basis points
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-smart-order-routing"><a class="header" href="#3-smart-order-routing">3. Smart Order Routing</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct SmartOrderRouter {
+    venues: Vec&lt;TradingVenue&gt;,
+    latency_tracker: HashMap&lt;VenueId, LatencyTracker&gt;,
+}
+
+impl SmartOrderRouter {
+    pub async fn route_order(&amp;self, order: &amp;Order) -&gt; Result&lt;VenueId&gt; {
+        let mut best_venue = None;
+        let mut best_score = f64::NEG_INFINITY;
+        
+        for venue in &amp;self.venues {
+            let score = self.calculate_venue_score(venue, order).await;
+            if score &gt; best_score {
+                best_score = score;
+                best_venue = Some(venue.id);
+            }
+        }
+        
+        best_venue.ok_or(RoutingError::NoSuitableVenue)
+    }
+    
+    async fn calculate_venue_score(&amp;self, venue: &amp;TradingVenue, order: &amp;Order) -&gt; f64 {
+        let liquidity_score = venue.get_liquidity_score(order.symbol()).await;
+        let latency_score = self.get_latency_score(venue.id).await;
+        let fee_score = 1.0 - venue.get_fee_rate(order.symbol()).await;
+        
+        // Weighted combination
+        liquidity_score * 0.4 + latency_score * 0.4 + fee_score * 0.2
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="network-optimization"><a class="header" href="#network-optimization">Network Optimization</a></h2>
+<h3 id="1-tcp-optimization"><a class="header" href="#1-tcp-optimization">1. TCP Optimization</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Configure HTTP client for optimal performance
+fn create_optimized_client() -&gt; reqwest::Client {
+    reqwest::Client::builder()
+        .tcp_nodelay(true)                    // Disable Nagle's algorithm
+        .tcp_keepalive(Duration::from_secs(60)) // Keep connections alive
+        .pool_max_idle_per_host(20)           // Connection pooling
+        .pool_idle_timeout(Duration::from_secs(30))
+        .timeout(Duration::from_secs(10))     // Request timeout
+        .connect_timeout(Duration::from_secs(5)) // Connection timeout
+        .user_agent("axiomtrade-rs/1.0")
+        .build()
+        .expect("Failed to create HTTP client")
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-websocket-optimization"><a class="header" href="#2-websocket-optimization">2. WebSocket Optimization</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Configure WebSocket for minimal latency
+pub async fn connect_optimized_websocket(url: &amp;str) -&gt; Result&lt;WebSocketStream&gt; {
+    let request = http::Request::builder()
+        .method("GET")
+        .uri(url)
+        .header("Connection", "Upgrade")
+        .header("Upgrade", "websocket")
+        .header("Sec-WebSocket-Version", "13")
+        .header("Sec-WebSocket-Key", generate_key())
+        .header("Cache-Control", "no-cache")
+        .header("Pragma", "no-cache")
+        .body(())?;
+    
+    let (ws_stream, _) = connect_async(request).await?;
+    
+    // Configure stream for minimal buffering
+    // (Platform-specific socket options would go here)
+    
+    Ok(ws_stream)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-regional-optimization"><a class="header" href="#3-regional-optimization">3. Regional Optimization</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum Region {
+    USWest,
+    USCentral, 
+    USEast,
+    EUWest,
+    // ...
+}
+
+impl Region {
+    pub fn get_optimal_endpoints(&amp;self) -&gt; Vec&lt;&amp;'static str&gt; {
+        match self {
+            Region::USWest =&gt; vec![
+                "socket8.axiom.trade",      // Primary
+                "cluster-usw2.axiom.trade", // Backup
+            ],
+            // Select closest endpoints for minimal latency
+        }
+    }
+    
+    pub async fn measure_latency(&amp;self, endpoint: &amp;str) -&gt; Result&lt;Duration&gt; {
+        let start = Instant::now();
+        let _response = reqwest::get(format!("https://{}/health", endpoint)).await?;
+        Ok(start.elapsed())
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="performance-monitoring-dashboard"><a class="header" href="#performance-monitoring-dashboard">Performance Monitoring Dashboard</a></h2>
+<h3 id="real-time-metrics"><a class="header" href="#real-time-metrics">Real-time Metrics</a></h3>
+<p>Monitor these key performance indicators:</p>
+<ul>
+<li><strong>Execution Latency</strong>: P50, P95, P99 execution times</li>
+<li><strong>Network Latency</strong>: Round-trip times to API endpoints</li>
+<li><strong>Rate Limit Status</strong>: Remaining capacity for each endpoint</li>
+<li><strong>Memory Usage</strong>: Heap usage and garbage collection frequency</li>
+<li><strong>Connection Health</strong>: Active connections and error rates</li>
+<li><strong>Order Flow</strong>: Orders per second and fill rates</li>
+</ul>
+<h3 id="alerting-thresholds"><a class="header" href="#alerting-thresholds">Alerting Thresholds</a></h3>
+<p>Set up alerts for:</p>
+<ul>
+<li>P99 latency &gt; 50ms</li>
+<li>Error rate &gt; 1%</li>
+<li>Memory usage &gt; 80%</li>
+<li>Rate limit utilization &gt; 90%</li>
+<li>Connection failures &gt; 5 per minute</li>
+</ul>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Effective performance optimization requires:</p>
+<ol>
+<li><strong>Proactive Monitoring</strong>: Instrument code to measure what matters</li>
+<li><strong>Efficient Resource Usage</strong>: Pool connections, batch operations, minimize allocations</li>
+<li><strong>Network Optimization</strong>: Choose optimal endpoints, configure TCP properly</li>
+<li><strong>Async Best Practices</strong>: Avoid blocking, use appropriate concurrency patterns</li>
+<li><strong>Continuous Benchmarking</strong>: Measure improvements and catch regressions</li>
+</ol>
+<p>The patterns demonstrated in this codebase provide a solid foundation for building high-performance trading applications that can handle the demands of modern financial markets.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../best-practices/security.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../troubleshooting/common-issues.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../best-practices/security.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../troubleshooting/common-issues.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Portfolio Examples - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/examples/portfolio.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="portfolio-examples"><a class="header" href="#portfolio-examples">Portfolio Examples</a></h1>
+<p>This section demonstrates comprehensive portfolio management capabilities using the Axiom Trade Rust client. These examples show how to retrieve, monitor, and analyze portfolio data across multiple wallets.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The portfolio examples showcase four key areas of functionality:</p>
+<ol>
+<li><strong>Basic Portfolio Retrieval</strong> - Getting complete portfolio summaries with performance metrics</li>
+<li><strong>Batch Balance Operations</strong> - Efficiently querying multiple wallets simultaneously</li>
+<li><strong>Real-time Monitoring</strong> - Continuous portfolio tracking with alerts and change detection</li>
+<li><strong>Token Account Analysis</strong> - Deep analysis of token holdings, distribution, and risk assessment</li>
+</ol>
+<p>All examples require proper authentication and environment setup as described in the <a href="authentication.html">Authentication Examples</a>.</p>
+<h2 id="1-basic-portfolio-retrieval-get_portfoliors"><a class="header" href="#1-basic-portfolio-retrieval-get_portfoliors">1. Basic Portfolio Retrieval (<code>get_portfolio.rs</code>)</a></h2>
+<h3 id="overview-1"><a class="header" href="#overview-1">Overview</a></h3>
+<p>The basic portfolio retrieval example demonstrates how to fetch comprehensive portfolio information including balance statistics, performance metrics, top positions, and recent transactions.</p>
+<h3 id="key-features"><a class="header" href="#key-features">Key Features</a></h3>
+<ul>
+<li>Complete portfolio summary with SOL values</li>
+<li>Performance metrics (1-day, 7-day, 30-day, all-time PnL)</li>
+<li>Top position analysis with profit/loss percentages</li>
+<li>Recent transaction history</li>
+<li>Individual wallet balance breakdowns</li>
+<li>Token holding details with market values</li>
+</ul>
+<h3 id="example-usage"><a class="header" href="#example-usage">Example Usage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::api::portfolio::PortfolioClient;
+use axiomtrade_rs::auth::AuthClient;
+
+// Authenticate and create portfolio client
+let mut auth_client = AuthClient::new()?;
+auth_client.login(&amp;email, &amp;password, None).await?;
+let mut portfolio_client = PortfolioClient::new()?;
+
+// Define wallets to analyze
+let wallet_addresses = vec![
+    "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK".to_string(),
+    "5FHwkrdxntdK24hgQU8qgBjn35Y1zwhz1GZwCkP2UJnM".to_string(),
+];
+
+// Get comprehensive portfolio summary
+let portfolio = portfolio_client.get_portfolio_summary(&amp;wallet_addresses).await?;
+
+// Access portfolio data
+println!("Total Value: {:.4} SOL", portfolio.balance_stats.total_value_sol);
+println!("Available Balance: {:.4} SOL", portfolio.balance_stats.available_balance_sol);
+println!("Unrealized PnL: {:.4} SOL", portfolio.balance_stats.unrealized_pnl_sol);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="output-example"><a class="header" href="#output-example">Output Example</a></h3>
+<pre><code>📊 Portfolio Summary
+====================
+  Total Value SOL: 125.4567 SOL
+  Available SOL: 98.7654 SOL
+  Unrealized PnL: 12.3456 SOL
+
+📈 Performance Metrics:
+  1 Day PnL: 2.3456 SOL
+  7 Day PnL: 8.9012 SOL
+  30 Day PnL: 15.6789 SOL
+  All Time PnL: 45.2341 SOL
+
+💎 Top Positions:
+  1. BONK (Bonk Inu)
+     Amount: 1234567.8900
+     Value: $567.89
+     PnL: +12.34%
+</code></pre>
+<h2 id="2-batch-balance-queries-batch_balancesrs"><a class="header" href="#2-batch-balance-queries-batch_balancesrs">2. Batch Balance Queries (<code>batch_balances.rs</code>)</a></h2>
+<h3 id="overview-2"><a class="header" href="#overview-2">Overview</a></h3>
+<p>This example demonstrates efficient batch querying capabilities for retrieving balance information across multiple wallets in a single API call, providing significant performance improvements over individual queries.</p>
+<h3 id="key-features-1"><a class="header" href="#key-features-1">Key Features</a></h3>
+<ul>
+<li>Single API call for multiple wallet balances</li>
+<li>Comprehensive balance statistics and aggregation</li>
+<li>Token distribution analysis across wallets</li>
+<li>Performance metrics and efficiency calculations</li>
+<li>Fallback to individual queries on batch failure</li>
+<li>Rich portfolio analytics and reporting</li>
+</ul>
+<h3 id="efficiency-benefits"><a class="header" href="#efficiency-benefits">Efficiency Benefits</a></h3>
+<ul>
+<li><strong>API Calls</strong>: 1 batch call vs N individual calls</li>
+<li><strong>Network Overhead</strong>: Reduced latency and bandwidth usage</li>
+<li><strong>Rate Limiting</strong>: More efficient use of API quotas</li>
+<li><strong>Data Consistency</strong>: Snapshot of all balances at the same time</li>
+</ul>
+<h3 id="example-usage-1"><a class="header" href="#example-usage-1">Example Usage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Define multiple wallet addresses
+let wallet_addresses = vec![
+    "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK".to_string(),
+    "5FHwkrdxntdK24hgQU8qgBjn35Y1zwhz1GZwCkP2UJnM".to_string(),
+    "7xLk17EQQ5KLDLDe44wCmupJKJjTGd8hs3eSVVhCx932".to_string(),
+    // ... more wallets
+];
+
+// Perform batch balance query
+let batch_response = portfolio_client.get_batch_balance(&amp;wallet_addresses).await?;
+
+// Analyze results
+for (address, balance) in batch_response.balances.iter() {
+    println!("Wallet: {}...", &amp;address[..8]);
+    println!("  SOL Balance: {:.6} SOL", balance.sol_balance);
+    println!("  Total Value: ${:.2}", balance.total_value_usd);
+    println!("  Token Count: {}", balance.token_balances.len());
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="output-example-1"><a class="header" href="#output-example-1">Output Example</a></h3>
+<pre><code>📊 Performing batch balance query...
+✓ Batch query successful!
+
+Address         SOL Balance     USD Value    Tokens
+-----------------------------------------------------------------
+DYw8jC...          12.345678      1,234.56        15
+5FHwkr...          23.456789      2,345.67         8
+7xLk17...           5.678901        567.89        22
+-----------------------------------------------------------------
+TOTAL              41.481368      4,148.12
+
+📈 Token Distribution Analysis:
+  Most common tokens:
+    USDC - held by 3 wallet(s), total value: $1,234.56
+    BONK - held by 2 wallet(s), total value: $567.89
+    SOL - held by 3 wallet(s), total value: $2,345.67
+
+📦 Batch Efficiency:
+  Single queries would require: 3 API calls
+  Batch query used: 1 API call
+  Efficiency gain: 3x
+</code></pre>
+<h2 id="3-real-time-portfolio-monitoring-portfolio_monitoringrs"><a class="header" href="#3-real-time-portfolio-monitoring-portfolio_monitoringrs">3. Real-time Portfolio Monitoring (<code>portfolio_monitoring.rs</code>)</a></h2>
+<h3 id="overview-3"><a class="header" href="#overview-3">Overview</a></h3>
+<p>This example implements continuous real-time monitoring of portfolio changes with configurable update intervals, change detection algorithms, performance tracking, and alert systems.</p>
+<h3 id="key-features-2"><a class="header" href="#key-features-2">Key Features</a></h3>
+<ul>
+<li><strong>Continuous Monitoring</strong>: Configurable update intervals (default 30 seconds)</li>
+<li><strong>Change Detection</strong>: Automatic detection of value, balance, and position changes</li>
+<li><strong>Performance Analysis</strong>: Historical tracking with volatility calculations</li>
+<li><strong>Alert System</strong>: Configurable thresholds for significant changes</li>
+<li><strong>Memory Management</strong>: Efficient historical data storage with cleanup</li>
+<li><strong>Error Handling</strong>: Robust error recovery and authentication refresh</li>
+</ul>
+<h3 id="monitoring-capabilities"><a class="header" href="#monitoring-capabilities">Monitoring Capabilities</a></h3>
+<h4 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h4>
+<ul>
+<li>Total portfolio value changes (SOL and percentage)</li>
+<li>Available balance fluctuations</li>
+<li>Active position count changes</li>
+<li>New transaction detection</li>
+</ul>
+<h4 id="performance-analysis"><a class="header" href="#performance-analysis">Performance Analysis</a></h4>
+<ul>
+<li>Total performance since monitoring start</li>
+<li>Recent trend analysis (last 5 data points)</li>
+<li>Volatility calculation using standard deviation</li>
+<li>Real-time profit/loss tracking</li>
+</ul>
+<h4 id="alert-system"><a class="header" href="#alert-system">Alert System</a></h4>
+<ul>
+<li>Portfolio value change alerts (&gt;5% threshold)</li>
+<li>New position alerts</li>
+<li>New transaction alerts</li>
+<li>Custom threshold configuration</li>
+</ul>
+<h3 id="example-usage-2"><a class="header" href="#example-usage-2">Example Usage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Initialize monitoring
+let demo_wallets = vec![
+    "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK".to_string(),
+    "5FHwkrdxntdK24hgQU8qgBjn35Y1zwhz1GZwCkP2UJnM".to_string(),
+];
+
+let mut last_portfolio = client.get_portfolio_summary(&amp;demo_wallets).await?;
+let initial_value = last_portfolio.balance_stats.total_value_sol;
+
+// Monitoring loop
+loop {
+    sleep(Duration::from_secs(30)).await;
+    
+    let current_portfolio = client.get_portfolio_summary(&amp;demo_wallets).await?;
+    let changes = detect_portfolio_changes(&amp;last_portfolio, &amp;current_portfolio);
+    
+    // Process changes and generate alerts
+    if !changes.is_empty() {
+        for change in &amp;changes {
+            println!("  {}", change);
+        }
+    }
+    
+    // Performance and alert analysis
+    analyze_performance(&amp;total_value_history, initial_value);
+    check_alerts(&amp;current_portfolio, &amp;last_portfolio);
+    
+    last_portfolio = current_portfolio;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="output-example-2"><a class="header" href="#output-example-2">Output Example</a></h3>
+<pre><code>============================================================
+Update #3 - 30.2s since last update
+
+Portfolio Summary:
+  Active positions: 15
+  Total SOL: 125.456789
+  Available SOL: 98.765432
+  Unrealized PnL: 12.345678 SOL
+  Total transactions: 45
+
+Detected Changes:
+  Total value: +2.345678 SOL (+1.90%)
+  New transactions: +2
+
+Performance Analysis:
+  Since start: $45.67 (+2.34%)
+  Recent trend: $12.34 (+1.12%)
+  Volatility: 3.45%
+
+ALERT: 2 new transactions detected
+</code></pre>
+<h2 id="4-token-account-analysis-token_accountsrs"><a class="header" href="#4-token-account-analysis-token_accountsrs">4. Token Account Analysis (<code>token_accounts.rs</code>)</a></h2>
+<h3 id="overview-4"><a class="header" href="#overview-4">Overview</a></h3>
+<p>This sophisticated example provides comprehensive analysis of token holdings across multiple wallets, including position sizing, risk assessment, portfolio optimization suggestions, and distribution analysis.</p>
+<h3 id="key-features-3"><a class="header" href="#key-features-3">Key Features</a></h3>
+<ul>
+<li><strong>Comprehensive Token Analysis</strong>: Aggregated view across all wallets</li>
+<li><strong>Risk Assessment</strong>: Concentration risk and position size analysis</li>
+<li><strong>Portfolio Optimization</strong>: Automated suggestions for improvement</li>
+<li><strong>Distribution Analysis</strong>: Position size buckets and diversity metrics</li>
+<li><strong>Wallet Diversity</strong>: Token distribution across wallet addresses</li>
+<li><strong>Performance Metrics</strong>: Position sizing and value calculations</li>
+</ul>
+<h3 id="analysis-capabilities"><a class="header" href="#analysis-capabilities">Analysis Capabilities</a></h3>
+<h4 id="token-aggregation"><a class="header" href="#token-aggregation">Token Aggregation</a></h4>
+<ul>
+<li>Total balance and USD value per token across all wallets</li>
+<li>Wallet count per token (distribution analysis)</li>
+<li>Average position size calculations</li>
+<li>Comprehensive position tracking</li>
+</ul>
+<h4 id="risk-analysis"><a class="header" href="#risk-analysis">Risk Analysis</a></h4>
+<ul>
+<li><strong>Concentration Risk</strong>: Top 5 holdings percentage of total portfolio</li>
+<li><strong>Small Position Analysis</strong>: Identification of positions under $5</li>
+<li><strong>Distribution Buckets</strong>: Position categorization (&lt;$1, $1-10, $10-100, $100-1K, &gt;$1K)</li>
+<li><strong>Wallet Diversity</strong>: Analysis of token distribution across wallets</li>
+</ul>
+<h4 id="optimization-suggestions"><a class="header" href="#optimization-suggestions">Optimization Suggestions</a></h4>
+<ul>
+<li>Concentration reduction recommendations</li>
+<li>Small position consolidation advice</li>
+<li>Dust position cleanup suggestions</li>
+<li>Well-distributed holdings identification</li>
+</ul>
+<h3 id="example-usage-3"><a class="header" href="#example-usage-3">Example Usage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get batch balances for analysis
+let batch_response = client.get_batch_balance(&amp;demo_wallets).await?;
+
+// Analyze token distribution
+let mut token_summary: HashMap&lt;String, TokenSummary&gt; = HashMap::new();
+
+for (wallet_address, wallet_balance) in &amp;batch_response.balances {
+    // Process SOL balance
+    if wallet_balance.sol_balance &gt; 0.0 {
+        let sol_value_usd = wallet_balance.sol_balance * 100.0; // SOL price estimate
+        // Add to token summary...
+    }
+    
+    // Process token balances
+    for (mint_address, token_balance) in &amp;wallet_balance.token_balances {
+        // Aggregate token data across wallets...
+    }
+}
+
+// Generate analysis and optimization suggestions
+analyze_concentration_risk(&amp;sorted_tokens, total_value);
+analyze_position_distribution(&amp;sorted_tokens);
+generate_optimization_suggestions(&amp;sorted_tokens);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="output-example-3"><a class="header" href="#output-example-3">Output Example</a></h3>
+<pre><code>Token Portfolio Summary:
+Total positions: 147
+Total portfolio value: $12,345.67
+Unique tokens: 23
+
+Top 10 Token Holdings:
+Symbol          Total Balance       USD Value    Wallets  Avg Position
+--------------------------------------------------------------------------------
+SOL                    45.678900      4,567.89         3      1,522.63
+USDC                2,345.123400      2,345.12         2      1,172.56
+BONK           12,345,678.900000      1,234.57         1      1,234.57
+
+Risk Analysis:
+Top 5 tokens concentration: 78.9%
+  WARNING: High concentration risk detected
+Positions under $5: 8 (34.8%)
+
+Position Size Distribution:
+  &lt;$1: 5 positions (21.7%)
+  $1-10: 8 positions (34.8%)
+  $10-100: 6 positions (26.1%)
+  $100-1K: 3 positions (13.0%)
+  &gt;$1K: 1 positions (4.3%)
+
+Optimization Suggestions:
+- Consider reducing concentration in top holdings
+- Consider consolidating or closing positions under $5
+- Consider cleaning up 5 dust positions
+
+Well Distributed Holdings:
+  USDC - 2 wallets, $2,345.12
+  SOL - 3 wallets, $4,567.89
+</code></pre>
+<h2 id="practical-use-cases"><a class="header" href="#practical-use-cases">Practical Use Cases</a></h2>
+<h3 id="1-portfolio-dashboards"><a class="header" href="#1-portfolio-dashboards">1. Portfolio Dashboards</a></h3>
+<p>Use the portfolio retrieval and monitoring examples to build real-time dashboard applications showing:</p>
+<ul>
+<li>Current portfolio values and performance</li>
+<li>Position changes and alerts</li>
+<li>Historical performance tracking</li>
+<li>Risk metrics and recommendations</li>
+</ul>
+<h3 id="2-automated-rebalancing"><a class="header" href="#2-automated-rebalancing">2. Automated Rebalancing</a></h3>
+<p>Combine token account analysis with trading capabilities to:</p>
+<ul>
+<li>Identify overweight positions requiring rebalancing</li>
+<li>Detect underweight allocations needing increases</li>
+<li>Automate portfolio rebalancing based on target allocations</li>
+<li>Implement risk management rules</li>
+</ul>
+<h3 id="3-multi-wallet-management"><a class="header" href="#3-multi-wallet-management">3. Multi-Wallet Management</a></h3>
+<p>Use batch balance queries for:</p>
+<ul>
+<li>Managing institutional portfolios across multiple wallets</li>
+<li>Consolidated reporting for multiple trading strategies</li>
+<li>Risk assessment across wallet boundaries</li>
+<li>Efficient monitoring of large wallet collections</li>
+</ul>
+<h3 id="4-risk-management-systems"><a class="header" href="#4-risk-management-systems">4. Risk Management Systems</a></h3>
+<p>Implement automated risk monitoring using:</p>
+<ul>
+<li>Real-time position monitoring with configurable alerts</li>
+<li>Concentration risk detection and warnings</li>
+<li>Position size limit enforcement</li>
+<li>Automated stop-loss and profit-taking triggers</li>
+</ul>
+<h3 id="5-performance-analytics"><a class="header" href="#5-performance-analytics">5. Performance Analytics</a></h3>
+<p>Build comprehensive analytics systems featuring:</p>
+<ul>
+<li>Historical performance tracking and reporting</li>
+<li>Volatility analysis and risk-adjusted returns</li>
+<li>Benchmark comparisons and relative performance</li>
+<li>Attribution analysis across tokens and time periods</li>
+</ul>
+<h3 id="6-compliance-and-reporting"><a class="header" href="#6-compliance-and-reporting">6. Compliance and Reporting</a></h3>
+<p>Generate regulatory and internal reports using:</p>
+<ul>
+<li>Complete transaction history with timestamps</li>
+<li>Position statements at specific points in time</li>
+<li>Profit/loss calculations for tax reporting</li>
+<li>Audit trails for trading activity</li>
+</ul>
+<h2 id="running-the-examples"><a class="header" href="#running-the-examples">Running the Examples</a></h2>
+<h3 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h3>
+<ol>
+<li>
+<p><strong>Environment Setup</strong>: Ensure your <code>.env</code> file contains:</p>
+<pre><code>AXIOM_EMAIL=your_email@example.com
+AXIOM_PASSWORD=your_password
+</code></pre>
+</li>
+<li>
+<p><strong>Dependencies</strong>: Make sure all required dependencies are installed:</p>
+<pre><code class="language-bash">cargo build
+</code></pre>
+</li>
+</ol>
+<h3 id="execution"><a class="header" href="#execution">Execution</a></h3>
+<p>Run individual examples using:</p>
+<pre><code class="language-bash"># Basic portfolio retrieval
+cargo run --example get_portfolio
+
+# Batch balance queries  
+cargo run --example batch_balances
+
+# Real-time monitoring
+cargo run --example portfolio_monitoring
+
+# Token account analysis
+cargo run --example token_accounts
+</code></pre>
+<h3 id="customization"><a class="header" href="#customization">Customization</a></h3>
+<p>Each example can be customized by:</p>
+<ul>
+<li>Modifying wallet addresses to use your actual wallets</li>
+<li>Adjusting monitoring intervals and alert thresholds</li>
+<li>Changing analysis parameters and risk thresholds</li>
+<li>Adding additional metrics and reporting features</li>
+</ul>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h3>
+<p>All examples include comprehensive error handling for:</p>
+<ul>
+<li>Authentication failures and token expiration</li>
+<li>Network connectivity issues</li>
+<li>API rate limiting and throttling</li>
+<li>Invalid wallet addresses or missing data</li>
+<li>Graceful degradation with fallback mechanisms</li>
+</ul>
+<p>These examples provide a solid foundation for building sophisticated portfolio management applications using the Axiom Trade Rust client.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../examples/authentication.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../examples/trading.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../examples/authentication.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../examples/trading.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

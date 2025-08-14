@@ -1,0 +1,975 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Error Handling - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/best-practices/error-handling.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="error-handling-best-practices"><a class="header" href="#error-handling-best-practices">Error Handling Best Practices</a></h1>
+<p>This guide covers comprehensive error handling strategies for axiomtrade-rs, including error types, Result handling patterns, retry logic, graceful degradation, and debugging approaches.</p>
+<h2 id="error-type-hierarchy"><a class="header" href="#error-type-hierarchy">Error Type Hierarchy</a></h2>
+<h3 id="core-error-types"><a class="header" href="#core-error-types">Core Error Types</a></h3>
+<p>The axiomtrade-rs library uses a well-structured error hierarchy with the <code>AxiomError</code> enum as the central error type:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use thiserror::Error;
+
+#[derive(Error, Debug)]
+pub enum AxiomError {
+    #[error("Authentication error: {0}")]
+    Auth(#[from] crate::auth::error::AuthError),
+    
+    #[error("Network request failed: {0}")]
+    Network(#[from] reqwest::Error),
+    
+    #[error("Serialization error: {0}")]
+    Serialization(#[from] serde_json::Error),
+    
+    #[error("API error: {message}")]
+    Api { message: String },
+    
+    #[error("Rate limit exceeded")]
+    RateLimit,
+    
+    #[error("Service unavailable")]
+    ServiceUnavailable,
+    
+    #[error("Timeout error")]
+    Timeout,
+    
+    #[error("Configuration error: {0}")]
+    Config(String),
+    
+    #[error("WebSocket error: {0}")]
+    WebSocket(String),
+}
+
+pub type Result&lt;T&gt; = std::result::Result&lt;T, AxiomError&gt;;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="authentication-errors"><a class="header" href="#authentication-errors">Authentication Errors</a></h3>
+<p>Authentication errors are handled through a dedicated <code>AuthError</code> enum:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Error, Debug)]
+pub enum AuthError {
+    #[error("Network request failed: {0}")]
+    NetworkError(#[from] reqwest::Error),
+    
+    #[error("Invalid credentials")]
+    InvalidCredentials,
+    
+    #[error("OTP required but not provided")]
+    OtpRequired,
+    
+    #[error("Invalid OTP code")]
+    InvalidOtp,
+    
+    #[error("Token expired")]
+    TokenExpired,
+    
+    #[error("Token not found")]
+    TokenNotFound,
+    
+    #[error("Email fetcher error: {0}")]
+    EmailError(String),
+    
+    #[error("API error: {message}")]
+    ApiError { message: String },
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="client-specific-errors"><a class="header" href="#client-specific-errors">Client-Specific Errors</a></h3>
+<p>Enhanced client operations use <code>EnhancedClientError</code> for more specific error handling:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Error, Debug)]
+pub enum EnhancedClientError {
+    #[error("Authentication error: {0}")]
+    AuthError(#[from] AuthError),
+    
+    #[error("Network error: {0}")]
+    NetworkError(#[from] reqwest::Error),
+    
+    #[error("Rate limit exceeded")]
+    RateLimitExceeded,
+    
+    #[error("Max retries exceeded")]
+    MaxRetriesExceeded,
+    
+    #[error("Request failed: {0}")]
+    RequestFailed(String),
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="result-handling-patterns"><a class="header" href="#result-handling-patterns">Result Handling Patterns</a></h2>
+<h3 id="basic-error-propagation"><a class="header" href="#basic-error-propagation">Basic Error Propagation</a></h3>
+<p>Use the <code>?</code> operator for clean error propagation:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn get_portfolio_balance(&amp;self, wallet: &amp;str) -&gt; Result&lt;PortfolioData&gt; {
+    let auth_token = self.auth_client.get_valid_token().await?;
+    let response = self.make_request("GET", &amp;format!("/portfolio/{}", wallet), None).await?;
+    let portfolio: PortfolioData = serde_json::from_value(response)?;
+    Ok(portfolio)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-mapping-and-context"><a class="header" href="#error-mapping-and-context">Error Mapping and Context</a></h3>
+<p>Add context to errors using <code>map_err</code>:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn login(&amp;mut self, email: &amp;str, password: &amp;str) -&gt; Result&lt;AuthTokens&gt; {
+    let response = self.client
+        .post(&amp;format!("{}/auth/login", self.base_url))
+        .json(&amp;login_request)
+        .send()
+        .await
+        .map_err(|e| AxiomError::Network(e))?;
+    
+    let auth_data: AuthResponse = response
+        .json()
+        .await
+        .map_err(|e| AxiomError::Serialization(serde_json::Error::from(e)))?;
+    
+    Ok(auth_data.into())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="handling-multiple-error-types"><a class="header" href="#handling-multiple-error-types">Handling Multiple Error Types</a></h3>
+<p>Pattern match on specific error types for different handling strategies:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn robust_api_call(&amp;self, endpoint: &amp;str) -&gt; Result&lt;Value&gt; {
+    match self.make_request(endpoint).await {
+        Ok(response) =&gt; Ok(response),
+        Err(AxiomError::Auth(AuthError::TokenExpired)) =&gt; {
+            self.refresh_token().await?;
+            self.make_request(endpoint).await
+        },
+        Err(AxiomError::RateLimit) =&gt; {
+            tokio::time::sleep(Duration::from_secs(60)).await;
+            self.make_request(endpoint).await
+        },
+        Err(e) =&gt; Err(e),
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="retry-logic-implementation"><a class="header" href="#retry-logic-implementation">Retry Logic Implementation</a></h2>
+<h3 id="retryconfig-structure"><a class="header" href="#retryconfig-structure">RetryConfig Structure</a></h3>
+<p>The library provides a comprehensive retry configuration system:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Clone)]
+pub struct RetryConfig {
+    pub max_retries: u32,
+    pub initial_delay: Duration,
+    pub max_delay: Duration,
+    pub exponential_base: f64,
+    pub jitter: bool,
+}
+
+impl Default for RetryConfig {
+    fn default() -&gt; Self {
+        Self {
+            max_retries: 3,
+            initial_delay: Duration::from_millis(100),
+            max_delay: Duration::from_secs(30),
+            exponential_base: 2.0,
+            jitter: true,
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="exponential-backoff-with-jitter"><a class="header" href="#exponential-backoff-with-jitter">Exponential Backoff with Jitter</a></h3>
+<p>The retry system implements exponential backoff with optional jitter to prevent thundering herd problems:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl RetryConfig {
+    fn calculate_delay(&amp;self, attempt: u32) -&gt; Duration {
+        let base_delay = self.initial_delay.as_millis() as f64;
+        let exponential_delay = base_delay * self.exponential_base.powi(attempt as i32);
+        
+        let mut delay_ms = exponential_delay.min(self.max_delay.as_millis() as f64);
+        
+        if self.jitter {
+            use rand::Rng;
+            let mut rng = rand::thread_rng();
+            let jitter_factor = rng.gen_range(0.5..1.5);
+            delay_ms *= jitter_factor;
+        }
+        
+        Duration::from_millis(delay_ms as u64)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="retryable-error-detection"><a class="header" href="#retryable-error-detection">Retryable Error Detection</a></h3>
+<p>Implement the <code>RetryableError</code> trait to determine which errors should trigger retries:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait RetryableError {
+    fn is_retryable(&amp;self) -&gt; bool;
+}
+
+impl RetryableError for reqwest::Error {
+    fn is_retryable(&amp;self) -&gt; bool {
+        if self.is_timeout() || self.is_connect() {
+            return true;
+        }
+        
+        if let Some(status) = self.status() {
+            matches!(status.as_u16(), 429 | 500 | 502 | 503 | 504)
+        } else {
+            true
+        }
+    }
+}
+
+impl RetryableError for EnhancedClientError {
+    fn is_retryable(&amp;self) -&gt; bool {
+        match self {
+            EnhancedClientError::NetworkError(e) =&gt; e.is_timeout() || e.is_connect(),
+            EnhancedClientError::RateLimitExceeded =&gt; true,
+            EnhancedClientError::RequestFailed(msg) =&gt; {
+                msg.contains("timeout") || msg.contains("connection")
+            }
+            _ =&gt; false,
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="using-retry-functions"><a class="header" href="#using-retry-functions">Using Retry Functions</a></h3>
+<p>Use the retry utilities for resilient operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use crate::utils::retry::{retry_with_config, RetryConfig};
+
+pub async fn resilient_api_call(&amp;self) -&gt; Result&lt;Value&gt; {
+    let retry_config = RetryConfig::default()
+        .with_max_delay(Duration::from_secs(10))
+        .with_jitter(true);
+
+    retry_with_config(retry_config, || async {
+        self.make_api_request("/some-endpoint").await
+    }).await
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="graceful-degradation-strategies"><a class="header" href="#graceful-degradation-strategies">Graceful Degradation Strategies</a></h2>
+<h3 id="service-availability-fallbacks"><a class="header" href="#service-availability-fallbacks">Service Availability Fallbacks</a></h3>
+<p>Implement fallback mechanisms when primary services are unavailable:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn get_token_price_with_fallback(&amp;self, token: &amp;str) -&gt; Result&lt;f64&gt; {
+    // Try primary price source
+    match self.get_primary_price(token).await {
+        Ok(price) =&gt; Ok(price),
+        Err(AxiomError::ServiceUnavailable) =&gt; {
+            // Fall back to secondary source
+            self.get_fallback_price(token).await
+        },
+        Err(e) =&gt; Err(e),
+    }
+}
+
+async fn get_fallback_price(&amp;self, token: &amp;str) -&gt; Result&lt;f64&gt; {
+    // Implement fallback price fetching logic
+    // Could use different API, cached data, or estimated values
+    Ok(0.0) // Placeholder
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="partial-success-handling"><a class="header" href="#partial-success-handling">Partial Success Handling</a></h3>
+<p>Handle scenarios where some operations succeed and others fail:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn bulk_portfolio_update(&amp;self, wallets: &amp;[String]) -&gt; PartialResult&lt;Vec&lt;PortfolioData&gt;&gt; {
+    let mut successes = Vec::new();
+    let mut failures = Vec::new();
+    
+    for wallet in wallets {
+        match self.get_portfolio_balance(wallet).await {
+            Ok(portfolio) =&gt; successes.push(portfolio),
+            Err(e) =&gt; failures.push((wallet.clone(), e)),
+        }
+    }
+    
+    PartialResult {
+        successes,
+        failures,
+        total_attempted: wallets.len(),
+    }
+}
+
+pub struct PartialResult&lt;T&gt; {
+    pub successes: Vec&lt;T&gt;,
+    pub failures: Vec&lt;(String, AxiomError)&gt;,
+    pub total_attempted: usize,
+}
+
+impl&lt;T&gt; PartialResult&lt;T&gt; {
+    pub fn success_rate(&amp;self) -&gt; f64 {
+        self.successes.len() as f64 / self.total_attempted as f64
+    }
+    
+    pub fn has_any_success(&amp;self) -&gt; bool {
+        !self.successes.is_empty()
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="circuit-breaker-pattern"><a class="header" href="#circuit-breaker-pattern">Circuit Breaker Pattern</a></h3>
+<p>Implement circuit breaker for failing services:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::sync::{Arc, Mutex};
+use std::time::{Duration, Instant};
+
+#[derive(Debug, Clone)]
+pub enum CircuitState {
+    Closed,    // Normal operation
+    Open,      // Failing fast
+    HalfOpen,  // Testing if service recovered
+}
+
+pub struct CircuitBreaker {
+    state: Arc&lt;Mutex&lt;CircuitState&gt;&gt;,
+    failure_count: Arc&lt;Mutex&lt;u32&gt;&gt;,
+    last_failure_time: Arc&lt;Mutex&lt;Option&lt;Instant&gt;&gt;&gt;,
+    failure_threshold: u32,
+    recovery_timeout: Duration,
+}
+
+impl CircuitBreaker {
+    pub fn new(failure_threshold: u32, recovery_timeout: Duration) -&gt; Self {
+        Self {
+            state: Arc::new(Mutex::new(CircuitState::Closed)),
+            failure_count: Arc::new(Mutex::new(0)),
+            last_failure_time: Arc::new(Mutex::new(None)),
+            failure_threshold,
+            recovery_timeout,
+        }
+    }
+    
+    pub async fn call&lt;F, T&gt;(&amp;self, operation: F) -&gt; Result&lt;T&gt;
+    where
+        F: FnOnce() -&gt; std::pin::Pin&lt;Box&lt;dyn std::future::Future&lt;Output = Result&lt;T&gt;&gt; + Send&gt;&gt;,
+    {
+        {
+            let state = self.state.lock().unwrap();
+            match *state {
+                CircuitState::Open =&gt; {
+                    if self.should_attempt_reset() {
+                        drop(state);
+                        *self.state.lock().unwrap() = CircuitState::HalfOpen;
+                    } else {
+                        return Err(AxiomError::ServiceUnavailable);
+                    }
+                }
+                _ =&gt; {}
+            }
+        }
+        
+        match operation().await {
+            Ok(result) =&gt; {
+                self.on_success();
+                Ok(result)
+            }
+            Err(e) =&gt; {
+                self.on_failure();
+                Err(e)
+            }
+        }
+    }
+    
+    fn should_attempt_reset(&amp;self) -&gt; bool {
+        if let Some(last_failure) = *self.last_failure_time.lock().unwrap() {
+            Instant::now().duration_since(last_failure) &gt;= self.recovery_timeout
+        } else {
+            false
+        }
+    }
+    
+    fn on_success(&amp;self) {
+        *self.state.lock().unwrap() = CircuitState::Closed;
+        *self.failure_count.lock().unwrap() = 0;
+    }
+    
+    fn on_failure(&amp;self) {
+        let mut failure_count = self.failure_count.lock().unwrap();
+        *failure_count += 1;
+        *self.last_failure_time.lock().unwrap() = Some(Instant::now());
+        
+        if *failure_count &gt;= self.failure_threshold {
+            *self.state.lock().unwrap() = CircuitState::Open;
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="logging-and-debugging"><a class="header" href="#logging-and-debugging">Logging and Debugging</a></h2>
+<h3 id="structured-logging"><a class="header" href="#structured-logging">Structured Logging</a></h3>
+<p>Use structured logging for better error tracking:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tracing::{error, warn, info, debug, span, Level};
+
+pub async fn authenticated_request(&amp;self, endpoint: &amp;str) -&gt; Result&lt;Value&gt; {
+    let span = span!(Level::INFO, "authenticated_request", endpoint = endpoint);
+    let _enter = span.enter();
+    
+    debug!("Starting authenticated request");
+    
+    match self.make_request(endpoint).await {
+        Ok(response) =&gt; {
+            info!("Request successful");
+            Ok(response)
+        }
+        Err(e) =&gt; {
+            error!(error = %e, "Request failed");
+            
+            // Log additional context based on error type
+            match &amp;e {
+                AxiomError::Auth(auth_err) =&gt; {
+                    warn!(auth_error = %auth_err, "Authentication error occurred");
+                }
+                AxiomError::RateLimit =&gt; {
+                    warn!("Rate limit exceeded, consider implementing backoff");
+                }
+                AxiomError::Network(net_err) =&gt; {
+                    warn!(network_error = %net_err, "Network connectivity issue");
+                }
+                _ =&gt; {}
+            }
+            
+            Err(e)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-context-and-tracing"><a class="header" href="#error-context-and-tracing">Error Context and Tracing</a></h3>
+<p>Add context to errors for better debugging:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use anyhow::{Context, Result as AnyhowResult};
+
+pub async fn complex_operation(&amp;self, user_id: u64) -&gt; AnyhowResult&lt;ProcessedData&gt; {
+    let user_data = self.fetch_user_data(user_id).await
+        .with_context(|| format!("Failed to fetch user data for user {}", user_id))?;
+    
+    let portfolio = self.get_portfolio(&amp;user_data.wallet_address).await
+        .with_context(|| format!("Failed to get portfolio for wallet {}", user_data.wallet_address))?;
+    
+    let processed = self.process_portfolio_data(&amp;portfolio).await
+        .context("Failed to process portfolio data")?;
+    
+    Ok(processed)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="debug-logging-for-development"><a class="header" href="#debug-logging-for-development">Debug Logging for Development</a></h3>
+<p>Implement debug logging that can be enabled in development:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(debug_assertions)]
+macro_rules! debug_log {
+    ($($arg:tt)*) =&gt; {
+        eprintln!("[DEBUG] {}: {}", chrono::Utc::now().format("%Y-%m-%d %H:%M:%S%.3f"), format!($($arg)*));
+    };
+}
+
+#[cfg(not(debug_assertions))]
+macro_rules! debug_log {
+    ($($arg:tt)*) =&gt; {};
+}
+
+pub async fn debug_enabled_request(&amp;self, endpoint: &amp;str) -&gt; Result&lt;Value&gt; {
+    debug_log!("Making request to endpoint: {}", endpoint);
+    
+    let start_time = std::time::Instant::now();
+    let result = self.make_request(endpoint).await;
+    let duration = start_time.elapsed();
+    
+    match &amp;result {
+        Ok(_) =&gt; debug_log!("Request to {} completed successfully in {:?}", endpoint, duration),
+        Err(e) =&gt; debug_log!("Request to {} failed after {:?}: {}", endpoint, duration, e),
+    }
+    
+    result
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling-best-practices-1"><a class="header" href="#error-handling-best-practices-1">Error Handling Best Practices</a></h2>
+<h3 id="1-fail-fast-principle"><a class="header" href="#1-fail-fast-principle">1. Fail Fast Principle</a></h3>
+<p>Validate inputs early and return errors immediately:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn create_trade_order(&amp;self, amount: f64, token_address: &amp;str) -&gt; Result&lt;TradeOrder&gt; {
+    // Validate inputs early
+    if amount &lt;= 0.0 {
+        return Err(AxiomError::Config("Amount must be positive".to_string()));
+    }
+    
+    if token_address.len() != 44 {
+        return Err(AxiomError::Config("Invalid token address format".to_string()));
+    }
+    
+    // Proceed with operation
+    self.execute_trade(amount, token_address).await
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-specific-error-types"><a class="header" href="#2-specific-error-types">2. Specific Error Types</a></h3>
+<p>Use specific error types rather than generic strings:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Good: Specific error types
+#[derive(Error, Debug)]
+pub enum TradeError {
+    #[error("Insufficient balance: required {required}, available {available}")]
+    InsufficientBalance { required: f64, available: f64 },
+    
+    #[error("Invalid token address: {address}")]
+    InvalidTokenAddress { address: String },
+    
+    #[error("Slippage tolerance exceeded: expected {expected}%, actual {actual}%")]
+    SlippageExceeded { expected: f64, actual: f64 },
+}
+
+// Bad: Generic string errors
+fn bad_example() -&gt; Result&lt;()&gt; {
+    Err(AxiomError::Config("Something went wrong".to_string()))
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-error-recovery-strategies"><a class="header" href="#3-error-recovery-strategies">3. Error Recovery Strategies</a></h3>
+<p>Implement appropriate recovery strategies for different error types:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn resilient_portfolio_fetch(&amp;self, wallet: &amp;str, max_retries: u32) -&gt; Result&lt;Portfolio&gt; {
+    for attempt in 0..max_retries {
+        match self.get_portfolio(wallet).await {
+            Ok(portfolio) =&gt; return Ok(portfolio),
+            Err(AxiomError::RateLimit) =&gt; {
+                // Wait longer for rate limits
+                let delay = Duration::from_secs(60 * (attempt + 1) as u64);
+                tokio::time::sleep(delay).await;
+            }
+            Err(AxiomError::Network(_)) =&gt; {
+                // Shorter wait for network issues
+                let delay = Duration::from_millis(1000 * (attempt + 1) as u64);
+                tokio::time::sleep(delay).await;
+            }
+            Err(AxiomError::Auth(_)) =&gt; {
+                // Try to refresh authentication
+                self.refresh_auth().await?;
+            }
+            Err(e) =&gt; {
+                // Non-recoverable errors
+                return Err(e);
+            }
+        }
+    }
+    
+    Err(AxiomError::Config("Max retries exceeded".to_string()))
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="4-resource-cleanup"><a class="header" href="#4-resource-cleanup">4. Resource Cleanup</a></h3>
+<p>Ensure proper resource cleanup even when errors occur:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async fn websocket_with_cleanup(&amp;self) -&gt; Result&lt;Vec&lt;Message&gt;&gt; {
+    let ws_connection = self.connect_websocket().await?;
+    let mut messages = Vec::new();
+    
+    let result = async {
+        loop {
+            match ws_connection.next().await {
+                Some(Ok(message)) =&gt; messages.push(message),
+                Some(Err(e)) =&gt; return Err(AxiomError::WebSocket(e.to_string())),
+                None =&gt; break,
+            }
+        }
+        Ok(messages)
+    }.await;
+    
+    // Ensure connection is properly closed regardless of success/failure
+    if let Err(e) = ws_connection.close().await {
+        warn!("Failed to close WebSocket connection: {}", e);
+    }
+    
+    result
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="5-testing-error-scenarios"><a class="header" href="#5-testing-error-scenarios">5. Testing Error Scenarios</a></h3>
+<p>Write comprehensive tests for error conditions:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(test)]
+mod tests {
+    use super::*;
+    use tokio_test;
+    
+    #[tokio::test]
+    async fn test_retry_on_rate_limit() {
+        let mut client = MockClient::new();
+        
+        // First call returns rate limit error
+        client.expect_get_portfolio()
+            .times(1)
+            .returning(|_| Err(AxiomError::RateLimit));
+        
+        // Second call succeeds
+        client.expect_get_portfolio()
+            .times(1)
+            .returning(|_| Ok(Portfolio::default()));
+        
+        let result = client.resilient_portfolio_fetch("test_wallet", 2).await;
+        assert!(result.is_ok());
+    }
+    
+    #[tokio::test]
+    async fn test_non_retryable_error() {
+        let mut client = MockClient::new();
+        
+        client.expect_get_portfolio()
+            .times(1)
+            .returning(|_| Err(AxiomError::Config("Invalid wallet".to_string())));
+        
+        let result = client.resilient_portfolio_fetch("invalid_wallet", 3).await;
+        assert!(result.is_err());
+        
+        // Should not retry non-retryable errors
+        assert_eq!(client.call_count(), 1);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="monitoring-and-alerting"><a class="header" href="#monitoring-and-alerting">Monitoring and Alerting</a></h2>
+<h3 id="error-metrics-collection"><a class="header" href="#error-metrics-collection">Error Metrics Collection</a></h3>
+<p>Implement error metrics for monitoring:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::sync::atomic::{AtomicU64, Ordering};
+use std::collections::HashMap;
+use std::sync::Arc;
+
+pub struct ErrorMetrics {
+    error_counts: Arc&lt;HashMap&lt;String, AtomicU64&gt;&gt;,
+    total_requests: AtomicU64,
+    successful_requests: AtomicU64,
+}
+
+impl ErrorMetrics {
+    pub fn new() -&gt; Self {
+        Self {
+            error_counts: Arc::new(HashMap::new()),
+            total_requests: AtomicU64::new(0),
+            successful_requests: AtomicU64::new(0),
+        }
+    }
+    
+    pub fn record_request_success(&amp;self) {
+        self.total_requests.fetch_add(1, Ordering::Relaxed);
+        self.successful_requests.fetch_add(1, Ordering::Relaxed);
+    }
+    
+    pub fn record_request_error(&amp;self, error_type: &amp;str) {
+        self.total_requests.fetch_add(1, Ordering::Relaxed);
+        // Note: This is simplified - in practice, you'd need thread-safe HashMap updates
+    }
+    
+    pub fn get_error_rate(&amp;self) -&gt; f64 {
+        let total = self.total_requests.load(Ordering::Relaxed);
+        let successful = self.successful_requests.load(Ordering::Relaxed);
+        
+        if total == 0 {
+            0.0
+        } else {
+            1.0 - (successful as f64 / total as f64)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="health-check-endpoints"><a class="header" href="#health-check-endpoints">Health Check Endpoints</a></h3>
+<p>Implement health checks that consider error rates:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(serde::Serialize)]
+pub struct HealthStatus {
+    pub status: String,
+    pub error_rate: f64,
+    pub recent_errors: Vec&lt;String&gt;,
+    pub uptime_seconds: u64,
+}
+
+impl AxiomClient {
+    pub async fn health_check(&amp;self) -&gt; HealthStatus {
+        let error_rate = self.metrics.get_error_rate();
+        
+        let status = if error_rate &gt; 0.5 {
+            "unhealthy"
+        } else if error_rate &gt; 0.1 {
+            "degraded"
+        } else {
+            "healthy"
+        }.to_string();
+        
+        HealthStatus {
+            status,
+            error_rate,
+            recent_errors: self.get_recent_errors(),
+            uptime_seconds: self.get_uptime().as_secs(),
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Effective error handling in axiomtrade-rs requires:</p>
+<ol>
+<li><strong>Structured Error Types</strong>: Use the provided error hierarchy with specific, actionable error types</li>
+<li><strong>Robust Retry Logic</strong>: Implement exponential backoff with jitter for retryable errors</li>
+<li><strong>Graceful Degradation</strong>: Provide fallbacks and partial success handling</li>
+<li><strong>Comprehensive Logging</strong>: Use structured logging with appropriate context</li>
+<li><strong>Proactive Monitoring</strong>: Collect metrics and implement health checks</li>
+<li><strong>Thorough Testing</strong>: Test error scenarios and recovery strategies</li>
+</ol>
+<p>By following these patterns, you can build resilient applications that handle failures gracefully and provide excellent user experience even when things go wrong.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../examples/advanced.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../best-practices/rate-limiting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../examples/advanced.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../best-practices/rate-limiting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

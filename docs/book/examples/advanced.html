@@ -1,0 +1,707 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Advanced Examples - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/examples/advanced.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="advanced-examples"><a class="header" href="#advanced-examples">Advanced Examples</a></h1>
+<p>This section covers sophisticated trading applications that demonstrate advanced patterns, optimizations, and multi-system integrations using the Axiom Trade Rust SDK.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The advanced examples showcase production-ready implementations for:</p>
+<ul>
+<li><strong>Automated Trading Bots</strong>: Multi-strategy algorithmic trading systems</li>
+<li><strong>High-Frequency Trading</strong>: Ultra-low latency optimization techniques</li>
+<li><strong>Multi-Chain Portfolio Management</strong>: Cross-blockchain asset management</li>
+</ul>
+<p>Each example includes comprehensive architecture patterns, performance optimizations, and real-world considerations for professional trading systems.</p>
+<h2 id="automated-trading-bot"><a class="header" href="#automated-trading-bot">Automated Trading Bot</a></h2>
+<p><strong>Location</strong>: <code>examples/advanced/automated_trading_bot.rs</code></p>
+<h3 id="overview-1"><a class="header" href="#overview-1">Overview</a></h3>
+<p>A sophisticated automated trading bot demonstrating multiple strategies, risk management, and performance monitoring. This example shows how to build a production-ready algorithmic trading system.</p>
+<h3 id="architecture-patterns"><a class="header" href="#architecture-patterns">Architecture Patterns</a></h3>
+<h4 id="strategy-engine-pattern"><a class="header" href="#strategy-engine-pattern">Strategy Engine Pattern</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait TradingStrategyTrait {
+    fn name(&amp;self) -&gt; &amp;str;
+    fn generate_signal(&amp;self, market_data: &amp;MarketData) -&gt; Option&lt;TradingSignal&gt;;
+}
+
+struct StrategyEngine {
+    strategies: Vec&lt;Box&lt;dyn TradingStrategyTrait&gt;&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The strategy engine implements a pluggable architecture allowing multiple trading strategies to operate simultaneously:</p>
+<ul>
+<li><strong>DCA Strategy</strong>: Dollar-cost averaging for consistent market entry</li>
+<li><strong>Momentum Strategy</strong>: Trend-following with technical indicators</li>
+<li><strong>Arbitrage Strategy</strong>: Cross-exchange price discrepancy exploitation</li>
+</ul>
+<h4 id="position-management-pattern"><a class="header" href="#position-management-pattern">Position Management Pattern</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PositionManager {
+    positions: HashMap&lt;String, Position&gt;,
+}
+
+impl PositionManager {
+    fn update_position(&amp;mut self, trade_result: &amp;TradeResult);
+    async fn check_positions(&amp;self, market_data: &amp;MarketData) -&gt; Vec&lt;PositionUpdate&gt;;
+    fn get_open_positions(&amp;self) -&gt; Vec&lt;&amp;Position&gt;;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Centralized position tracking with automated monitoring for:</p>
+<ul>
+<li>Stop-loss triggers</li>
+<li>Take-profit execution</li>
+<li>Trailing stop adjustments</li>
+<li>Position size validation</li>
+</ul>
+<h4 id="risk-management-system"><a class="header" href="#risk-management-system">Risk Management System</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RiskMonitor {
+    config: RiskManagement,
+}
+
+#[derive(Debug, Clone)]
+struct RiskManagement {
+    max_portfolio_risk: f64,
+    max_single_trade_risk: f64,
+    stop_loss_percentage: f64,
+    daily_loss_limit: f64,
+    position_sizing: PositionSizing,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Comprehensive risk controls including:</p>
+<ul>
+<li>Portfolio-level risk limits</li>
+<li>Per-trade size restrictions</li>
+<li>Daily loss limits</li>
+<li>Dynamic position sizing</li>
+</ul>
+<h3 id="key-features"><a class="header" href="#key-features">Key Features</a></h3>
+<h4 id="1-multi-strategy-configuration"><a class="header" href="#1-multi-strategy-configuration">1. Multi-Strategy Configuration</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let bot_config = TradingBotConfig {
+    strategies: vec![
+        TradingStrategy::DcaStrategy {
+            interval: Duration::from_secs(3600),
+            amount_per_trade: 100.0,
+            tokens: vec!["SOL".to_string(), "BTC".to_string()],
+        },
+        TradingStrategy::MomentumStrategy {
+            lookback_period: Duration::from_secs(3600 * 24),
+            momentum_threshold: 5.0,
+            stop_loss: 2.0,
+            take_profit: 8.0,
+        },
+        TradingStrategy::ArbitrageStrategy {
+            min_profit_threshold: 0.5,
+            max_position_size: 1000.0,
+            supported_exchanges: vec!["axiom".to_string(), "hyperliquid".to_string()],
+        },
+    ],
+    // ... additional configuration
+};
+<span class="boring">}</span></code></pre></pre>
+<h4 id="2-real-time-market-data-processing"><a class="header" href="#2-real-time-market-data-processing">2. Real-Time Market Data Processing</a></h4>
+<ul>
+<li>WebSocket connections for live price feeds</li>
+<li>Multi-token subscription management</li>
+<li>Tick-by-tick processing with minimal latency</li>
+</ul>
+<h4 id="3-automated-execution-engine"><a class="header" href="#3-automated-execution-engine">3. Automated Execution Engine</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct ExecutionSettings {
+    slippage_tolerance: f64,
+    timeout_seconds: u64,
+    retry_attempts: u32,
+    use_mev_protection: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Features MEV protection, retry logic, and slippage management for optimal execution.</p>
+<h4 id="4-performance-monitoring"><a class="header" href="#4-performance-monitoring">4. Performance Monitoring</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct FinalPerformanceReport {
+    total_trades: u32,
+    successful_trades: u32,
+    success_rate: f64,
+    total_pnl: f64,
+    max_drawdown: f64,
+    sharpe_ratio: f64,
+    strategy_performance: Vec&lt;StrategyPerformance&gt;,
+    risk_rejected_trades: u32,
+    // ... additional metrics
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Comprehensive performance tracking with strategy-specific analytics and risk metrics.</p>
+<h2 id="high-frequency-trading"><a class="header" href="#high-frequency-trading">High-Frequency Trading</a></h2>
+<p><strong>Location</strong>: <code>examples/advanced/high_frequency_trading.rs</code></p>
+<h3 id="overview-2"><a class="header" href="#overview-2">Overview</a></h3>
+<p>Ultra-low latency trading system demonstrating microsecond-level optimizations, market microstructure analysis, and institutional-grade execution techniques.</p>
+<h3 id="architecture-patterns-1"><a class="header" href="#architecture-patterns-1">Architecture Patterns</a></h3>
+<h4 id="ultra-fast-data-pipeline"><a class="header" href="#ultra-fast-data-pipeline">Ultra-Fast Data Pipeline</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct MarketDataBuffer {
+    ticks: VecDeque&lt;MarketTick&gt;,
+    max_size: usize,
+}
+
+struct LatencyTracker {
+    execution_latencies: VecDeque&lt;Duration&gt;,
+    max_samples: usize,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Optimized data structures for minimal allocation and maximum throughput.</p>
+<h4 id="market-microstructure-analysis"><a class="header" href="#market-microstructure-analysis">Market Microstructure Analysis</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct MicrostructureAnalyzer {
+    config: Option&lt;MicrostructureConfig&gt;,
+}
+
+struct MicrostructureConfig {
+    tick_size: f64,
+    min_spread_threshold: f64,
+    volume_imbalance_threshold: f64,
+    price_impact_window: Duration,
+    order_flow_analysis: bool,
+    liquidity_detection: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Advanced market analysis including:</p>
+<ul>
+<li>Order flow toxicity detection</li>
+<li>Liquidity scoring</li>
+<li>Volume imbalance analysis</li>
+<li>Price impact measurement</li>
+</ul>
+<h4 id="hft-strategy-framework"><a class="header" href="#hft-strategy-framework">HFT Strategy Framework</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait HftStrategy: Send + Sync {
+    fn generate_signal(&amp;self, market_state: &amp;MarketState) -&gt; Option&lt;HftSignal&gt;;
+    fn name(&amp;self) -&gt; &amp;str;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Specialized HFT strategies:</p>
+<ul>
+<li><strong>Market Making</strong>: Automated bid-ask spread capture</li>
+<li><strong>Statistical Arbitrage</strong>: Mean reversion and correlation trading</li>
+<li><strong>Momentum Scalping</strong>: Ultra-short-term trend exploitation</li>
+</ul>
+<h3 id="performance-optimizations"><a class="header" href="#performance-optimizations">Performance Optimizations</a></h3>
+<h4 id="1-network-optimization"><a class="header" href="#1-network-optimization">1. Network Optimization</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct NetworkOptimization {
+    use_fastest_endpoint: bool,
+    enable_connection_pooling: bool,
+    tcp_no_delay: bool,
+    keep_alive: bool,
+    connection_timeout: Duration,
+    read_timeout: Duration,
+    preferred_regions: Vec&lt;String&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Network-level optimizations for minimal latency:</p>
+<ul>
+<li>TCP_NODELAY for immediate packet transmission</li>
+<li>Connection pooling for reduced handshake overhead</li>
+<li>Regional endpoint selection</li>
+<li>Aggressive timeout settings</li>
+</ul>
+<h4 id="2-execution-engine"><a class="header" href="#2-execution-engine">2. Execution Engine</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct ExecutionConfig {
+    max_latency_tolerance: Duration,
+    order_batching: bool,
+    smart_routing: bool,
+    post_only_default: bool,
+    ioc_default: bool,
+    mev_protection: bool,
+    co_location_mode: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Ultra-fast execution with:</p>
+<ul>
+<li>Sub-5ms latency tolerance</li>
+<li>Immediate-or-cancel (IOC) orders</li>
+<li>Smart order routing</li>
+<li>Co-location optimizations</li>
+</ul>
+<h4 id="3-real-time-risk-management"><a class="header" href="#3-real-time-risk-management">3. Real-Time Risk Management</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn calculate_real_time_risk() -&gt; PortfolioRisk {
+    PortfolioRisk {
+        exceeds_limits: false,
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Tick-level risk monitoring to prevent exposure accumulation.</p>
+<h3 id="key-features-1"><a class="header" href="#key-features-1">Key Features</a></h3>
+<h4 id="1-redundant-websocket-connections"><a class="header" href="#1-redundant-websocket-connections">1. Redundant WebSocket Connections</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut primary_ws = WebSocketClient::new(handler.clone()).unwrap();
+let mut backup_ws = WebSocketClient::new(handler.clone()).unwrap();
+<span class="boring">}</span></code></pre></pre>
+<p>Multiple connections ensure zero downtime and data continuity.</p>
+<h4 id="2-microsecond-level-latency-tracking"><a class="header" href="#2-microsecond-level-latency-tracking">2. Microsecond-Level Latency Tracking</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let execution_latency = execution_start.elapsed();
+if execution_latency &gt; Duration::from_millis(10) {
+    println!("⚠️  High execution latency: {:.2}ms", 
+        execution_latency.as_secs_f64() * 1000.0);
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Continuous latency monitoring with alerting for performance degradation.</p>
+<h4 id="3-market-making-strategy"><a class="header" href="#3-market-making-strategy">3. Market Making Strategy</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl HftStrategy for MarketMakingStrategy {
+    fn generate_signal(&amp;self, _market_state: &amp;MarketState) -&gt; Option&lt;HftSignal&gt; {
+        Some(HftSignal {
+            action: HftAction::MakeMarket {
+                bid_price: 125.49,
+                ask_price: 125.51,
+                bid_size: self.quote_size,
+                ask_size: self.quote_size,
+            },
+            urgency: SignalUrgency::Normal,
+            confidence: 0.8,
+        })
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Automated market making with dynamic spread adjustment and inventory management.</p>
+<h2 id="multi-chain-portfolio-management"><a class="header" href="#multi-chain-portfolio-management">Multi-Chain Portfolio Management</a></h2>
+<p><strong>Location</strong>: <code>examples/advanced/multi_chain_portfolio.rs</code></p>
+<h3 id="overview-3"><a class="header" href="#overview-3">Overview</a></h3>
+<p>Comprehensive cross-blockchain portfolio management system supporting Solana, Hyperliquid, and other networks with automated rebalancing and arbitrage detection.</p>
+<h3 id="architecture-patterns-2"><a class="header" href="#architecture-patterns-2">Architecture Patterns</a></h3>
+<h4 id="multi-chain-configuration"><a class="header" href="#multi-chain-configuration">Multi-Chain Configuration</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct MultiChainPortfolioConfig {
+    track_solana: bool,
+    track_hyperliquid: bool,
+    track_ethereum: bool,
+    track_arbitrum: bool,
+    auto_sync: bool,
+    sync_interval: Duration,
+    include_staking: bool,
+    include_liquidity: bool,
+    base_currency: String,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Unified configuration for multiple blockchain networks with flexible tracking options.</p>
+<h4 id="cross-chain-transfer-management"><a class="header" href="#cross-chain-transfer-management">Cross-Chain Transfer Management</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct CrossChainTransfer {
+    from_chain: String,
+    to_chain: String,
+    token_symbol: String,
+    amount: f64,
+    recipient_address: String,
+    bridge_provider: String,
+    slippage_tolerance: f64,
+    priority_fee: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Structured approach to cross-chain asset transfers with bridge integration and fee optimization.</p>
+<h4 id="portfolio-rebalancing-engine"><a class="header" href="#portfolio-rebalancing-engine">Portfolio Rebalancing Engine</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RebalanceStrategy {
+    target_allocations: HashMap&lt;String, f64&gt;,
+    rebalance_threshold: f64,
+    min_trade_size: f64,
+    max_slippage: f64,
+    include_gas_optimization: bool,
+    dry_run: bool,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Automated rebalancing with configurable thresholds and cost optimization.</p>
+<h3 id="key-features-2"><a class="header" href="#key-features-2">Key Features</a></h3>
+<h4 id="1-cross-chain-arbitrage-detection"><a class="header" href="#1-cross-chain-arbitrage-detection">1. Cross-Chain Arbitrage Detection</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("  Opportunity #1:");
+println!("    Token: USDC");
+println!("    Buy on: Solana at $0.999500");
+println!("    Sell on: Hyperliquid at $1.001200");
+println!("    Profit potential: $1.70 (0.17%)");
+println!("    Min trade size: $1000.00");
+println!("    Est. gas costs: $0.50");
+println!("    Net profit: $1.20");
+<span class="boring">}</span></code></pre></pre>
+<p>Real-time detection of price discrepancies across chains with profitability analysis.</p>
+<h4 id="2-yield-farming-analysis"><a class="header" href="#2-yield-farming-analysis">2. Yield Farming Analysis</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("  Protocol: Marinade Finance");
+println!("    Chain: Solana");
+println!("    Pool: mSOL Staking");
+println!("    APY: 7.85%");
+println!("    TVL: $125000000");
+println!("    Required tokens: [\"SOL\"]");
+println!("    Risks: [\"Slashing\", \"Protocol\"]");
+<span class="boring">}</span></code></pre></pre>
+<p>Comprehensive DeFi yield opportunity analysis across multiple chains.</p>
+<h4 id="3-risk-assessment-framework"><a class="header" href="#3-risk-assessment-framework">3. Risk Assessment Framework</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("Multi-chain risk assessment (simulated):");
+println!("  Overall risk score: 6.5/10");
+println!("  Diversification score: 7.2/10");
+println!("Risk factors:");
+println!("  🟡 Bridge Risk: Cross-chain bridges have historical vulnerability");
+println!("  🟢 Protocol Risk: Smart contract risks on DeFi protocols");
+<span class="boring">}</span></code></pre></pre>
+<p>Multi-dimensional risk analysis including bridge risks, protocol risks, and concentration metrics.</p>
+<h4 id="4-performance-analytics"><a class="header" href="#4-performance-analytics">4. Performance Analytics</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>println!("Multi-chain performance analytics (30 days, simulated):");
+println!("  Total return: +8.5%");
+println!("  Best performing chain: Solana (+12.3%)");
+println!("  Worst performing chain: Hyperliquid (+4.2%)");
+<span class="boring">}</span></code></pre></pre>
+<p>Comprehensive performance tracking across all supported chains with detailed metrics.</p>
+<h2 id="performance-optimizations-1"><a class="header" href="#performance-optimizations-1">Performance Optimizations</a></h2>
+<h3 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h3>
+<ul>
+<li><strong>Zero-copy deserialization</strong> where possible</li>
+<li><strong>Bounded collections</strong> to prevent memory leaks</li>
+<li><strong>RAII patterns</strong> for automatic resource cleanup</li>
+</ul>
+<h3 id="concurrency-patterns"><a class="header" href="#concurrency-patterns">Concurrency Patterns</a></h3>
+<ul>
+<li><strong>Actor model</strong> for message passing between components</li>
+<li><strong>Lock-free data structures</strong> for high-frequency operations</li>
+<li><strong>Async/await</strong> for non-blocking I/O operations</li>
+</ul>
+<h3 id="network-optimizations"><a class="header" href="#network-optimizations">Network Optimizations</a></h3>
+<ul>
+<li><strong>Connection pooling</strong> to reduce handshake overhead</li>
+<li><strong>Compression</strong> for large data transfers</li>
+<li><strong>TCP optimization</strong> with NO_DELAY and keep-alive settings</li>
+</ul>
+<h3 id="data-processing"><a class="header" href="#data-processing">Data Processing</a></h3>
+<ul>
+<li><strong>Streaming processing</strong> for real-time market data</li>
+<li><strong>Batch operations</strong> where latency permits</li>
+<li><strong>Caching strategies</strong> for frequently accessed data</li>
+</ul>
+<h2 id="error-handling-and-resilience"><a class="header" href="#error-handling-and-resilience">Error Handling and Resilience</a></h2>
+<h3 id="retry-mechanisms"><a class="header" href="#retry-mechanisms">Retry Mechanisms</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct ExecutionSettings {
+    retry_attempts: u32,
+    timeout_seconds: u64,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Configurable retry logic with exponential backoff for transient failures.</p>
+<h3 id="circuit-breaker-pattern"><a class="header" href="#circuit-breaker-pattern">Circuit Breaker Pattern</a></h3>
+<p>Automatic fallback mechanisms when services become unavailable or performance degrades.</p>
+<h3 id="graceful-degradation"><a class="header" href="#graceful-degradation">Graceful Degradation</a></h3>
+<p>Systems continue operating with reduced functionality when components fail.</p>
+<h2 id="testing-and-validation"><a class="header" href="#testing-and-validation">Testing and Validation</a></h2>
+<h3 id="unit-testing"><a class="header" href="#unit-testing">Unit Testing</a></h3>
+<p>Each component includes comprehensive unit tests with mock data and edge case coverage.</p>
+<h3 id="integration-testing"><a class="header" href="#integration-testing">Integration Testing</a></h3>
+<p>End-to-end tests verify complete workflows across multiple systems.</p>
+<h3 id="performance-testing"><a class="header" href="#performance-testing">Performance Testing</a></h3>
+<p>Latency and throughput benchmarks ensure optimization targets are met.</p>
+<h2 id="production-considerations"><a class="header" href="#production-considerations">Production Considerations</a></h2>
+<h3 id="monitoring-and-alerting"><a class="header" href="#monitoring-and-alerting">Monitoring and Alerting</a></h3>
+<ul>
+<li>Real-time performance metrics</li>
+<li>Automated alerting for anomalies</li>
+<li>Health check endpoints</li>
+</ul>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<ul>
+<li>Secure credential management</li>
+<li>Rate limiting and abuse prevention</li>
+<li>Audit logging for all transactions</li>
+</ul>
+<h3 id="scalability"><a class="header" href="#scalability">Scalability</a></h3>
+<ul>
+<li>Horizontal scaling capabilities</li>
+<li>Load balancing across instances</li>
+<li>Database optimization for high throughput</li>
+</ul>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>These advanced examples provide a foundation for building production trading systems. Consider these enhancements for real-world deployment:</p>
+<ol>
+<li><strong>Hardware Optimization</strong>: FPGA acceleration for ultra-low latency</li>
+<li><strong>Machine Learning</strong>: Predictive models for market behavior</li>
+<li><strong>Advanced Risk Models</strong>: VaR, stress testing, and scenario analysis</li>
+<li><strong>Compliance</strong>: Regulatory reporting and audit trails</li>
+<li><strong>High Availability</strong>: Disaster recovery and failover mechanisms</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../examples/websocket.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../best-practices/error-handling.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../examples/websocket.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../best-practices/error-handling.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

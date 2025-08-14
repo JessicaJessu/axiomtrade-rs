@@ -1,0 +1,703 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Portfolio Management - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/api/portfolio.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="portfolio-management"><a class="header" href="#portfolio-management">Portfolio Management</a></h1>
+<p>The portfolio management system in axiomtrade-rs provides comprehensive access to wallet balances, token holdings, and portfolio analytics. This module allows you to query single wallets, perform batch operations across multiple addresses, and retrieve detailed portfolio summaries.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The <code>PortfolioClient</code> handles all portfolio-related operations including:</p>
+<ul>
+<li><strong>Single wallet balance queries</strong> - Get detailed balance information for individual wallets</li>
+<li><strong>Batch balance operations</strong> - Query multiple wallets simultaneously for efficiency</li>
+<li><strong>Portfolio summaries</strong> - Comprehensive portfolio analytics with performance metrics</li>
+<li><strong>Token account analysis</strong> - Detailed token holdings and distribution analysis</li>
+</ul>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::api::portfolio::PortfolioClient;
+
+// Create portfolio client
+let mut portfolio_client = PortfolioClient::new()?;
+
+// Get single wallet balance
+let balance = portfolio_client.get_balance("DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK").await?;
+println!("SOL Balance: {:.6}", balance.sol_balance);
+println!("Total Value: ${:.2}", balance.total_value_usd);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="getting-wallet-balances"><a class="header" href="#getting-wallet-balances">Getting Wallet Balances</a></h2>
+<h3 id="single-wallet-balance"><a class="header" href="#single-wallet-balance">Single Wallet Balance</a></h3>
+<p>Retrieve the complete balance information for a single Solana wallet address.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let wallet_address = "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK";
+let balance = portfolio_client.get_balance(wallet_address).await?;
+
+println!("SOL Balance: {:.6} SOL", balance.sol_balance);
+println!("Total USD Value: ${:.2}", balance.total_value_usd);
+println!("Token Count: {}", balance.token_balances.len());
+
+// Access individual token balances
+for (mint_address, token) in &amp;balance.token_balances {
+    println!("{} ({}): {} tokens (${:.2})", 
+        token.symbol, 
+        token.name,
+        token.ui_amount, 
+        token.value_usd
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Response Structure:</strong></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>WalletBalance {
+    sol_balance: f64,                              // SOL amount in native units
+    token_balances: HashMap&lt;String, TokenBalance&gt;, // Token holdings by mint address
+    total_value_usd: f64,                         // Total portfolio value in USD
+}
+
+TokenBalance {
+    mint_address: String,     // Token mint address
+    symbol: String,           // Token symbol (e.g., "USDC")
+    name: String,             // Full token name
+    amount: f64,              // Raw token amount
+    decimals: u8,             // Token decimal places
+    ui_amount: f64,           // Human-readable amount
+    value_usd: f64,           // USD value of holding
+    price_per_token: f64,     // Current token price
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="batch-balance-queries"><a class="header" href="#batch-balance-queries">Batch Balance Queries</a></h2>
+<p>For applications managing multiple wallets, batch queries provide significant performance improvements by fetching all balances in a single API call.</p>
+<h3 id="basic-batch-query"><a class="header" href="#basic-batch-query">Basic Batch Query</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let wallet_addresses = vec![
+    "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK".to_string(),
+    "5FHwkrdxntdK24hgQU8qgBjn35Y1zwhz1GZwCkP2UJnM".to_string(),
+    "7xLk17EQQ5KLDLDe44wCmupJKJjTGd8hs3eSVVhCx932".to_string(),
+];
+
+let batch_response = portfolio_client.get_batch_balance(&amp;wallet_addresses).await?;
+
+println!("Retrieved {} wallet balances", batch_response.balances.len());
+
+let mut total_value = 0.0;
+for (address, balance) in &amp;batch_response.balances {
+    println!("Wallet {}: {:.6} SOL (${:.2})", 
+        &amp;address[..8], 
+        balance.sol_balance, 
+        balance.total_value_usd
+    );
+    total_value += balance.total_value_usd;
+}
+
+println!("Combined portfolio value: ${:.2}", total_value);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="advanced-batch-analysis"><a class="header" href="#advanced-batch-analysis">Advanced Batch Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let batch_response = portfolio_client.get_batch_balance(&amp;wallet_addresses).await?;
+
+// Analyze token distribution across wallets
+let mut token_counts = HashMap::new();
+let mut token_values = HashMap::new();
+
+for (address, balance) in &amp;batch_response.balances {
+    for token in balance.token_balances.values() {
+        *token_counts.entry(token.symbol.clone()).or_insert(0) += 1;
+        *token_values.entry(token.symbol.clone()).or_insert(0.0) += token.value_usd;
+    }
+}
+
+// Find most common tokens
+let mut sorted_tokens: Vec&lt;_&gt; = token_counts.iter().collect();
+sorted_tokens.sort_by(|a, b| b.1.cmp(a.1));
+
+for (token, count) in sorted_tokens.iter().take(5) {
+    let total_value = token_values.get(*token).unwrap_or(&amp;0.0);
+    println!("{} - held by {} wallets, total value: ${:.2}", 
+        token, count, total_value);
+}
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Batch Response Structure:</strong></p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>BatchBalanceResponse {
+    balances: HashMap&lt;String, WalletBalance&gt;, // Wallet address -&gt; balance data
+    timestamp: i64,                          // Query timestamp
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="portfolio-summary"><a class="header" href="#portfolio-summary">Portfolio Summary</a></h2>
+<p>The portfolio summary provides comprehensive analytics including performance metrics, top positions, and transaction history.</p>
+<h3 id="getting-portfolio-summary"><a class="header" href="#getting-portfolio-summary">Getting Portfolio Summary</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let wallet_addresses = vec![
+    "DYw8jCTfwHNRJhhmFcbXvVDTqWMEVFBX6ZKUmG5CNSKK".to_string(),
+    "5FHwkrdxntdK24hgQU8qgBjn35Y1zwhz1GZwCkP2UJnM".to_string(),
+];
+
+let portfolio = portfolio_client.get_portfolio_summary(&amp;wallet_addresses).await?;
+
+// Overall balance statistics
+println!("Total Value: {:.4} SOL", portfolio.balance_stats.total_value_sol);
+println!("Available Balance: {:.4} SOL", portfolio.balance_stats.available_balance_sol);
+println!("Unrealized PnL: {:.4} SOL", portfolio.balance_stats.unrealized_pnl_sol);
+
+// Performance metrics
+println!("1 Day PnL: {:.4} SOL", portfolio.performance_metrics.one_day.total_pnl);
+println!("7 Day PnL: {:.4} SOL", portfolio.performance_metrics.seven_day.total_pnl);
+println!("30 Day PnL: {:.4} SOL", portfolio.performance_metrics.thirty_day.total_pnl);
+println!("All Time PnL: {:.4} SOL", portfolio.performance_metrics.all_time.total_pnl);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="analyzing-top-positions"><a class="header" href="#analyzing-top-positions">Analyzing Top Positions</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Display top holdings
+for (i, position) in portfolio.top_positions.iter().take(10).enumerate() {
+    println!("{}. {} ({})", 
+        i + 1, 
+        position.symbol.as_deref().unwrap_or("Unknown"), 
+        position.name.as_deref().unwrap_or("Unknown")
+    );
+    
+    if let Some(amount) = position.amount {
+        println!("   Amount: {:.4}", amount);
+    }
+    if let Some(value_usd) = position.value_usd {
+        println!("   Value: ${:.2}", value_usd);
+    }
+    if let Some(pnl_percent) = position.pnl_percent {
+        println!("   PnL: {}{:.2}%", 
+            if pnl_percent &gt;= 0.0 { "+" } else { "" },
+            pnl_percent
+        );
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="transaction-history"><a class="header" href="#transaction-history">Transaction History</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Recent transactions
+for tx in portfolio.transactions.iter().take(10) {
+    if let (Some(symbol), Some(tx_type), Some(amount), Some(value_usd)) = 
+        (&amp;tx.symbol, &amp;tx.transaction_type, tx.amount, tx.value_usd) {
+        println!("{} {} {} for ${:.2}", tx_type, amount, symbol, value_usd);
+        
+        if let Some(timestamp) = tx.timestamp {
+            let datetime = chrono::DateTime::from_timestamp(timestamp / 1000, 0)
+                .unwrap_or_default();
+            println!("   Time: {}", datetime.format("%Y-%m-%d %H:%M:%S UTC"));
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="portfolio-monitoring"><a class="header" href="#portfolio-monitoring">Portfolio Monitoring</a></h2>
+<p>For real-time portfolio tracking, you can implement continuous monitoring with change detection.</p>
+<h3 id="basic-monitoring-loop"><a class="header" href="#basic-monitoring-loop">Basic Monitoring Loop</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::time::{Duration, Instant};
+use tokio::time::sleep;
+
+let mut last_portfolio = portfolio_client.get_portfolio_summary(&amp;wallet_addresses).await?;
+let initial_value = last_portfolio.balance_stats.total_value_sol;
+
+loop {
+    sleep(Duration::from_secs(30)).await;
+    
+    match portfolio_client.get_portfolio_summary(&amp;wallet_addresses).await {
+        Ok(current_portfolio) =&gt; {
+            // Detect changes
+            let value_change = current_portfolio.balance_stats.total_value_sol - 
+                              last_portfolio.balance_stats.total_value_sol;
+            
+            if value_change.abs() &gt; 0.001 {
+                let change_pct = (value_change / last_portfolio.balance_stats.total_value_sol) * 100.0;
+                println!("Portfolio value changed: {:+.6} SOL ({:+.2}%)", 
+                    value_change, change_pct);
+            }
+            
+            // Check for new positions
+            if current_portfolio.active_positions.len() != last_portfolio.active_positions.len() {
+                let pos_diff = current_portfolio.active_positions.len() as i32 - 
+                              last_portfolio.active_positions.len() as i32;
+                println!("Position count changed: {:+} positions", pos_diff);
+            }
+            
+            last_portfolio = current_portfolio;
+        }
+        Err(e) =&gt; println!("Error fetching portfolio: {}", e),
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="performance-tracking"><a class="header" href="#performance-tracking">Performance Tracking</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut value_history = Vec::new();
+
+// Track performance over time
+value_history.push((Instant::now(), portfolio.balance_stats.total_value_sol));
+
+// Calculate volatility (after collecting sufficient data points)
+if value_history.len() &gt;= 10 {
+    let recent_values: Vec&lt;f64&gt; = value_history.iter()
+        .rev()
+        .take(10)
+        .map(|(_, value)| *value)
+        .collect();
+    
+    let mean = recent_values.iter().sum::&lt;f64&gt;() / recent_values.len() as f64;
+    let variance = recent_values.iter()
+        .map(|value| (value - mean).powi(2))
+        .sum::&lt;f64&gt;() / recent_values.len() as f64;
+    
+    let volatility = (variance.sqrt() / mean) * 100.0;
+    println!("Portfolio volatility: {:.2}%", volatility);
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="token-account-analysis"><a class="header" href="#token-account-analysis">Token Account Analysis</a></h2>
+<p>Analyze token distribution and concentration across your portfolio.</p>
+<h3 id="position-size-analysis"><a class="header" href="#position-size-analysis">Position Size Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let batch_response = portfolio_client.get_batch_balance(&amp;wallet_addresses).await?;
+
+// Aggregate all token positions
+let mut token_summary = HashMap::new();
+
+for (wallet_address, balance) in &amp;batch_response.balances {
+    for (mint, token) in &amp;balance.token_balances {
+        let entry = token_summary.entry(token.symbol.clone()).or_insert_with(|| {
+            (0.0, 0.0, 0) // (total_balance, total_usd_value, wallet_count)
+        });
+        
+        entry.0 += token.ui_amount;
+        entry.1 += token.value_usd;
+        entry.2 += 1;
+    }
+}
+
+// Sort by total USD value
+let mut sorted_tokens: Vec&lt;_&gt; = token_summary.iter().collect();
+sorted_tokens.sort_by(|a, b| b.1.1.partial_cmp(&amp;a.1.1).unwrap());
+
+// Display top holdings
+println!("{:&lt;15} {:&gt;15} {:&gt;15} {:&gt;10}", "Symbol", "Total Balance", "USD Value", "Wallets");
+println!("{}", "-".repeat(65));
+
+for (symbol, (balance, usd_value, wallet_count)) in sorted_tokens.iter().take(10) {
+    println!("{:&lt;15} {:&gt;15.6} {:&gt;15.2} {:&gt;10}", 
+        symbol, balance, usd_value, wallet_count);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="risk-analysis"><a class="header" href="#risk-analysis">Risk Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Calculate concentration risk
+let total_value: f64 = sorted_tokens.iter().map(|(_, (_, usd_value, _))| usd_value).sum();
+let top_5_value: f64 = sorted_tokens.iter()
+    .take(5)
+    .map(|(_, (_, usd_value, _))| usd_value)
+    .sum();
+
+let concentration_ratio = (top_5_value / total_value) * 100.0;
+println!("Top 5 token concentration: {:.1}%", concentration_ratio);
+
+if concentration_ratio &gt; 70.0 {
+    println!("WARNING: High concentration risk detected");
+}
+
+// Identify small positions
+let small_positions = sorted_tokens.iter()
+    .filter(|(_, (_, usd_value, _))| **usd_value &lt; 5.0)
+    .count();
+
+println!("Positions under $5: {} ({:.1}%)", 
+    small_positions, 
+    (small_positions as f64 / sorted_tokens.len() as f64) * 100.0
+);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="complete-api-reference"><a class="header" href="#complete-api-reference">Complete API Reference</a></h2>
+<h3 id="portfolioclient-methods"><a class="header" href="#portfolioclient-methods">PortfolioClient Methods</a></h3>
+<h4 id="new---resultself-portfolioerror"><a class="header" href="#new---resultself-portfolioerror"><code>new() -&gt; Result&lt;Self, PortfolioError&gt;</code></a></h4>
+<p>Creates a new portfolio client instance.</p>
+<p><strong>Returns:</strong> <code>Result&lt;PortfolioClient, PortfolioError&gt;</code></p>
+<h4 id="get_balancewallet_address-str---resultwalletbalance-portfolioerror"><a class="header" href="#get_balancewallet_address-str---resultwalletbalance-portfolioerror"><code>get_balance(wallet_address: &amp;str) -&gt; Result&lt;WalletBalance, PortfolioError&gt;</code></a></h4>
+<p>Gets the balance for a single wallet address.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>wallet_address: &amp;str</code> - The Solana wallet address to query</li>
+</ul>
+<p><strong>Returns:</strong> <code>Result&lt;WalletBalance, PortfolioError&gt;</code></p>
+<h4 id="get_batch_balancewallet_addresses-string---resultbatchbalanceresponse-portfolioerror"><a class="header" href="#get_batch_balancewallet_addresses-string---resultbatchbalanceresponse-portfolioerror"><code>get_batch_balance(wallet_addresses: &amp;[String]) -&gt; Result&lt;BatchBalanceResponse, PortfolioError&gt;</code></a></h4>
+<p>Gets balances for multiple wallet addresses in a single request.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>wallet_addresses: &amp;[String]</code> - Array of Solana wallet addresses</li>
+</ul>
+<p><strong>Returns:</strong> <code>Result&lt;BatchBalanceResponse, PortfolioError&gt;</code></p>
+<h4 id="get_portfolio_summarywallet_addresses-string---resultportfoliov5response-portfolioerror"><a class="header" href="#get_portfolio_summarywallet_addresses-string---resultportfoliov5response-portfolioerror"><code>get_portfolio_summary(wallet_addresses: &amp;[String]) -&gt; Result&lt;PortfolioV5Response, PortfolioError&gt;</code></a></h4>
+<p>Gets comprehensive portfolio summary with performance metrics.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>wallet_addresses: &amp;[String]</code> - Array of wallet addresses to include in portfolio</li>
+</ul>
+<p><strong>Returns:</strong> <code>Result&lt;PortfolioV5Response, PortfolioError&gt;</code></p>
+<h3 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h3>
+<p>All portfolio operations return <code>Result&lt;T, PortfolioError&gt;</code>. Handle errors appropriately:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match portfolio_client.get_balance(wallet_address).await {
+    Ok(balance) =&gt; {
+        // Process successful response
+        println!("Balance: {:.6} SOL", balance.sol_balance);
+    }
+    Err(PortfolioError::InvalidWalletAddress(addr)) =&gt; {
+        println!("Invalid wallet address: {}", addr);
+    }
+    Err(PortfolioError::AuthError(auth_err)) =&gt; {
+        println!("Authentication error: {}", auth_err);
+        // May need to re-authenticate
+    }
+    Err(PortfolioError::NetworkError(net_err)) =&gt; {
+        println!("Network error: {}", net_err);
+        // Retry with backoff
+    }
+    Err(PortfolioError::ApiError(api_err)) =&gt; {
+        println!("API error: {}", api_err);
+    }
+    Err(e) =&gt; {
+        println!("Unexpected error: {}", e);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="data-models"><a class="header" href="#data-models">Data Models</a></h3>
+<h4 id="walletbalance"><a class="header" href="#walletbalance">WalletBalance</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct WalletBalance {
+    pub sol_balance: f64,                              // SOL balance in native units
+    pub token_balances: HashMap&lt;String, TokenBalance&gt;, // Token holdings by mint
+    pub total_value_usd: f64,                          // Total USD value
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="tokenbalance"><a class="header" href="#tokenbalance">TokenBalance</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TokenBalance {
+    pub mint_address: String,     // Token mint address  
+    pub symbol: String,           // Token symbol (e.g., "USDC")
+    pub name: String,             // Full token name
+    pub amount: f64,              // Raw token amount
+    pub decimals: u8,             // Token decimal places
+    pub ui_amount: f64,           // Human-readable amount
+    pub value_usd: f64,           // USD value of holding
+    pub price_per_token: f64,     // Current token price
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="portfoliov5response"><a class="header" href="#portfoliov5response">PortfolioV5Response</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PortfolioV5Response {
+    pub active_positions: Vec&lt;Position&gt;,          // Current holdings
+    pub history_positions: Vec&lt;Position&gt;,         // Historical positions
+    pub top_positions: Vec&lt;Position&gt;,             // Top holdings by value
+    pub transactions: Vec&lt;Transaction&gt;,           // Recent transactions
+    pub balance_stats: BalanceStats,              // Balance summary
+    pub performance_metrics: PerformanceMetrics, // Performance data
+    pub chart_data: Vec&lt;ChartDataPoint&gt;,          // Chart data points
+    pub calendar_data: Vec&lt;CalendarDataPoint&gt;,    // Calendar view data
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="balancestats"><a class="header" href="#balancestats">BalanceStats</a></h4>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct BalanceStats {
+    pub total_value_sol: f64,       // Total portfolio value in SOL
+    pub available_balance_sol: f64, // Available (liquid) balance
+    pub unrealized_pnl_sol: f64,    // Unrealized profit/loss
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="efficient-batch-operations"><a class="header" href="#efficient-batch-operations">Efficient Batch Operations</a></h3>
+<ul>
+<li>Use batch queries for multiple wallets to reduce API calls</li>
+<li>Limit batch size to reasonable numbers (typically 50-100 wallets)</li>
+<li>Implement proper error handling for partial failures</li>
+</ul>
+<h3 id="performance-optimization"><a class="header" href="#performance-optimization">Performance Optimization</a></h3>
+<ul>
+<li>Cache balance data when possible to reduce API load</li>
+<li>Use appropriate update intervals for monitoring (30-60 seconds minimum)</li>
+<li>Implement exponential backoff for failed requests</li>
+</ul>
+<h3 id="error-recovery"><a class="header" href="#error-recovery">Error Recovery</a></h3>
+<ul>
+<li>Handle authentication errors by refreshing tokens</li>
+<li>Implement retry logic for transient network errors</li>
+<li>Validate wallet addresses before making API calls</li>
+</ul>
+<h3 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h3>
+<ul>
+<li>Clean up historical data periodically in monitoring applications</li>
+<li>Avoid storing excessive amounts of portfolio history in memory</li>
+<li>Use streaming or pagination for large datasets</li>
+</ul>
+<p>This portfolio management system provides comprehensive tools for tracking and analyzing Solana wallet portfolios, from simple balance queries to advanced risk analysis and real-time monitoring capabilities.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../auth/otp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../api/trading.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../auth/otp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../api/trading.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

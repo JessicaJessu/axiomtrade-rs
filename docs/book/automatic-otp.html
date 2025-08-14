@@ -1,0 +1,630 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Automatic OTP - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/automatic-otp.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="automatic-otp"><a class="header" href="#automatic-otp">Automatic OTP</a></h1>
+<p>The Axiom Trade Rust client provides automatic OTP (One-Time Password) retrieval functionality that eliminates the need to manually check emails for verification codes. This feature uses IMAP protocol to fetch OTP codes directly from your inbox.lv email account.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>When enabled, the automatic OTP system:</p>
+<ul>
+<li>Monitors your inbox.lv email account for new Axiom security codes</li>
+<li>Extracts 6-digit OTP codes from email subjects and bodies</li>
+<li>Provides methods for immediate retrieval or waiting for new codes</li>
+<li>Automatically marks processed emails as read to avoid duplicates</li>
+</ul>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>Axiom Trade account with OTP authentication enabled</li>
+<li>inbox.lv email account with IMAP access</li>
+<li>Environment variables configured for email credentials</li>
+</ul>
+<h2 id="configuration-setup"><a class="header" href="#configuration-setup">Configuration Setup</a></h2>
+<h3 id="1-inboxlv-account-setup"><a class="header" href="#1-inboxlv-account-setup">1. inbox.lv Account Setup</a></h3>
+<p>Create a dedicated inbox.lv email account for OTP purposes:</p>
+<ol>
+<li>
+<p><strong>Register Account</strong></p>
+<ul>
+<li>Navigate to <a href="https://www.inbox.lv/">https://www.inbox.lv/</a></li>
+<li>Click "Register" and complete the form</li>
+<li>Choose a unique username (becomes <code>username@inbox.lv</code>)</li>
+<li>Verify your account through the confirmation email</li>
+</ul>
+</li>
+<li>
+<p><strong>Enable IMAP Access</strong></p>
+<ul>
+<li>Log into inbox.lv web interface</li>
+<li>Go to Settings → "Outlook, email programs"</li>
+<li>Click "Enable" button for IMAP access</li>
+<li>Direct link: <a href="https://email.inbox.lv/prefs?group=enable_pop3">https://email.inbox.lv/prefs?group=enable_pop3</a></li>
+<li>Wait 15 minutes for activation to complete</li>
+</ul>
+</li>
+<li>
+<p><strong>Retrieve IMAP Credentials</strong></p>
+<ul>
+<li>After the 15-minute wait, refresh your settings page</li>
+<li>Locate the "IMAP/SMTP Password" section</li>
+<li>Copy the special IMAP password (different from web login password)</li>
+<li>Save these credentials securely</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-imap-configuration"><a class="header" href="#2-imap-configuration">2. IMAP Configuration</a></h3>
+<p>The client uses these IMAP settings for inbox.lv:</p>
+<ul>
+<li><strong>Server</strong>: <code>mail.inbox.lv</code></li>
+<li><strong>Port</strong>: <code>993</code> (SSL/TLS)</li>
+<li><strong>Security</strong>: TLS encryption</li>
+<li><strong>Authentication</strong>: Username/password</li>
+</ul>
+<h3 id="3-email-forwarding-setup"><a class="header" href="#3-email-forwarding-setup">3. Email Forwarding Setup</a></h3>
+<p>Configure Axiom Trade to send OTP emails to your inbox.lv account:</p>
+<ol>
+<li>
+<p><strong>Access Axiom Settings</strong></p>
+<ul>
+<li>Log into your Axiom Trade account</li>
+<li>Navigate to Account Settings or Security Settings</li>
+<li>Find "Email Preferences" or "Notification Settings"</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure Forwarding</strong></p>
+<ul>
+<li>Add your inbox.lv email as the notification address</li>
+<li>Enable "Security Code" or "OTP" notifications</li>
+<li>Save the configuration</li>
+</ul>
+</li>
+<li>
+<p><strong>Test Email Delivery</strong></p>
+<ul>
+<li>Trigger an OTP request from Axiom Trade</li>
+<li>Verify the email arrives at your inbox.lv account</li>
+<li>Confirm subject format: "Your Axiom security code is XXXXXX"</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-environment-variables"><a class="header" href="#4-environment-variables">4. Environment Variables</a></h3>
+<p>Set the required environment variables in your <code>.env</code> file:</p>
+<pre><code class="language-env"># inbox.lv IMAP Configuration
+INBOX_LV_EMAIL=your_username@inbox.lv
+INBOX_LV_PASSWORD=your_special_imap_password
+
+# Axiom Trade Credentials (if using automatic login)
+AXIOM_EMAIL=your_axiom_email@domain.com
+AXIOM_PASSWORD=your_axiom_password
+</code></pre>
+<p><strong>Important Notes:</strong></p>
+<ul>
+<li>Use the IMAP password, not your web login password</li>
+<li>Ensure no spaces around the <code>=</code> signs</li>
+<li>Never commit <code>.env</code> files to version control</li>
+</ul>
+<h2 id="usage-examples"><a class="header" href="#usage-examples">Usage Examples</a></h2>
+<h3 id="basic-otp-retrieval"><a class="header" href="#basic-otp-retrieval">Basic OTP Retrieval</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::email::otp_fetcher::{OtpFetcher, from_env};
+
+// Create fetcher from environment variables
+let fetcher = from_env()?.expect("OTP environment variables not configured");
+
+// Fetch the latest unread OTP
+if let Some(otp) = fetcher.fetchotp()? {
+    println!("Retrieved OTP: {}", otp);
+} else {
+    println!("No unread OTP emails found");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="waiting-for-new-otp"><a class="header" href="#waiting-for-new-otp">Waiting for New OTP</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Wait up to 60 seconds for a new OTP email, checking every 5 seconds
+let timeout_seconds = 60;
+let check_interval = 5;
+
+if let Some(otp) = fetcher.wait_for_otp(timeout_seconds, check_interval)? {
+    println!("New OTP received: {}", otp);
+} else {
+    println!("Timeout: No OTP received within {} seconds", timeout_seconds);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="time-based-otp-retrieval"><a class="header" href="#time-based-otp-retrieval">Time-Based OTP Retrieval</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Fetch OTP from emails received in the last 3 minutes
+let minutes_ago = 3;
+
+if let Some(otp) = fetcher.fetchotp_recent(minutes_ago)? {
+    println!("Recent OTP found: {}", otp);
+} else {
+    println!("No OTP emails from the last {} minutes", minutes_ago);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="integration-with-client-authentication"><a class="header" href="#integration-with-client-authentication">Integration with Client Authentication</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::AxiomClient;
+
+let mut client = AxiomClient::new().await?;
+
+// Attempt login
+let login_result = client.login(&amp;email, &amp;password).await?;
+
+if login_result.requires_otp {
+    // Use automatic OTP retrieval
+    if let Some(fetcher) = from_env()? {
+        if let Some(otp) = fetcher.wait_for_otp(60, 5)? {
+            client.verify_otp(&amp;otp).await?;
+            println!("Authentication successful with automatic OTP");
+        } else {
+            return Err("Failed to retrieve OTP automatically".into());
+        }
+    } else {
+        // Fall back to manual OTP entry
+        print!("Enter OTP: ");
+        // ... manual input logic
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="otp-extraction-methods"><a class="header" href="#otp-extraction-methods">OTP Extraction Methods</a></h2>
+<p>The system uses multiple strategies to extract OTP codes from emails:</p>
+<h3 id="subject-line-extraction"><a class="header" href="#subject-line-extraction">Subject Line Extraction</a></h3>
+<ul>
+<li>Primary pattern: <code>"Your Axiom security code is (\d{6})"</code></li>
+<li>Extracts 6-digit codes from email subjects</li>
+</ul>
+<h3 id="body-content-extraction"><a class="header" href="#body-content-extraction">Body Content Extraction</a></h3>
+<p>The system tries multiple patterns in order:</p>
+<ol>
+<li><code>"Your Axiom security code is[:\s]+(\d{6})"</code></li>
+<li><code>"Your security code is[:\s]+(\d{6})"</code></li>
+<li><code>"security code[:\s]+(\d{6})"</code></li>
+<li>HTML tags: <code>&lt;span&gt;</code>, <code>&lt;b&gt;</code>, <code>&lt;strong&gt;</code> containing 6 digits</li>
+<li>Fallback: Any 6-digit number in context containing "security code" or "Your Axiom"</li>
+</ol>
+<h3 id="example-email-formats"><a class="header" href="#example-email-formats">Example Email Formats</a></h3>
+<p><strong>Subject Line Format:</strong></p>
+<pre><code>Subject: Your Axiom security code is 123456
+</code></pre>
+<p><strong>Plain Text Body:</strong></p>
+<pre><code>Your Axiom security code is: 123456
+
+This code will expire in 10 minutes.
+</code></pre>
+<p><strong>HTML Body:</strong></p>
+<pre><code class="language-html">&lt;div style="background-color: #f5f5f5; padding: 15px;"&gt;
+  &lt;span style="font-size: 24px; font-weight: bold;"&gt;123456&lt;/span&gt;
+&lt;/div&gt;
+&lt;p&gt;Your Axiom security code&lt;/p&gt;
+</code></pre>
+<h2 id="troubleshooting-otp-issues"><a class="header" href="#troubleshooting-otp-issues">Troubleshooting OTP Issues</a></h2>
+<h3 id="connection-problems"><a class="header" href="#connection-problems">Connection Problems</a></h3>
+<p><strong>Issue</strong>: "IMAP connection failed"</p>
+<ul>
+<li><strong>Cause</strong>: IMAP not enabled or incorrect credentials</li>
+<li><strong>Solutions</strong>:
+<ul>
+<li>Verify 15-minute IMAP activation wait period completed</li>
+<li>Check IMAP password vs web login password</li>
+<li>Confirm email address spelling in environment variables</li>
+<li>Test connection manually using an IMAP client</li>
+</ul>
+</li>
+</ul>
+<p><strong>Issue</strong>: "Authentication failed to inbox.lv"</p>
+<ul>
+<li><strong>Cause</strong>: Wrong IMAP credentials</li>
+<li><strong>Solutions</strong>:
+<ul>
+<li>Verify IMAP password from inbox.lv settings</li>
+<li>Check for typos in email address</li>
+<li>Try logging into inbox.lv webmail to verify credentials</li>
+<li>Regenerate IMAP password if necessary</li>
+</ul>
+</li>
+</ul>
+<h3 id="email-delivery-problems"><a class="header" href="#email-delivery-problems">Email Delivery Problems</a></h3>
+<p><strong>Issue</strong>: "No OTP emails found"</p>
+<ul>
+<li><strong>Cause</strong>: Email forwarding not configured or emails not arriving</li>
+<li><strong>Solutions</strong>:
+<ul>
+<li>Verify Axiom Trade sends OTP emails to inbox.lv address</li>
+<li>Check spam/junk folder in inbox.lv</li>
+<li>Manually trigger OTP and verify email arrives</li>
+<li>Confirm email subject format matches expected pattern</li>
+</ul>
+</li>
+</ul>
+<p><strong>Issue</strong>: "OTP extraction failed"</p>
+<ul>
+<li><strong>Cause</strong>: Email format changed or parsing issue</li>
+<li><strong>Solutions</strong>:
+<ul>
+<li>Check recent OTP email for exact subject format</li>
+<li>Verify subject contains "Your Axiom security code is"</li>
+<li>Review email body format if subject extraction fails</li>
+<li>Report format changes to maintain compatibility</li>
+</ul>
+</li>
+</ul>
+<h3 id="debug-and-testing"><a class="header" href="#debug-and-testing">Debug and Testing</a></h3>
+<p>Enable debug logging for detailed information:</p>
+<pre><code class="language-env">RUST_LOG=debug
+</code></pre>
+<p>Test individual components:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Test IMAP connection
+let fetcher = OtpFetcher::new(
+    "your_email@inbox.lv".to_string(),
+    "your_imap_password".to_string()
+);
+
+// Test email parsing
+let email_body = "Your Axiom security code is: 123456";
+let result = fetcher.extract_otp_from_email(email_body)?;
+<span class="boring">}</span></code></pre></pre>
+<p>Manual verification steps:</p>
+<ol>
+<li>Send test email to inbox.lv account</li>
+<li>Verify email appears in webmail interface</li>
+<li>Request OTP manually from Axiom Trade</li>
+<li>Check exact subject line format in received email</li>
+</ol>
+<h2 id="security-considerations"><a class="header" href="#security-considerations">Security Considerations</a></h2>
+<h3 id="email-account-security"><a class="header" href="#email-account-security">Email Account Security</a></h3>
+<ul>
+<li>Use dedicated inbox.lv account only for OTP purposes</li>
+<li>Avoid using this email for other services</li>
+<li>Consider the email account semi-public</li>
+<li>Use strong, unique password for inbox.lv account</li>
+</ul>
+<h3 id="credential-management"><a class="header" href="#credential-management">Credential Management</a></h3>
+<ul>
+<li>Store IMAP credentials securely in environment variables</li>
+<li>Never commit <code>.env</code> files to version control</li>
+<li>Use proper file permissions on configuration files</li>
+<li>Consider using OS keychain for production deployments</li>
+</ul>
+<h3 id="access-control"><a class="header" href="#access-control">Access Control</a></h3>
+<ul>
+<li>The inbox.lv account only needs to receive emails</li>
+<li>Enable two-factor authentication on Axiom Trade account</li>
+<li>Regularly review account access and settings</li>
+<li>Monitor for unauthorized access attempts</li>
+</ul>
+<h3 id="network-security"><a class="header" href="#network-security">Network Security</a></h3>
+<ul>
+<li>All IMAP connections use TLS encryption</li>
+<li>Verify SSL certificate validation</li>
+<li>Use secure networks for production systems</li>
+<li>Consider VPN for additional protection</li>
+</ul>
+<h2 id="alternative-configurations"><a class="header" href="#alternative-configurations">Alternative Configurations</a></h2>
+<h3 id="other-email-providers"><a class="header" href="#other-email-providers">Other Email Providers</a></h3>
+<p>The OTP fetcher can be adapted for other IMAP-enabled providers:</p>
+<p><strong>Gmail</strong> (requires app-specific passwords):</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let fetcher = OtpFetcher::new(
+    "user@gmail.com".to_string(),
+    "app_specific_password".to_string()
+);
+// Note: Different IMAP server settings required
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Custom Email Servers</strong>:</p>
+<ul>
+<li>Modify <code>IMAP_DOMAIN</code> and <code>IMAP_PORT</code> constants</li>
+<li>Adjust TLS settings as needed</li>
+<li>Update authentication method if required</li>
+</ul>
+<h3 id="manual-fallback"><a class="header" href="#manual-fallback">Manual Fallback</a></h3>
+<p>Always provide manual OTP entry as fallback:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn get_otp_manual() -&gt; Result&lt;String&gt; {
+    print!("Enter OTP code: ");
+    io::stdout().flush()?;
+    
+    let mut input = String::new();
+    io::stdin().read_line(&amp;mut input)?;
+    
+    Ok(input.trim().to_string())
+}
+
+// Use in authentication flow
+let otp = if let Some(fetcher) = from_env()? {
+    fetcher.fetchotp()?.unwrap_or_else(|| get_otp_manual())
+} else {
+    get_otp_manual()?
+};
+<span class="boring">}</span></code></pre></pre>
+<h2 id="performance-and-limitations"><a class="header" href="#performance-and-limitations">Performance and Limitations</a></h2>
+<h3 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h3>
+<ul>
+<li>IMAP connection establishment: ~1-2 seconds</li>
+<li>Email search and retrieval: &lt;1 second</li>
+<li>OTP extraction: &lt;100 milliseconds</li>
+<li>Total process time: 2-4 seconds typically</li>
+</ul>
+<h3 id="rate-limiting"><a class="header" href="#rate-limiting">Rate Limiting</a></h3>
+<ul>
+<li>IMAP servers may limit connection frequency</li>
+<li>Implement backoff strategies for production use</li>
+<li>Consider connection pooling for high-frequency operations</li>
+</ul>
+<h3 id="email-limitations"><a class="header" href="#email-limitations">Email Limitations</a></h3>
+<ul>
+<li>Only processes UNREAD emails to avoid duplicates</li>
+<li>Requires emails to match specific subject patterns</li>
+<li>Dependent on email delivery timing and reliability</li>
+<li>Limited to 6-digit numeric OTP codes</li>
+</ul>
+<h3 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h3>
+<ul>
+<li>Use timeouts to prevent hanging operations</li>
+<li>Implement retry logic with exponential backoff</li>
+<li>Log operations for debugging and monitoring</li>
+<li>Handle network interruptions gracefully</li>
+<li>Cache credentials securely to avoid repeated lookups</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="environment-setup.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="auth/login.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="environment-setup.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="auth/login.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

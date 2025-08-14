@@ -1,0 +1,977 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>WebSocket Examples - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/examples/websocket.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="websocket-examples"><a class="header" href="#websocket-examples">WebSocket Examples</a></h1>
+<p>This section demonstrates how to use WebSocket connections for real-time data streaming from Axiom Trade. WebSocket connections provide low-latency access to market updates, trade notifications, order status changes, and portfolio balance updates.</p>
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ul>
+<li><a href="#basic-websocket-connection">Basic WebSocket Connection</a></li>
+<li><a href="#price-subscriptions">Price Subscriptions</a></li>
+<li><a href="#messagehandler-implementations">MessageHandler Implementations</a></li>
+<li><a href="#connection-management">Connection Management</a></li>
+<li><a href="#real-world-use-cases">Real-World Use Cases</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#performance-considerations">Performance Considerations</a></li>
+</ul>
+<h2 id="basic-websocket-connection"><a class="header" href="#basic-websocket-connection">Basic WebSocket Connection</a></h2>
+<p>The simplest way to establish a WebSocket connection and receive real-time updates.</p>
+<h3 id="example-basic_websocketrs"><a class="header" href="#example-basic_websocketrs">Example: basic_websocket.rs</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::websocket::{WebSocketClient, MessageHandler, WebSocketMessage};
+use async_trait::async_trait;
+use std::sync::Arc;
+use std::time::Duration;
+use tokio::time::sleep;
+
+/// Simple message handler that prints incoming messages
+struct BasicMessageHandler;
+
+#[async_trait]
+impl MessageHandler for BasicMessageHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                println!("Market Update: {} - ${:.6}", update.symbol, update.price_usd);
+            }
+            WebSocketMessage::OrderUpdate(order) =&gt; {
+                println!("Order Update: {} - {:?}", order.order_id, order.status);
+            }
+            WebSocketMessage::TradeUpdate(trade) =&gt; {
+                println!("Trade Update: {} - ${:.6}", trade.token_mint, trade.price);
+            }
+            WebSocketMessage::BalanceUpdate(balance) =&gt; {
+                println!("Balance Update: {} SOL", balance.sol_balance);
+            }
+            WebSocketMessage::Connected { session_id } =&gt; {
+                println!("Connected with session: {}", session_id);
+            }
+            WebSocketMessage::Disconnected { reason } =&gt; {
+                println!("Disconnected: {}", reason);
+            }
+            WebSocketMessage::Error { code, message } =&gt; {
+                println!("WebSocket Error {}: {}", code, message);
+            }
+            _ =&gt; {
+                println!("Other message: {:?}", message);
+            }
+        }
+    }
+
+    async fn on_connected(&amp;self, session_id: String) {
+        println!("WebSocket connected! Session ID: {}", session_id);
+    }
+
+    async fn on_disconnected(&amp;self, reason: String) {
+        println!("WebSocket disconnected: {}", reason);
+    }
+
+    async fn on_error(&amp;self, error: String) {
+        println!("WebSocket error: {}", error);
+    }
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Load environment variables
+    dotenvy::dotenv().ok();
+
+    // Create message handler and WebSocket client
+    let handler = Arc::new(BasicMessageHandler);
+    let mut ws_client = WebSocketClient::new(handler.clone())?;
+    
+    // Connect to WebSocket (authentication is handled internally)
+    ws_client.connect().await?;
+    
+    // Subscribe to new token listings
+    ws_client.subscribe_new_tokens().await?;
+    
+    // Monitor the connection for 30 seconds
+    let monitoring_duration = Duration::from_secs(30);
+    let start_time = std::time::Instant::now();
+
+    while start_time.elapsed() &lt; monitoring_duration {
+        if !ws_client.is_connected().await {
+            println!("Connection lost, attempting reconnection...");
+            ws_client.reconnect().await?;
+        }
+        sleep(Duration::from_millis(1000)).await;
+    }
+
+    // Graceful disconnect
+    ws_client.disconnect().await;
+    println!("WebSocket disconnected gracefully");
+
+    Ok(())
+}</code></pre></pre>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Simple connection establishment with automatic authentication</li>
+<li>Basic message handling for different event types</li>
+<li>Connection health monitoring with automatic reconnection</li>
+<li>Graceful disconnection</li>
+</ul>
+<h2 id="price-subscriptions"><a class="header" href="#price-subscriptions">Price Subscriptions</a></h2>
+<p>Advanced example demonstrating subscription to multiple token price feeds with real-time tracking.</p>
+<h3 id="example-price_subscriptionsrs"><a class="header" href="#example-price_subscriptionsrs">Example: price_subscriptions.rs</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::websocket::{WebSocketClient, MessageHandler, WebSocketMessage};
+use async_trait::async_trait;
+use std::sync::Arc;
+use std::time::Duration;
+use std::collections::HashMap;
+use tokio::time::sleep;
+use tokio::sync::RwLock;
+
+/// Price tracking message handler
+struct PriceMessageHandler {
+    price_tracker: Arc&lt;RwLock&lt;PriceTracker&gt;&gt;,
+}
+
+impl PriceMessageHandler {
+    fn new(price_tracker: Arc&lt;RwLock&lt;PriceTracker&gt;&gt;) -&gt; Self {
+        Self { price_tracker }
+    }
+}
+
+#[async_trait]
+impl MessageHandler for PriceMessageHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                let mut tracker = self.price_tracker.write().await;
+                tracker.update_price(
+                    &amp;update.symbol, 
+                    update.price_usd, 
+                    Some(update.volume_24h), 
+                    Some(update.price_change_24h)
+                ).await;
+            }
+            WebSocketMessage::TradeUpdate(trade) =&gt; {
+                println!("Trade: {} - ${:.6}", trade.token_mint, trade.price);
+            }
+            _ =&gt; {}
+        }
+    }
+
+    async fn on_connected(&amp;self, session_id: String) {
+        println!("WebSocket connected! Session ID: {}", session_id);
+    }
+
+    async fn on_disconnected(&amp;self, reason: String) {
+        println!("WebSocket disconnected: {}", reason);
+    }
+
+    async fn on_error(&amp;self, error: String) {
+        println!("WebSocket error: {}", error);
+    }
+}
+
+struct PriceTracker {
+    prices: HashMap&lt;String, PriceData&gt;,
+    update_count: u64,
+}
+
+struct PriceData {
+    symbol: String,
+    current_price: f64,
+    previous_price: f64,
+    high_24h: f64,
+    low_24h: f64,
+    volume_24h: f64,
+    change_24h: f64,
+    last_updated: std::time::Instant,
+    update_count: u32,
+}
+
+impl PriceTracker {
+    fn new() -&gt; Self {
+        Self {
+            prices: HashMap::new(),
+            update_count: 0,
+        }
+    }
+
+    async fn update_price(&amp;mut self, symbol: &amp;str, price: f64, volume: Option&lt;f64&gt;, change: Option&lt;f64&gt;) {
+        self.update_count += 1;
+        
+        let price_data = self.prices.entry(symbol.to_string()).or_insert(PriceData {
+            symbol: symbol.to_string(),
+            current_price: price,
+            previous_price: price,
+            high_24h: price,
+            low_24h: price,
+            volume_24h: volume.unwrap_or(0.0),
+            change_24h: change.unwrap_or(0.0),
+            last_updated: std::time::Instant::now(),
+            update_count: 0,
+        });
+
+        price_data.previous_price = price_data.current_price;
+        price_data.current_price = price;
+        
+        if price &gt; price_data.high_24h {
+            price_data.high_24h = price;
+        }
+        if price &lt; price_data.low_24h {
+            price_data.low_24h = price;
+        }
+        
+        if let Some(vol) = volume {
+            price_data.volume_24h = vol;
+        }
+        if let Some(chg) = change {
+            price_data.change_24h = chg;
+        }
+        
+        price_data.last_updated = std::time::Instant::now();
+        price_data.update_count += 1;
+
+        // Display real-time update with direction indicator
+        let direction = if price &gt; price_data.previous_price {
+            "📈"
+        } else if price &lt; price_data.previous_price {
+            "📉"
+        } else {
+            "➡️"
+        };
+
+        println!("{} {} ${:.6} ({})", 
+            chrono::Utc::now().format("%H:%M:%S"),
+            symbol,
+            price,
+            direction
+        );
+    }
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    dotenvy::dotenv().ok();
+
+    // Create price tracker and message handler
+    let price_tracker = Arc::new(RwLock::new(PriceTracker::new()));
+    let handler = Arc::new(PriceMessageHandler::new(price_tracker.clone()));
+    let mut ws_client = WebSocketClient::new(handler.clone())?;
+    
+    // Connect to WebSocket
+    ws_client.connect().await?;
+
+    // Subscribe to new token listings for general market updates
+    ws_client.subscribe_new_tokens().await?;
+
+    // Define tokens to monitor for specific price updates
+    let tokens_to_watch = vec![
+        ("SOL", "So11111111111111111111111111111111111111112"),
+        ("USDC", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
+        ("BONK", "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"),
+        ("WIF", "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm"),
+        ("PEPE", "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R"),
+    ];
+
+    // Subscribe to price feeds for multiple tokens
+    for (symbol, mint) in &amp;tokens_to_watch {
+        match ws_client.subscribe_token_price(mint).await {
+            Ok(()) =&gt; println!("✓ Subscribed to {} price feed", symbol),
+            Err(e) =&gt; println!("❌ Failed to subscribe to {}: {}", symbol, e),
+        }
+        sleep(Duration::from_millis(100)).await;
+    }
+
+    // Monitor prices for 2 minutes
+    let monitoring_duration = Duration::from_secs(120);
+    let start_time = std::time::Instant::now();
+    let mut last_summary = std::time::Instant::now();
+
+    while start_time.elapsed() &lt; monitoring_duration {
+        // Check connection health
+        if !ws_client.is_connected().await {
+            println!("Connection lost, reconnecting...");
+            ws_client.reconnect().await?;
+            
+            // Re-subscribe after reconnection
+            ws_client.subscribe_new_tokens().await.ok();
+            for (_symbol, mint) in &amp;tokens_to_watch {
+                ws_client.subscribe_token_price(mint).await.ok();
+            }
+        }
+
+        // Show periodic summary every 30 seconds
+        if last_summary.elapsed() &gt;= Duration::from_secs(30) {
+            show_price_summary(&amp;price_tracker).await;
+            last_summary = std::time::Instant::now();
+        }
+
+        sleep(Duration::from_millis(500)).await;
+    }
+
+    // Final summary and disconnect
+    show_detailed_summary(&amp;price_tracker).await;
+    ws_client.disconnect().await;
+
+    Ok(())
+}
+
+async fn show_price_summary(price_tracker: &amp;Arc&lt;RwLock&lt;PriceTracker&gt;&gt;) {
+    let tracker = price_tracker.read().await;
+    println!("\n📊 Price Summary ({} updates total):", tracker.update_count);
+    println!("{:&lt;8} {:&gt;12} {:&gt;12} {:&gt;12} {:&gt;8}", "Symbol", "Price", "24h Change", "Volume", "Updates");
+    println!("{}", "-".repeat(60));
+    
+    for symbol in tracker.get_symbols() {
+        if let Some(data) = tracker.get_price_data(&amp;symbol) {
+            println!("{:&lt;8} {:&gt;12.6} {:&gt;11.2}% {:&gt;12.0} {:&gt;8}", 
+                data.symbol,
+                data.current_price,
+                data.change_24h,
+                data.volume_24h,
+                data.update_count
+            );
+        }
+    }
+}</code></pre></pre>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Multi-token price subscription management</li>
+<li>Real-time price tracking with historical data</li>
+<li>Periodic summary reports</li>
+<li>Automatic re-subscription after reconnection</li>
+<li>Visual price direction indicators</li>
+</ul>
+<h2 id="messagehandler-implementations"><a class="header" href="#messagehandler-implementations">MessageHandler Implementations</a></h2>
+<h3 id="default-messagehandler"><a class="header" href="#default-messagehandler">Default MessageHandler</a></h3>
+<p>The library provides a built-in <code>DefaultMessageHandler</code> for basic use cases:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::websocket::handler::DefaultMessageHandler;
+
+// Create default handler that stores all updates
+let handler = Arc::new(DefaultMessageHandler::new());
+let ws_client = WebSocketClient::new(handler.clone())?;
+
+// After some time, retrieve stored updates
+let market_updates = handler.get_market_updates().await;
+let order_updates = handler.get_order_updates().await;
+let trade_updates = handler.get_trade_updates().await;
+let balance_updates = handler.get_balance_updates().await;
+
+// Clear stored data to manage memory
+handler.clear_all().await;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="custom-messagehandler"><a class="header" href="#custom-messagehandler">Custom MessageHandler</a></h3>
+<p>Implement the <code>MessageHandler</code> trait for custom behavior:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::websocket::{MessageHandler, WebSocketMessage};
+use async_trait::async_trait;
+
+struct CustomHandler {
+    // Your custom fields
+}
+
+#[async_trait]
+impl MessageHandler for CustomHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        // Custom message processing logic
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                // Process market updates
+                self.process_market_data(update).await;
+            }
+            WebSocketMessage::OrderUpdate(order) =&gt; {
+                // Handle order status changes
+                self.update_order_status(order).await;
+            }
+            WebSocketMessage::TradeUpdate(trade) =&gt; {
+                // Log trade executions
+                self.log_trade(trade).await;
+            }
+            WebSocketMessage::BalanceUpdate(balance) =&gt; {
+                // Update portfolio tracking
+                self.update_portfolio(balance).await;
+            }
+            _ =&gt; {}
+        }
+    }
+
+    async fn on_connected(&amp;self, session_id: String) {
+        // Connection established logic
+        println!("Connected: {}", session_id);
+    }
+
+    async fn on_disconnected(&amp;self, reason: String) {
+        // Cleanup on disconnection
+        println!("Disconnected: {}", reason);
+    }
+
+    async fn on_error(&amp;self, error: String) {
+        // Error handling
+        eprintln!("Error: {}", error);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="connection-management"><a class="header" href="#connection-management">Connection Management</a></h2>
+<h3 id="regional-selection"><a class="header" href="#regional-selection">Regional Selection</a></h3>
+<p>Choose optimal regions for better latency:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::websocket::{WebSocketClient, Region};
+
+// Use specific region for better performance
+let ws_client = WebSocketClient::with_region(handler, Region::USWest)?;
+
+// Available regions:
+// - Region::USWest
+// - Region::USCentral  
+// - Region::USEast
+// - Region::EUWest
+// - Region::EUCentral
+// - Region::EUEast
+// - Region::Asia
+// - Region::Australia
+// - Region::Global (default)
+<span class="boring">}</span></code></pre></pre>
+<h3 id="connection-health-monitoring"><a class="header" href="#connection-health-monitoring">Connection Health Monitoring</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check connection status
+let is_connected = ws_client.is_connected().await;
+
+// Manual reconnection
+if !is_connected {
+    ws_client.reconnect().await?;
+}
+
+// Get current subscriptions
+let subscriptions = ws_client.get_subscriptions().await;
+println!("Active subscriptions: {:?}", subscriptions);
+
+// Enable automatic token refresh
+let ws_client = WebSocketClient::with_auto_refresh(handler, true)?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="subscription-management"><a class="header" href="#subscription-management">Subscription Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Subscribe to different data feeds
+ws_client.subscribe_new_tokens().await?;
+ws_client.subscribe_token_price("token_mint_address").await?;
+ws_client.subscribe_portfolio_updates().await?;
+ws_client.subscribe_order_updates().await?;
+
+// Unsubscribe from feeds
+ws_client.unsubscribe_token_price("token_mint_address").await?;
+ws_client.unsubscribe_new_tokens().await?;
+
+// Check active subscriptions
+let active_subs = ws_client.get_subscriptions().await;
+for subscription in active_subs {
+    println!("Active: {:?}", subscription);
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="real-world-use-cases"><a class="header" href="#real-world-use-cases">Real-World Use Cases</a></h2>
+<h3 id="trading-bot-with-real-time-signals"><a class="header" href="#trading-bot-with-real-time-signals">Trading Bot with Real-Time Signals</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct TradingBotHandler {
+    trading_client: Arc&lt;TradingClient&gt;,
+    strategy: Arc&lt;TradingStrategy&gt;,
+}
+
+#[async_trait]
+impl MessageHandler for TradingBotHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                // Analyze market data for trading signals
+                if let Some(signal) = self.strategy.analyze_market(&amp;update).await {
+                    match signal {
+                        TradingSignal::Buy { token, amount } =&gt; {
+                            self.trading_client.execute_buy(&amp;token, amount).await.ok();
+                        }
+                        TradingSignal::Sell { token, amount } =&gt; {
+                            self.trading_client.execute_sell(&amp;token, amount).await.ok();
+                        }
+                    }
+                }
+            }
+            WebSocketMessage::OrderUpdate(order) =&gt; {
+                // Track order execution
+                self.strategy.update_order_status(order).await;
+            }
+            _ =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="portfolio-monitoring-dashboard"><a class="header" href="#portfolio-monitoring-dashboard">Portfolio Monitoring Dashboard</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct DashboardHandler {
+    portfolio_state: Arc&lt;RwLock&lt;PortfolioState&gt;&gt;,
+    alert_system: Arc&lt;AlertSystem&gt;,
+}
+
+#[async_trait]
+impl MessageHandler for DashboardHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::BalanceUpdate(balance) =&gt; {
+                let mut portfolio = self.portfolio_state.write().await;
+                portfolio.update_balance(balance).await;
+                
+                // Check for alerts
+                if portfolio.total_value_usd &lt; portfolio.stop_loss_threshold {
+                    self.alert_system.send_alert(AlertType::StopLoss).await;
+                }
+            }
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                // Update portfolio value based on price changes
+                let mut portfolio = self.portfolio_state.write().await;
+                portfolio.update_token_price(&amp;update.token_mint, update.price_usd).await;
+            }
+            _ =&gt; {}
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="price-alert-system"><a class="header" href="#price-alert-system">Price Alert System</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct PriceAlertHandler {
+    alert_rules: Arc&lt;RwLock&lt;Vec&lt;PriceAlert&gt;&gt;&gt;,
+    notification_service: Arc&lt;NotificationService&gt;,
+}
+
+#[async_trait]
+impl MessageHandler for PriceAlertHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        if let WebSocketMessage::MarketUpdate(update) = message {
+            let alerts = self.alert_rules.read().await;
+            
+            for alert in alerts.iter() {
+                if alert.token_mint == update.token_mint {
+                    let triggered = match alert.condition {
+                        AlertCondition::PriceAbove(price) =&gt; update.price_usd &gt; price,
+                        AlertCondition::PriceBelow(price) =&gt; update.price_usd &lt; price,
+                        AlertCondition::PriceChange(change) =&gt; update.price_change_24h.abs() &gt; change,
+                    };
+                    
+                    if triggered {
+                        self.notification_service.send_alert(&amp;alert, &amp;update).await;
+                    }
+                }
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<h3 id="connection-error-recovery"><a class="header" href="#connection-error-recovery">Connection Error Recovery</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn robust_websocket_connection() -&gt; Result&lt;(), WebSocketError&gt; {
+    let handler = Arc::new(MyHandler::new());
+    let mut ws_client = WebSocketClient::new(handler)?;
+    
+    let mut retry_count = 0;
+    const MAX_RETRIES: u32 = 5;
+    
+    loop {
+        match ws_client.connect().await {
+            Ok(()) =&gt; {
+                println!("Connected successfully");
+                break;
+            }
+            Err(WebSocketError::AuthError(_)) =&gt; {
+                // Authentication failed - check credentials
+                eprintln!("Authentication failed - check credentials");
+                return Err(WebSocketError::AuthError(AuthError::InvalidCredentials));
+            }
+            Err(e) if retry_count &lt; MAX_RETRIES =&gt; {
+                retry_count += 1;
+                eprintln!("Connection failed (attempt {}): {}", retry_count, e);
+                tokio::time::sleep(Duration::from_secs(2_u64.pow(retry_count))).await;
+            }
+            Err(e) =&gt; {
+                eprintln!("Failed to connect after {} attempts: {}", MAX_RETRIES, e);
+                return Err(e);
+            }
+        }
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="message-processing-error-handling"><a class="header" href="#message-processing-error-handling">Message Processing Error Handling</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+impl MessageHandler for RobustHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        // Wrap message processing in error handling
+        if let Err(e) = self.process_message_safe(message).await {
+            eprintln!("Failed to process message: {}", e);
+            
+            // Optionally log error or send to monitoring system
+            self.error_logger.log_error(e).await;
+        }
+    }
+    
+    async fn on_error(&amp;self, error: String) {
+        // Implement sophisticated error handling
+        if error.contains("token_expired") {
+            // Trigger token refresh
+            self.auth_client.refresh_token().await.ok();
+        } else if error.contains("rate_limit") {
+            // Implement backoff strategy
+            self.apply_rate_limit_backoff().await;
+        }
+    }
+}
+
+impl RobustHandler {
+    async fn process_message_safe(&amp;self, message: WebSocketMessage) -&gt; Result&lt;(), ProcessingError&gt; {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                self.validate_market_update(&amp;update)?;
+                self.store_market_update(update).await?;
+            }
+            WebSocketMessage::Error { code, message } =&gt; {
+                self.handle_websocket_error(code, &amp;message).await?;
+            }
+            _ =&gt; {}
+        }
+        Ok(())
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
+<h3 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Use bounded channels for message queuing
+struct MemoryEfficientHandler {
+    message_queue: Arc&lt;RwLock&lt;VecDeque&lt;WebSocketMessage&gt;&gt;&gt;,
+    max_queue_size: usize,
+}
+
+#[async_trait]
+impl MessageHandler for MemoryEfficientHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        let mut queue = self.message_queue.write().await;
+        
+        // Prevent memory leaks by limiting queue size
+        if queue.len() &gt;= self.max_queue_size {
+            queue.pop_front(); // Remove oldest message
+        }
+        
+        queue.push_back(message);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="batch-processing"><a class="header" href="#batch-processing">Batch Processing</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct BatchProcessor {
+    batch_buffer: Arc&lt;RwLock&lt;Vec&lt;MarketUpdate&gt;&gt;&gt;,
+    batch_size: usize,
+}
+
+#[async_trait]
+impl MessageHandler for BatchProcessor {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        if let WebSocketMessage::MarketUpdate(update) = message {
+            let mut buffer = self.batch_buffer.write().await;
+            buffer.push(update);
+            
+            // Process in batches for efficiency
+            if buffer.len() &gt;= self.batch_size {
+                let batch = buffer.drain(..).collect::&lt;Vec&lt;_&gt;&gt;();
+                drop(buffer); // Release lock before processing
+                
+                self.process_batch(batch).await;
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="connection-optimization"><a class="header" href="#connection-optimization">Connection Optimization</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Use connection pooling for high-frequency applications
+struct OptimizedWebSocketClient {
+    primary_connection: WebSocketClient,
+    backup_connections: Vec&lt;WebSocketClient&gt;,
+    load_balancer: LoadBalancer,
+}
+
+impl OptimizedWebSocketClient {
+    async fn send_with_failover(&amp;mut self, message: &amp;str) -&gt; Result&lt;(), WebSocketError&gt; {
+        // Try primary connection first
+        if let Err(_) = self.primary_connection.send(message).await {
+            // Failover to backup connections
+            for backup in &amp;mut self.backup_connections {
+                if backup.is_connected().await {
+                    return backup.send(message).await;
+                }
+            }
+        }
+        
+        Err(WebSocketError::NotConnected)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This comprehensive guide covers all aspects of WebSocket usage in the Axiom Trade Rust library, from basic connections to advanced real-world implementations. The examples demonstrate proper error handling, performance optimization, and various use cases for different trading scenarios.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../examples/trading.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../examples/advanced.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../examples/trading.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../examples/advanced.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

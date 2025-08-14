@@ -1,0 +1,928 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>WebSocket Streaming - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/api/websocket.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="websocket-streaming"><a class="header" href="#websocket-streaming">WebSocket Streaming</a></h1>
+<p>The Axiom Trade Rust client provides comprehensive WebSocket support for real-time data streaming. The WebSocket module handles authentication, connection management, automatic reconnection, and provides a flexible message handling system.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The WebSocket implementation consists of three main components:</p>
+<ul>
+<li><strong>WebSocketClient</strong>: Core client for managing connections and subscriptions</li>
+<li><strong>MessageHandler</strong>: Trait for processing incoming messages</li>
+<li><strong>Message Types</strong>: Structured data types for different streaming data</li>
+</ul>
+<h2 id="basic-websocket-connection"><a class="header" href="#basic-websocket-connection">Basic WebSocket Connection</a></h2>
+<h3 id="setting-up-a-connection"><a class="header" href="#setting-up-a-connection">Setting Up a Connection</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::websocket::{WebSocketClient, MessageHandler, WebSocketMessage};
+use async_trait::async_trait;
+use std::sync::Arc;
+
+// Create a message handler
+struct MyMessageHandler;
+
+#[async_trait]
+impl MessageHandler for MyMessageHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                println!("Market Update: {} - ${:.6}", update.symbol, update.price_usd);
+            }
+            _ =&gt; {}
+        }
+    }
+
+    async fn on_connected(&amp;self, session_id: String) {
+        println!("Connected with session: {}", session_id);
+    }
+
+    async fn on_disconnected(&amp;self, reason: String) {
+        println!("Disconnected: {}", reason);
+    }
+
+    async fn on_error(&amp;self, error: String) {
+        println!("Error: {}", error);
+    }
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Create WebSocket client
+    let handler = Arc::new(MyMessageHandler);
+    let mut ws_client = WebSocketClient::new(handler)?;
+    
+    // Connect to WebSocket
+    ws_client.connect().await?;
+    
+    // Subscribe to data feeds
+    ws_client.subscribe_new_tokens().await?;
+    
+    // Keep connection alive
+    tokio::time::sleep(std::time::Duration::from_secs(30)).await;
+    
+    // Disconnect gracefully
+    ws_client.disconnect().await;
+    
+    Ok(())
+}</code></pre></pre>
+<h2 id="regional-connection-options"><a class="header" href="#regional-connection-options">Regional Connection Options</a></h2>
+<p>The WebSocket client supports multiple regional endpoints for optimal latency:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::websocket::{WebSocketClient, Region};
+
+// Create client with specific region
+let handler = Arc::new(MyMessageHandler);
+let mut ws_client = WebSocketClient::with_region(handler, Region::USWest)?;
+
+// Available regions:
+// - Region::USWest
+// - Region::USCentral  
+// - Region::USEast
+// - Region::EUWest
+// - Region::EUCentral
+// - Region::EUEast
+// - Region::Asia
+// - Region::Australia
+// - Region::Global (default)
+<span class="boring">}</span></code></pre></pre>
+<h2 id="messagehandler-trait-implementation"><a class="header" href="#messagehandler-trait-implementation">MessageHandler Trait Implementation</a></h2>
+<p>The <code>MessageHandler</code> trait defines how your application processes incoming WebSocket messages:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[async_trait]
+pub trait MessageHandler: Send + Sync {
+    /// Handles incoming WebSocket messages
+    async fn handle_message(&amp;self, message: WebSocketMessage);
+    
+    /// Called when connection is established
+    async fn on_connected(&amp;self, session_id: String);
+    
+    /// Called when connection is lost
+    async fn on_disconnected(&amp;self, reason: String);
+    
+    /// Called when an error occurs
+    async fn on_error(&amp;self, error: String);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="advanced-message-handler-example"><a class="header" href="#advanced-message-handler-example">Advanced Message Handler Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::sync::RwLock;
+use std::collections::HashMap;
+
+struct AdvancedMessageHandler {
+    price_data: Arc&lt;RwLock&lt;HashMap&lt;String, f64&gt;&gt;&gt;,
+    order_book: Arc&lt;RwLock&lt;HashMap&lt;String, OrderBookData&gt;&gt;&gt;,
+}
+
+impl AdvancedMessageHandler {
+    fn new() -&gt; Self {
+        Self {
+            price_data: Arc::new(RwLock::new(HashMap::new())),
+            order_book: Arc::new(RwLock::new(HashMap::new())),
+        }
+    }
+    
+    async fn get_latest_price(&amp;self, token: &amp;str) -&gt; Option&lt;f64&gt; {
+        self.price_data.read().await.get(token).copied()
+    }
+}
+
+#[async_trait]
+impl MessageHandler for AdvancedMessageHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        match message {
+            WebSocketMessage::MarketUpdate(update) =&gt; {
+                // Store price data
+                let mut prices = self.price_data.write().await;
+                prices.insert(update.symbol.clone(), update.price_usd);
+                
+                // Process price alerts
+                if update.price_change_24h &gt; 10.0 {
+                    println!("🚀 {} is up {:.2}% in 24h!", 
+                        update.symbol, update.price_change_24h);
+                }
+            }
+            
+            WebSocketMessage::OrderUpdate(order) =&gt; {
+                println!("Order {} status: {:?}", order.order_id, order.status);
+                
+                if let Some(tx_hash) = &amp;order.transaction_hash {
+                    println!("Transaction: {}", tx_hash);
+                }
+            }
+            
+            WebSocketMessage::TradeUpdate(trade) =&gt; {
+                println!("Trade executed: {} {} at ${:.6}",
+                    trade.amount, trade.token_mint, trade.price);
+            }
+            
+            WebSocketMessage::BalanceUpdate(balance) =&gt; {
+                println!("Portfolio value: ${:.2}", balance.total_value_usd);
+                for token in &amp;balance.token_balances {
+                    println!("  {}: {} (${:.2})", 
+                        token.symbol, token.amount, token.value_usd);
+                }
+            }
+            
+            WebSocketMessage::Error { code, message } =&gt; {
+                eprintln!("WebSocket error {}: {}", code, message);
+            }
+            
+            _ =&gt; {}
+        }
+    }
+    
+    async fn on_connected(&amp;self, session_id: String) {
+        println!("✅ WebSocket connected! Session: {}", session_id);
+    }
+    
+    async fn on_disconnected(&amp;self, reason: String) {
+        println!("❌ WebSocket disconnected: {}", reason);
+        // Implement custom reconnection logic here if needed
+    }
+    
+    async fn on_error(&amp;self, error: String) {
+        eprintln!("⚠️ WebSocket error: {}", error);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="subscription-types"><a class="header" href="#subscription-types">Subscription Types</a></h2>
+<p>The WebSocket client supports various data feed subscriptions:</p>
+<h3 id="new-token-listings"><a class="header" href="#new-token-listings">New Token Listings</a></h3>
+<p>Subscribe to newly launched tokens on the platform:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Subscribe to all new token pairs
+ws_client.subscribe_new_tokens().await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="token-price-updates"><a class="header" href="#token-price-updates">Token Price Updates</a></h3>
+<p>Monitor real-time price changes for specific tokens:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Subscribe to price updates for a specific token
+let bonk_address = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263";
+ws_client.subscribe_token_price(bonk_address).await?;
+
+// Subscribe to multiple tokens
+let tokens = vec![
+    "So11111111111111111111111111111111111111112", // SOL
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+    "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", // BONK
+];
+
+for token in tokens {
+    ws_client.subscribe_token_price(token).await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="wallet-transaction-monitoring"><a class="header" href="#wallet-transaction-monitoring">Wallet Transaction Monitoring</a></h3>
+<p>Track transactions for specific wallet addresses:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Monitor transactions for a wallet
+let wallet_address = "YourWalletAddressHere";
+ws_client.subscribe_wallet_transactions(wallet_address).await?;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="real-time-data-handling"><a class="header" href="#real-time-data-handling">Real-Time Data Handling</a></h2>
+<h3 id="market-update-structure"><a class="header" href="#market-update-structure">Market Update Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MarketUpdate {
+    pub token_mint: String,      // Token contract address
+    pub symbol: String,          // Token symbol (e.g., "BONK")
+    pub price_usd: f64,         // Current price in USD
+    pub price_sol: f64,         // Current price in SOL
+    pub price_change_24h: f64,  // 24-hour price change percentage
+    pub volume_24h: f64,        // 24-hour trading volume
+    pub market_cap: f64,        // Market capitalization
+    pub timestamp: i64,         // Unix timestamp
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="order-update-structure"><a class="header" href="#order-update-structure">Order Update Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct OrderUpdate {
+    pub order_id: String,           // Unique order identifier
+    pub status: OrderStatus,        // Order status (Pending, Filled, etc.)
+    pub transaction_hash: Option&lt;String&gt;, // Blockchain transaction hash
+    pub token_mint: String,         // Token being traded
+    pub side: OrderSide,           // Buy or Sell
+    pub amount: f64,               // Order amount
+    pub price: f64,                // Order price
+    pub filled_amount: f64,        // Amount filled so far
+    pub timestamp: i64,            // Order timestamp
+    pub error_message: Option&lt;String&gt;, // Error message if failed
+}
+
+pub enum OrderStatus {
+    Pending,
+    Processing,
+    PartiallyFilled,
+    Filled,
+    Cancelled,
+    Failed,
+}
+
+pub enum OrderSide {
+    Buy,
+    Sell,
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="price-tracking-example"><a class="header" href="#price-tracking-example">Price Tracking Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::collections::HashMap;
+use tokio::sync::RwLock;
+
+struct PriceTracker {
+    prices: HashMap&lt;String, PriceData&gt;,
+    alerts: Vec&lt;PriceAlert&gt;,
+}
+
+struct PriceData {
+    current_price: f64,
+    high_24h: f64,
+    low_24h: f64,
+    volume_24h: f64,
+    last_updated: std::time::Instant,
+}
+
+struct PriceAlert {
+    token: String,
+    target_price: f64,
+    condition: AlertCondition, // Above, Below
+}
+
+impl PriceTracker {
+    async fn update_price(&amp;mut self, symbol: &amp;str, price: f64) {
+        // Update price data
+        let price_data = self.prices.entry(symbol.to_string())
+            .or_insert(PriceData {
+                current_price: price,
+                high_24h: price,
+                low_24h: price,
+                volume_24h: 0.0,
+                last_updated: std::time::Instant::now(),
+            });
+        
+        price_data.current_price = price;
+        price_data.high_24h = price_data.high_24h.max(price);
+        price_data.low_24h = price_data.low_24h.min(price);
+        price_data.last_updated = std::time::Instant::now();
+        
+        // Check price alerts
+        for alert in &amp;self.alerts {
+            if alert.token == symbol {
+                match alert.condition {
+                    AlertCondition::Above if price &gt; alert.target_price =&gt; {
+                        println!("🔔 ALERT: {} is above ${:.6}!", symbol, alert.target_price);
+                    }
+                    AlertCondition::Below if price &lt; alert.target_price =&gt; {
+                        println!("🔔 ALERT: {} is below ${:.6}!", symbol, alert.target_price);
+                    }
+                    _ =&gt; {}
+                }
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="connection-management-and-reconnection-logic"><a class="header" href="#connection-management-and-reconnection-logic">Connection Management and Reconnection Logic</a></h2>
+<h3 id="automatic-reconnection"><a class="header" href="#automatic-reconnection">Automatic Reconnection</a></h3>
+<p>The WebSocket client includes built-in reconnection logic:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Enable automatic reconnection (enabled by default)
+ws_client.set_auto_reconnect(true);
+
+// The client will automatically:
+// 1. Refresh authentication tokens every 10 minutes
+// 2. Reconnect if the connection is lost
+// 3. Re-subscribe to all previous subscriptions
+<span class="boring">}</span></code></pre></pre>
+<h3 id="manual-reconnection"><a class="header" href="#manual-reconnection">Manual Reconnection</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check connection status
+if !ws_client.is_connected().await {
+    println!("Connection lost, reconnecting...");
+    
+    match ws_client.reconnect().await {
+        Ok(()) =&gt; {
+            println!("Reconnected successfully");
+            
+            // Re-subscribe to feeds if needed
+            ws_client.subscribe_new_tokens().await?;
+        }
+        Err(e) =&gt; {
+            eprintln!("Reconnection failed: {}", e);
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="connection-health-monitoring"><a class="header" href="#connection-health-monitoring">Connection Health Monitoring</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{interval, Duration};
+
+async fn monitor_connection(ws_client: &amp;mut WebSocketClient) {
+    let mut health_check = interval(Duration::from_secs(30));
+    
+    loop {
+        health_check.tick().await;
+        
+        if !ws_client.is_connected().await {
+            println!("⚠️ Connection lost, attempting reconnection...");
+            
+            match ws_client.reconnect().await {
+                Ok(()) =&gt; {
+                    println!("✅ Reconnection successful");
+                }
+                Err(e) =&gt; {
+                    eprintln!("❌ Reconnection failed: {}", e);
+                    // Implement exponential backoff or other retry logic
+                }
+            }
+        }
+        
+        // Display current subscriptions
+        let subs = ws_client.get_subscriptions().await;
+        println!("Active subscriptions: {:?}", subs);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="token-price-websocket"><a class="header" href="#token-price-websocket">Token Price WebSocket</a></h2>
+<p>For dedicated price monitoring, use the token price WebSocket:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Connect to the specialized token price stream
+let mut price_ws = WebSocketClient::new(handler)?;
+price_ws.connect_token_price().await?;
+
+// This uses socket8.axiom.trade specifically for price data
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<h3 id="websocket-error-types"><a class="header" href="#websocket-error-types">WebSocket Error Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum WebSocketError {
+    AuthError(AuthError),           // Authentication failure
+    ConnectionError(String),        // Connection issues
+    NotConnected,                  // Not connected when operation attempted
+    SendError(String),             // Failed to send message
+    ReceiveError(String),          // Failed to receive message
+    SerializationError(String),    // JSON parsing errors
+    WebSocketError(tokio_tungstenite::tungstenite::Error), // Low-level WebSocket errors
+    HttpError(http::Error),        // HTTP upgrade errors
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="robust-error-handling-example"><a class="header" href="#robust-error-handling-example">Robust Error Handling Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn robust_websocket_connection() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let handler = Arc::new(MyMessageHandler::new());
+    let mut ws_client = WebSocketClient::new(handler)?;
+    
+    let mut retry_count = 0;
+    const MAX_RETRIES: u32 = 5;
+    
+    loop {
+        match ws_client.connect().await {
+            Ok(()) =&gt; {
+                println!("✅ Connected successfully");
+                break;
+            }
+            Err(e) =&gt; {
+                retry_count += 1;
+                eprintln!("❌ Connection failed (attempt {}): {}", retry_count, e);
+                
+                if retry_count &gt;= MAX_RETRIES {
+                    return Err(format!("Failed to connect after {} attempts", MAX_RETRIES).into());
+                }
+                
+                // Exponential backoff
+                let delay = Duration::from_secs(2_u64.pow(retry_count));
+                println!("⏳ Retrying in {:?}...", delay);
+                tokio::time::sleep(delay).await;
+            }
+        }
+    }
+    
+    // Subscribe with error handling
+    if let Err(e) = ws_client.subscribe_new_tokens().await {
+        eprintln!("⚠️ Failed to subscribe to new tokens: {}", e);
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="1-use-arc-for-shared-message-handlers"><a class="header" href="#1-use-arc-for-shared-message-handlers">1. Use Arc for Shared Message Handlers</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Good: Use Arc for shared ownership
+let handler = Arc::new(MyMessageHandler::new());
+let mut ws_client = WebSocketClient::new(handler.clone())?;
+
+// The handler can be safely shared across async tasks
+let handler_clone = handler.clone();
+tokio::spawn(async move {
+    // Use handler_clone in another task
+});
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-implement-connection-pooling-for-multiple-streams"><a class="header" href="#2-implement-connection-pooling-for-multiple-streams">2. Implement Connection Pooling for Multiple Streams</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct WebSocketManager {
+    connections: HashMap&lt;String, WebSocketClient&gt;,
+    handler: Arc&lt;dyn MessageHandler&gt;,
+}
+
+impl WebSocketManager {
+    async fn create_connection(&amp;mut self, name: &amp;str, region: Region) -&gt; Result&lt;(), WebSocketError&gt; {
+        let mut client = WebSocketClient::with_region(self.handler.clone(), region)?;
+        client.connect().await?;
+        self.connections.insert(name.to_string(), client);
+        Ok(())
+    }
+    
+    async fn subscribe_to_token(&amp;mut self, connection_name: &amp;str, token: &amp;str) -&gt; Result&lt;(), WebSocketError&gt; {
+        if let Some(client) = self.connections.get_mut(connection_name) {
+            client.subscribe_token_price(token).await
+        } else {
+            Err(WebSocketError::NotConnected)
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-rate-limiting-subscriptions"><a class="header" href="#3-rate-limiting-subscriptions">3. Rate Limiting Subscriptions</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{interval, Duration};
+
+async fn subscribe_with_rate_limit(
+    ws_client: &amp;mut WebSocketClient,
+    tokens: Vec&lt;&amp;str&gt;
+) -&gt; Result&lt;(), WebSocketError&gt; {
+    let mut rate_limiter = interval(Duration::from_millis(100));
+    
+    for token in tokens {
+        rate_limiter.tick().await;
+        
+        match ws_client.subscribe_token_price(token).await {
+            Ok(()) =&gt; {
+                println!("✅ Subscribed to {}", token);
+            }
+            Err(e) =&gt; {
+                eprintln!("❌ Failed to subscribe to {}: {}", token, e);
+            }
+        }
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="4-graceful-shutdown"><a class="header" href="#4-graceful-shutdown">4. Graceful Shutdown</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use tokio::signal;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let handler = Arc::new(MyMessageHandler::new());
+    let mut ws_client = WebSocketClient::new(handler)?;
+    
+    ws_client.connect().await?;
+    ws_client.subscribe_new_tokens().await?;
+    
+    // Set up graceful shutdown
+    tokio::select! {
+        _ = signal::ctrl_c() =&gt; {
+            println!("🛑 Shutdown signal received");
+        }
+        _ = monitor_websocket(&amp;mut ws_client) =&gt; {
+            println!("WebSocket monitoring ended");
+        }
+    }
+    
+    // Graceful disconnect
+    println!("Disconnecting...");
+    ws_client.disconnect().await;
+    println!("✅ Disconnected gracefully");
+    
+    Ok(())
+}
+
+async fn monitor_websocket(ws_client: &amp;mut WebSocketClient) {
+    loop {
+        if !ws_client.is_connected().await {
+            if let Err(e) = ws_client.reconnect().await {
+                eprintln!("Failed to reconnect: {}", e);
+                break;
+            }
+        }
+        
+        tokio::time::sleep(Duration::from_secs(5)).await;
+    }
+}</code></pre></pre>
+<h2 id="complete-example-multi-token-price-monitor"><a class="header" href="#complete-example-multi-token-price-monitor">Complete Example: Multi-Token Price Monitor</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::websocket::{WebSocketClient, MessageHandler, WebSocketMessage};
+use async_trait::async_trait;
+use std::sync::Arc;
+use std::collections::HashMap;
+use tokio::sync::RwLock;
+use tokio::time::{interval, Duration};
+
+struct PriceMonitorHandler {
+    prices: Arc&lt;RwLock&lt;HashMap&lt;String, f64&gt;&gt;&gt;,
+    alerts: Arc&lt;RwLock&lt;Vec&lt;PriceAlert&gt;&gt;&gt;,
+}
+
+struct PriceAlert {
+    symbol: String,
+    target_price: f64,
+    triggered: bool,
+}
+
+#[async_trait]
+impl MessageHandler for PriceMonitorHandler {
+    async fn handle_message(&amp;self, message: WebSocketMessage) {
+        if let WebSocketMessage::MarketUpdate(update) = message {
+            // Update price
+            {
+                let mut prices = self.prices.write().await;
+                prices.insert(update.symbol.clone(), update.price_usd);
+            }
+            
+            // Check alerts
+            {
+                let mut alerts = self.alerts.write().await;
+                for alert in alerts.iter_mut() {
+                    if alert.symbol == update.symbol &amp;&amp; !alert.triggered {
+                        if update.price_usd &gt;= alert.target_price {
+                            println!("🚨 PRICE ALERT: {} reached ${:.6}!", 
+                                update.symbol, update.price_usd);
+                            alert.triggered = true;
+                        }
+                    }
+                }
+            }
+            
+            println!("💰 {} ${:.6} ({:+.2}%)", 
+                update.symbol, update.price_usd, update.price_change_24h);
+        }
+    }
+    
+    async fn on_connected(&amp;self, session_id: String) {
+        println!("🔗 Connected: {}", session_id);
+    }
+    
+    async fn on_disconnected(&amp;self, reason: String) {
+        println!("🔌 Disconnected: {}", reason);
+    }
+    
+    async fn on_error(&amp;self, error: String) {
+        eprintln!("❌ Error: {}", error);
+    }
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    dotenvy::dotenv().ok();
+    
+    let handler = Arc::new(PriceMonitorHandler {
+        prices: Arc::new(RwLock::new(HashMap::new())),
+        alerts: Arc::new(RwLock::new(vec![
+            PriceAlert {
+                symbol: "BONK".to_string(),
+                target_price: 0.00003,
+                triggered: false,
+            }
+        ])),
+    });
+    
+    let mut ws_client = WebSocketClient::new(handler.clone())?;
+    
+    // Connect and subscribe
+    ws_client.connect().await?;
+    ws_client.subscribe_new_tokens().await?;
+    
+    // Subscribe to specific tokens
+    let popular_tokens = vec![
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", // BONK
+        "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm", // WIF
+    ];
+    
+    for token in popular_tokens {
+        ws_client.subscribe_token_price(token).await?;
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    }
+    
+    // Monitor for 5 minutes
+    println!("🚀 Monitoring prices for 5 minutes...");
+    tokio::time::sleep(Duration::from_secs(300)).await;
+    
+    // Show final summary
+    let prices = handler.prices.read().await;
+    println!("\n📊 Final Price Summary:");
+    for (symbol, price) in prices.iter() {
+        println!("  {}: ${:.6}", symbol, price);
+    }
+    
+    ws_client.disconnect().await;
+    Ok(())
+}</code></pre></pre>
+<p>This comprehensive WebSocket documentation covers all aspects of the streaming functionality, from basic connections to advanced real-time data processing and error handling patterns.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/market-data.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../api/notifications.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/market-data.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../api/notifications.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

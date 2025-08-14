@@ -1,0 +1,817 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Market Data - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/api/market-data.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="market-data"><a class="header" href="#market-data">Market Data</a></h1>
+<p>The Market Data API provides comprehensive access to real-time and historical market information for Solana tokens. This includes trending tokens, price feeds, token analysis, market statistics, and search functionality.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The <code>MarketDataClient</code> offers a complete suite of market data operations:</p>
+<ul>
+<li><strong>Trending Tokens</strong>: Get tokens trending across different timeframes</li>
+<li><strong>Token Information</strong>: Detailed token metadata and analysis</li>
+<li><strong>Price Feeds</strong>: Real-time and historical price data</li>
+<li><strong>Market Statistics</strong>: Overall market metrics and trends</li>
+<li><strong>Token Search</strong>: Find tokens by name, symbol, or address</li>
+<li><strong>Chart Data</strong>: OHLCV candle data for technical analysis</li>
+</ul>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::api::market_data::MarketDataClient;
+use axiomtrade_rs::models::market::TimePeriod;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut client = MarketDataClient::new()?;
+    
+    // Get trending tokens
+    let trending = client.get_trending_tokens(TimePeriod::TwentyFourHours).await?;
+    
+    println!("Top trending token: {} - {}", 
+        trending[0].symbol, 
+        trending[0].name
+    );
+    
+    Ok(())
+}</code></pre></pre>
+<h2 id="trending-tokens"><a class="header" href="#trending-tokens">Trending Tokens</a></h2>
+<p>Get tokens that are currently trending based on volume, price movement, and trading activity.</p>
+<h3 id="get-trending-tokens"><a class="header" href="#get-trending-tokens">Get Trending Tokens</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::models::market::TimePeriod;
+
+// Get 24-hour trending tokens
+let trending = client.get_trending_tokens(TimePeriod::TwentyFourHours).await?;
+
+for (i, token) in trending.iter().take(10).enumerate() {
+    println!("{}. {} ({}) - ${:.8}", 
+        i + 1,
+        token.symbol,
+        token.name,
+        token.price_usd
+    );
+    println!("   Change: {:.2}% | Volume: ${:.2}", 
+        token.price_change_24h,
+        token.volume_24h
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="time-periods"><a class="header" href="#time-periods">Time Periods</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Available time periods
+TimePeriod::OneHour        // 1h trending
+TimePeriod::TwentyFourHours // 24h trending  
+TimePeriod::SevenDays      // 7d trending
+TimePeriod::ThirtyDays     // 30d trending
+<span class="boring">}</span></code></pre></pre>
+<h3 id="trending-token-data-structure"><a class="header" href="#trending-token-data-structure">Trending Token Data Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TrendingToken {
+    pub mint_address: String,      // Token mint address
+    pub symbol: String,            // Token symbol (e.g., "BONK")
+    pub name: String,              // Full token name
+    pub price_usd: f64,           // Current price in USD
+    pub price_change_24h: f64,    // 24h price change percentage
+    pub price_change_7d: f64,     // 7d price change percentage  
+    pub volume_24h: f64,          // 24h trading volume
+    pub market_cap: f64,          // Market capitalization
+    pub holders: u64,             // Number of token holders
+    pub rank: u32,                // Trending rank
+    pub logo_uri: Option&lt;String&gt;, // Token logo URL
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="token-information"><a class="header" href="#token-information">Token Information</a></h2>
+<p>Get detailed information about specific tokens including metadata, liquidity, and protocol details.</p>
+<h3 id="get-token-info-by-symbol"><a class="header" href="#get-token-info-by-symbol">Get Token Info by Symbol</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get detailed token information
+let token_info = client.get_token_info("BONK").await?;
+
+println!("Token: {} ({})", token_info.name, token_info.symbol);
+println!("Decimals: {}", token_info.decimals);
+println!("Supply: {:.2}", token_info.supply);
+println!("Liquidity SOL: {:.2}", token_info.liquidity_sol);
+println!("Protocol: {}", token_info.protocol);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="get-token-info-by-address"><a class="header" href="#get-token-info-by-address">Get Token Info by Address</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get token info using mint or pair address
+let address = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // Example BONK mint
+let token_info = client.get_token_info_by_address(address).await?;
+
+println!("Found token: {} at address {}", 
+    token_info.symbol, 
+    token_info.mint_address
+);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="token-information-data-structure"><a class="header" href="#token-information-data-structure">Token Information Data Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TokenInfo {
+    pub mint_address: String,         // Token mint address
+    pub symbol: String,               // Token symbol
+    pub name: String,                 // Token name
+    pub decimals: u8,                // Token decimals
+    pub supply: f64,                 // Total supply
+    pub liquidity_sol: f64,          // SOL liquidity
+    pub liquidity_token: f64,        // Token liquidity
+    pub pair_address: String,        // Pair contract address
+    pub protocol: String,            // DEX protocol (Raydium, etc.)
+    pub protocol_details: Option&lt;Value&gt;, // Additional protocol data
+    pub created_at: String,          // Creation timestamp
+    pub logo_uri: Option&lt;String&gt;,    // Token logo URL
+    pub mint_authority: Option&lt;String&gt;, // Mint authority
+    pub freeze_authority: Option&lt;String&gt;, // Freeze authority
+    pub lp_burned: f64,              // LP tokens burned percentage
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="token-analysis"><a class="header" href="#token-analysis">Token Analysis</a></h2>
+<p>Get creator analysis and risk assessment for tokens.</p>
+<h3 id="get-token-analysis"><a class="header" href="#get-token-analysis">Get Token Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get creator analysis and related tokens
+let analysis = client.get_token_analysis("BONK").await?;
+
+println!("Creator Risk Level: {}", analysis.creator_risk_level);
+println!("Creator Rug Count: {}", analysis.creator_rug_count);
+println!("Creator Token Count: {}", analysis.creator_token_count);
+
+// Show related tokens from same creator
+println!("Related high market cap tokens:");
+for token in &amp;analysis.top_market_cap_coins {
+    println!("  {} - ${:.2} market cap", 
+        token.symbol, 
+        token.market_cap
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="token-analysis-data-structure"><a class="header" href="#token-analysis-data-structure">Token Analysis Data Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TokenAnalysis {
+    pub creator_risk_level: String,           // Risk assessment
+    pub creator_rug_count: u32,              // Number of rugs by creator
+    pub creator_token_count: u32,            // Total tokens by creator
+    pub top_market_cap_coins: Vec&lt;RelatedToken&gt;, // High cap related tokens
+    pub top_og_coins: Vec&lt;RelatedToken&gt;,     // Original related tokens
+}
+
+pub struct RelatedToken {
+    pub mint_address: String,        // Token mint address
+    pub symbol: String,              // Token symbol
+    pub name: String,                // Token name
+    pub pair_address: String,        // Pair address
+    pub market_cap: f64,            // Market capitalization
+    pub created_at: String,         // Creation date
+    pub last_trade_time: String,    // Last trade timestamp
+    pub image: Option&lt;String&gt;,      // Token image URL
+    pub migrated: bool,             // Migration status
+    pub bonding_curve_percent: f64, // Bonding curve completion
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="price-feeds"><a class="header" href="#price-feeds">Price Feeds</a></h2>
+<p>Get current and historical price data for tokens.</p>
+<h3 id="current-price"><a class="header" href="#current-price">Current Price</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get current price for a token
+let mint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263";
+let price = client.get_token_price(mint).await?;
+
+println!("Current price: ${:.8} USD", price.price_usd);
+println!("Price in SOL: {:.6}", price.price_sol);
+println!("Last updated: {}", price.timestamp);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="historical-price-feed"><a class="header" href="#historical-price-feed">Historical Price Feed</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get historical price data
+let price_feed = client.get_price_feed(mint, TimePeriod::TwentyFourHours).await?;
+
+println!("Price history for {}:", price_feed.mint_address);
+for point in price_feed.prices.iter().take(10) {
+    println!("  ${:.8} at {} (Volume: ${:.2})", 
+        point.price_usd,
+        point.timestamp,
+        point.volume
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="batch-prices"><a class="header" href="#batch-prices">Batch Prices</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get prices for multiple tokens at once
+let mints = vec![
+    "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263".to_string(), // BONK
+    "So11111111111111111111111111111111111111112".to_string(),      // SOL
+];
+
+let prices = client.get_batch_prices(&amp;mints).await?;
+
+for price in prices {
+    println!("{}: ${:.6}", price.mint_address, price.price_usd);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="price-data-structures"><a class="header" href="#price-data-structures">Price Data Structures</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct PriceData {
+    pub mint_address: String,    // Token mint address
+    pub price_usd: f64,         // Price in USD
+    pub price_sol: f64,         // Price in SOL
+    pub timestamp: i64,         // Unix timestamp
+}
+
+pub struct PriceFeed {
+    pub mint_address: String,       // Token mint address
+    pub prices: Vec&lt;PricePoint&gt;,   // Historical price points
+}
+
+pub struct PricePoint {
+    pub timestamp: i64,    // Unix timestamp
+    pub price_usd: f64,   // Price in USD
+    pub price_sol: f64,   // Price in SOL
+    pub volume: f64,      // Trading volume
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="chart-data"><a class="header" href="#chart-data">Chart Data</a></h2>
+<p>Get OHLCV candle data for technical analysis and charting.</p>
+<h3 id="get-token-chart"><a class="header" href="#get-token-chart">Get Token Chart</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::models::market::ChartTimeframe;
+
+// Get 1-hour candles for a token
+let chart = client.get_token_chart(
+    mint,
+    ChartTimeframe::OneHour,
+    Some(100) // Limit to 100 candles
+).await?;
+
+println!("Chart data for {} ({})", chart.mint_address, chart.timeframe);
+
+for candle in chart.candles.iter().take(10) {
+    println!("  O: {:.6} H: {:.6} L: {:.6} C: {:.6} V: {:.2}",
+        candle.open,
+        candle.high,
+        candle.low,
+        candle.close,
+        candle.volume
+    );
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="chart-timeframes"><a class="header" href="#chart-timeframes">Chart Timeframes</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ChartTimeframe::OneMinute      // 1m candles
+ChartTimeframe::FiveMinutes    // 5m candles
+ChartTimeframe::FifteenMinutes // 15m candles
+ChartTimeframe::OneHour        // 1h candles
+ChartTimeframe::FourHours      // 4h candles
+ChartTimeframe::OneDay         // 1d candles
+ChartTimeframe::OneWeek        // 1w candles
+<span class="boring">}</span></code></pre></pre>
+<h3 id="chart-data-structures"><a class="header" href="#chart-data-structures">Chart Data Structures</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TokenChart {
+    pub mint_address: String,         // Token mint address
+    pub timeframe: ChartTimeframe,    // Chart timeframe
+    pub candles: Vec&lt;Candle&gt;,        // OHLCV candles
+}
+
+pub struct Candle {
+    pub timestamp: i64,    // Candle timestamp
+    pub open: f64,        // Opening price
+    pub high: f64,        // Highest price
+    pub low: f64,         // Lowest price
+    pub close: f64,       // Closing price
+    pub volume: f64,      // Trading volume
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="market-statistics"><a class="header" href="#market-statistics">Market Statistics</a></h2>
+<p>Get overall market metrics and trends.</p>
+<h3 id="get-market-stats"><a class="header" href="#get-market-stats">Get Market Stats</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get overall market statistics
+let stats = client.get_market_stats().await?;
+
+println!("Market Statistics:");
+println!("  Total 24h Volume: ${:.2}", stats.total_volume_24h);
+println!("  Total Market Cap: ${:.2}", stats.total_market_cap);
+println!("  Active Traders: {}", stats.active_traders_24h);
+println!("  Total Transactions: {}", stats.total_transactions_24h);
+println!("  Trending Tokens: {}", stats.trending_tokens_count);
+println!("  New Tokens (24h): {}", stats.new_tokens_24h);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="market-statistics-data-structure"><a class="header" href="#market-statistics-data-structure">Market Statistics Data Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct MarketStats {
+    pub total_volume_24h: f64,         // Total 24h trading volume
+    pub total_market_cap: f64,         // Total market capitalization
+    pub active_traders_24h: u64,       // Active traders in 24h
+    pub total_transactions_24h: u64,   // Total transactions in 24h
+    pub trending_tokens_count: u32,    // Number of trending tokens
+    pub new_tokens_24h: u32,          // New tokens launched in 24h
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="token-search"><a class="header" href="#token-search">Token Search</a></h2>
+<p>Search for tokens by name, symbol, or partial matches.</p>
+<h3 id="search-tokens"><a class="header" href="#search-tokens">Search Tokens</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Search for tokens
+let results = client.search_tokens("bonk", Some(10)).await?;
+
+println!("Search results for 'bonk':");
+for (i, token) in results.results.iter().enumerate() {
+    println!("{}. {} ({}) - ${:.8}", 
+        i + 1,
+        token.symbol,
+        token.name,
+        token.market_cap
+    );
+    
+    if let Some(website) = &amp;token.website {
+        println!("   Website: {}", website);
+    }
+    
+    if let Some(twitter) = &amp;token.twitter {
+        println!("   Twitter: {}", twitter);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="search-data-structures"><a class="header" href="#search-data-structures">Search Data Structures</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TokenSearch {
+    pub query: String,                      // Original search query
+    pub results: Vec&lt;TokenSearchResult&gt;,   // Search results
+}
+
+pub struct TokenSearchResult {
+    pub mint_address: String,        // Token mint address
+    pub symbol: String,              // Token symbol
+    pub name: String,                // Token name
+    pub logo_uri: Option&lt;String&gt;,    // Token logo URL
+    pub decimals: u8,               // Token decimals
+    pub supply: f64,                // Total supply
+    pub liquidity_sol: f64,         // SOL liquidity
+    pub market_cap: f64,            // Market capitalization
+    pub volume_sol: f64,            // SOL volume
+    pub created_at: String,         // Creation timestamp
+    pub pair_address: String,       // Pair address
+    pub protocol: String,           // DEX protocol
+    pub website: Option&lt;String&gt;,    // Project website
+    pub twitter: Option&lt;String&gt;,    // Twitter handle
+    pub telegram: Option&lt;String&gt;,   // Telegram channel
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>The Market Data API uses comprehensive error handling for robust applications.</p>
+<h3 id="error-types"><a class="header" href="#error-types">Error Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::api::market_data::MarketDataError;
+
+match client.get_trending_tokens(TimePeriod::TwentyFourHours).await {
+    Ok(tokens) =&gt; {
+        println!("Found {} trending tokens", tokens.len());
+    }
+    Err(MarketDataError::AuthError(_)) =&gt; {
+        println!("Authentication failed - check credentials");
+    }
+    Err(MarketDataError::TokenNotFound(symbol)) =&gt; {
+        println!("Token not found: {}", symbol);
+    }
+    Err(MarketDataError::InvalidTokenMint(mint)) =&gt; {
+        println!("Invalid mint address: {}", mint);
+    }
+    Err(MarketDataError::NetworkError(_)) =&gt; {
+        println!("Network error - check connection");
+    }
+    Err(MarketDataError::ApiError(msg)) =&gt; {
+        println!("API error: {}", msg);
+    }
+    Err(e) =&gt; {
+        println!("Unexpected error: {}", e);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="complete-example"><a class="header" href="#complete-example">Complete Example</a></h2>
+<p>Here's a comprehensive example showing various market data operations:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::api::market_data::MarketDataClient;
+use axiomtrade_rs::models::market::{TimePeriod, ChartTimeframe};
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Initialize client
+    let mut client = MarketDataClient::new()?;
+    
+    // Get trending tokens
+    println!("=== TRENDING TOKENS ===");
+    let trending = client.get_trending_tokens(TimePeriod::TwentyFourHours).await?;
+    
+    for (i, token) in trending.iter().take(5).enumerate() {
+        println!("{}. {} - ${:.8} ({:.2}%)", 
+            i + 1,
+            token.symbol,
+            token.price_usd,
+            token.price_change_24h
+        );
+    }
+    
+    // Get detailed info for top token
+    if let Some(top_token) = trending.first() {
+        println!("\n=== TOKEN DETAILS ===");
+        let token_info = client.get_token_info(&amp;top_token.symbol).await?;
+        
+        println!("Name: {}", token_info.name);
+        println!("Symbol: {}", token_info.symbol);
+        println!("Supply: {:.2}", token_info.supply);
+        println!("Liquidity: {:.2} SOL", token_info.liquidity_sol);
+        
+        // Get price history
+        println!("\n=== PRICE HISTORY ===");
+        let price_feed = client.get_price_feed(
+            &amp;token_info.mint_address, 
+            TimePeriod::TwentyFourHours
+        ).await?;
+        
+        println!("Last 5 price points:");
+        for point in price_feed.prices.iter().rev().take(5) {
+            println!("  ${:.8} (Volume: {:.2})", 
+                point.price_usd, 
+                point.volume
+            );
+        }
+        
+        // Get chart data
+        println!("\n=== CHART DATA ===");
+        let chart = client.get_token_chart(
+            &amp;token_info.mint_address,
+            ChartTimeframe::OneHour,
+            Some(5)
+        ).await?;
+        
+        println!("Recent candles:");
+        for candle in &amp;chart.candles {
+            println!("  OHLC: {:.6}/{:.6}/{:.6}/{:.6}", 
+                candle.open, 
+                candle.high, 
+                candle.low, 
+                candle.close
+            );
+        }
+    }
+    
+    // Get market statistics
+    println!("\n=== MARKET STATS ===");
+    let stats = client.get_market_stats().await?;
+    println!("Total Volume: ${:.2}", stats.total_volume_24h);
+    println!("Active Traders: {}", stats.active_traders_24h);
+    
+    // Search for tokens
+    println!("\n=== TOKEN SEARCH ===");
+    let search_results = client.search_tokens("sol", Some(3)).await?;
+    
+    for result in &amp;search_results.results {
+        println!("{} ({}) - ${:.2} market cap", 
+            result.symbol,
+            result.name,
+            result.market_cap
+        );
+    }
+    
+    Ok(())
+}</code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="rate-limiting"><a class="header" href="#rate-limiting">Rate Limiting</a></h3>
+<p>The API includes built-in rate limiting. For high-frequency applications:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{sleep, Duration};
+
+// Add delays between requests for bulk operations
+for symbol in token_symbols {
+    let info = client.get_token_info(&amp;symbol).await?;
+    // Process info...
+    
+    sleep(Duration::from_millis(100)).await; // Prevent rate limiting
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-recovery"><a class="header" href="#error-recovery">Error Recovery</a></h3>
+<p>Implement retry logic for network failures:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{sleep, Duration};
+
+async fn get_trending_with_retry(
+    client: &amp;mut MarketDataClient,
+    period: TimePeriod,
+    max_retries: u32
+) -&gt; Result&lt;Vec&lt;TrendingToken&gt;, MarketDataError&gt; {
+    for attempt in 0..max_retries {
+        match client.get_trending_tokens(period.clone()).await {
+            Ok(tokens) =&gt; return Ok(tokens),
+            Err(MarketDataError::NetworkError(_)) if attempt &lt; max_retries - 1 =&gt; {
+                sleep(Duration::from_millis(1000 * (attempt + 1) as u64)).await;
+                continue;
+            }
+            Err(e) =&gt; return Err(e),
+        }
+    }
+    
+    unreachable!()
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="batch-operations"><a class="header" href="#batch-operations">Batch Operations</a></h3>
+<p>Use batch endpoints when possible for better performance:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Instead of multiple individual calls
+// let price1 = client.get_token_price(mint1).await?;
+// let price2 = client.get_token_price(mint2).await?;
+
+// Use batch endpoint
+let mints = vec![mint1.to_string(), mint2.to_string()];
+let prices = client.get_batch_prices(&amp;mints).await?;
+<span class="boring">}</span></code></pre></pre>
+<h3 id="data-validation"><a class="header" href="#data-validation">Data Validation</a></h3>
+<p>Always validate mint addresses before API calls:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn is_valid_mint_address(address: &amp;str) -&gt; bool {
+    address.len() &gt;= 32 &amp;&amp; 
+    address.len() &lt;= 44 &amp;&amp; 
+    address.chars().all(|c| c.is_ascii_alphanumeric())
+}
+
+if is_valid_mint_address(&amp;mint_address) {
+    let price = client.get_token_price(&amp;mint_address).await?;
+} else {
+    println!("Invalid mint address format");
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The Market Data API provides comprehensive access to Solana token market information, enabling developers to build sophisticated trading applications, market analysis tools, and portfolio management systems.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/trading.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../api/websocket.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/trading.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../api/websocket.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

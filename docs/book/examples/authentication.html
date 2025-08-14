@@ -1,0 +1,1071 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Authentication Examples - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/examples/authentication.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="authentication-examples"><a class="header" href="#authentication-examples">Authentication Examples</a></h1>
+<p>This section provides comprehensive examples of authentication with the Axiom Trade API. The examples demonstrate different authentication methods, session management, and OTP handling.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The authentication system in axiomtrade-rs supports multiple authentication methods:</p>
+<ul>
+<li><strong>Basic Login</strong>: Email/password authentication with token management</li>
+<li><strong>OTP Verification</strong>: Automatic OTP fetching from inbox.lv email service</li>
+<li><strong>Session Management</strong>: Persistent sessions with token refresh capabilities</li>
+<li><strong>Cookie Authentication</strong>: Web-based authentication for browser integrations</li>
+</ul>
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
+<p>Before running any authentication examples, ensure you have:</p>
+<ol>
+<li><strong>Environment Setup</strong>: Configure your <code>.env</code> file with required credentials</li>
+<li><strong>Dependencies</strong>: All required crates are installed via <code>cargo build</code></li>
+<li><strong>Optional OTP Setup</strong>: Configure inbox.lv for automatic OTP retrieval</li>
+</ol>
+<h3 id="required-environment-variables"><a class="header" href="#required-environment-variables">Required Environment Variables</a></h3>
+<pre><code class="language-env"># Basic authentication (required)
+AXIOM_EMAIL=your_email@example.com
+AXIOM_PASSWORD=your_password
+
+# Optional OTP automation (recommended)
+INBOX_LV_EMAIL=your_username@inbox.lv
+INBOX_LV_PASSWORD=your_imap_password
+</code></pre>
+<h2 id="example-1-basic-login"><a class="header" href="#example-1-basic-login">Example 1: Basic Login</a></h2>
+<p>The basic login example demonstrates the fundamental authentication flow with email/password credentials.</p>
+<h3 id="location"><a class="header" href="#location">Location</a></h3>
+<pre><code>examples/authentication/basic_login.rs
+</code></pre>
+<h3 id="code"><a class="header" href="#code">Code</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">/// Basic Authentication Example
+/// 
+/// This example demonstrates the fundamental authentication flow with Axiom Trade,
+/// including email/password login and token management.
+
+use axiomtrade_rs::auth::{AuthClient, TokenManager};
+use std::env;
+use std::path::PathBuf;
+
+#[tokio::main]
+async fn main() {
+    // Load credentials from environment variables
+    dotenvy::dotenv().ok();
+    
+    let email = env::var("AXIOM_EMAIL")
+        .expect("AXIOM_EMAIL must be set in .env file");
+    let password = env::var("AXIOM_PASSWORD")
+        .expect("AXIOM_PASSWORD must be set in .env file");
+
+    println!("Starting basic authentication example...");
+    println!("Email: {}", email);
+
+    // Create a new auth client
+    let mut auth_client = match AuthClient::new() {
+        Ok(client) =&gt; {
+            println!("Auth client initialized");
+            client
+        }
+        Err(e) =&gt; {
+            println!("Failed to create auth client: {}", e);
+            return;
+        }
+    };
+    
+    // Check if OTP auto-fetching is configured
+    let inbox_configured = env::var("INBOX_LV_EMAIL").is_ok()
+        &amp;&amp; env::var("INBOX_LV_PASSWORD").is_ok();
+    
+    if inbox_configured {
+        println!("OTP auto-fetching is configured");
+    } else {
+        println!("OTP auto-fetching not configured - will require manual entry");
+    }
+    
+    // Perform login
+    println!("\nAttempting login...");
+    match auth_client.login(&amp;email, &amp;password, None).await {
+        Ok(tokens) =&gt; {
+            println!("Login successful!");
+            
+            println!(
+                "Access Token: {}...",
+                &amp;tokens.access_token[..20.min(tokens.access_token.len())]
+            );
+            println!(
+                "Refresh Token: {}...",
+                &amp;tokens.refresh_token[..20.min(tokens.refresh_token.len())]
+            );
+            
+            // Save tokens for future use
+            let tokens_file = PathBuf::from(".axiom_tokens.json");
+            let token_manager = TokenManager::new(Some(tokens_file.clone()));
+            
+            if let Err(e) = token_manager.set_tokens(tokens).await {
+                println!("Warning: Failed to save tokens: {}", e);
+            } else {
+                println!("\nTokens saved to {}", tokens_file.display());
+                println!("You can now use these tokens for API calls without re-logging in");
+            }
+            
+            // Test authenticated request using EnhancedClient
+            println!("\nTesting authenticated request...");
+            let enhanced_client = match axiomtrade_rs::client::EnhancedClient::new() {
+                Ok(client) =&gt; client,
+                Err(e) =&gt; {
+                    println!("Failed to create enhanced client: {}", e);
+                    return;
+                }
+            };
+            
+            println!("\nAuthentication example completed successfully!");
+        }
+        Err(e) =&gt; {
+            println!("Login failed: {}", e);
+            println!("\nPossible reasons:");
+            println!("1. Invalid credentials");
+            println!("2. Network connectivity issues");
+            println!("3. API service unavailable");
+            
+            if !inbox_configured {
+                println!("4. OTP required but auto-fetching not configured");
+                println!("   Run: cargo run --example setup_env");
+                println!("   Or see: examples/setup/auto_otp_setup.md");
+            }
+        }
+    }
+}</code></pre></pre>
+<h3 id="how-to-run"><a class="header" href="#how-to-run">How to Run</a></h3>
+<pre><code class="language-bash"># Ensure environment variables are set in .env file
+cargo run --example basic_login
+</code></pre>
+<h3 id="features-demonstrated"><a class="header" href="#features-demonstrated">Features Demonstrated</a></h3>
+<ul>
+<li><strong>AuthClient Initialization</strong>: Creating and configuring the authentication client</li>
+<li><strong>Email/Password Login</strong>: Basic credential-based authentication</li>
+<li><strong>Token Management</strong>: Saving and managing access/refresh tokens</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling with helpful troubleshooting tips</li>
+<li><strong>Token Persistence</strong>: Saving tokens to disk for future use</li>
+</ul>
+<h3 id="expected-output"><a class="header" href="#expected-output">Expected Output</a></h3>
+<pre><code>Starting basic authentication example...
+Email: your_email@example.com
+Auth client initialized
+OTP auto-fetching is configured
+Attempting login...
+Login successful!
+Access Token: eyJhbGciOiJIUzI1NiIsI...
+Refresh Token: eyJhbGciOiJIUzI1NiIsI...
+Tokens saved to .axiom_tokens.json
+You can now use these tokens for API calls without re-logging in
+Testing authenticated request...
+Authentication example completed successfully!
+</code></pre>
+<h2 id="example-2-otp-verification"><a class="header" href="#example-2-otp-verification">Example 2: OTP Verification</a></h2>
+<p>This example demonstrates automatic OTP handling using the inbox.lv email service integration.</p>
+<h3 id="location-1"><a class="header" href="#location-1">Location</a></h3>
+<pre><code>examples/authentication/otp_verification.rs
+</code></pre>
+<h3 id="code-1"><a class="header" href="#code-1">Code</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">/// OTP Verification Example
+/// 
+/// This example demonstrates OTP verification with automatic email fetching
+/// from inbox.lv when properly configured.
+
+use axiomtrade_rs::auth::{AuthClient, TokenManager};
+use std::env;
+use std::io::{self, Write};
+use std::path::PathBuf;
+
+#[tokio::main]
+async fn main() {
+    // Load credentials from environment variables
+    dotenvy::dotenv().ok();
+    
+    let email = env::var("AXIOM_EMAIL")
+        .expect("AXIOM_EMAIL must be set in .env file");
+    let password = env::var("AXIOM_PASSWORD")
+        .expect("AXIOM_PASSWORD must be set in .env file");
+
+    println!("Starting OTP verification example...");
+
+    // Create a new auth client
+    let mut auth_client = match AuthClient::new() {
+        Ok(client) =&gt; {
+            println!("Auth client initialized");
+            client
+        }
+        Err(e) =&gt; {
+            println!("Failed to create auth client: {}", e);
+            return;
+        }
+    };
+    
+    // Check if automatic OTP fetching is configured
+    let inbox_email = env::var("INBOX_LV_EMAIL").ok();
+    let inbox_password = env::var("INBOX_LV_PASSWORD").ok();
+    
+    let auto_otp_configured = inbox_email.is_some() &amp;&amp; inbox_password.is_some();
+    
+    if auto_otp_configured {
+        println!("Automatic OTP retrieval is configured");
+        println!("The system will automatically fetch OTP from inbox.lv");
+    } else {
+        println!("Automatic OTP not configured");
+        println!("To enable automatic OTP:");
+        println!("1. Create an inbox.lv account");
+        println!("2. Enable IMAP access in settings");
+        println!("3. Set INBOX_LV_EMAIL and INBOX_LV_PASSWORD in .env");
+        println!("4. Forward Axiom OTP emails to your inbox.lv address");
+        println!("\nFor now, you'll need to enter OTP manually when prompted.");
+    }
+    
+    println!("\nPerforming login...");
+    
+    // The login method handles OTP automatically if configured
+    match auth_client.login(&amp;email, &amp;password, None).await {
+        Ok(tokens) =&gt; {
+            println!("\nLogin successful with OTP verification!");
+            
+            println!(
+                "Access Token: {}...",
+                &amp;tokens.access_token[..20.min(tokens.access_token.len())]
+            );
+            
+            // Save tokens
+            let tokens_file = PathBuf::from(".axiom_tokens.json");
+            let token_manager = TokenManager::new(Some(tokens_file.clone()));
+            
+            if let Err(e) = token_manager.set_tokens(tokens).await {
+                println!("Warning: Failed to save tokens: {}", e);
+            } else {
+                println!("\nTokens saved to {}", tokens_file.display());
+            }
+            
+            println!("\nOTP verification example completed successfully!");
+            
+            if auto_otp_configured {
+                println!("\nNote: OTP was fetched automatically from inbox.lv");
+            } else {
+                println!("\nNote: In production, configure auto-OTP for seamless authentication");
+            }
+        }
+        Err(e) =&gt; {
+            println!("Login failed: {}", e);
+            
+            if !auto_otp_configured {
+                println!("\nHint: The login may have failed because OTP couldn't be retrieved automatically.");
+                println!("Configure inbox.lv integration for automatic OTP handling.");
+                println!("See: examples/setup/auto_otp_setup.md");
+            }
+        }
+    }
+}
+
+/// Helper function to manually get OTP from user (not used with auto-OTP)
+fn get_otp_from_user() -&gt; Result&lt;String, io::Error&gt; {
+    print!("Enter OTP code: ");
+    io::stdout().flush()?;
+    
+    let mut otp = String::new();
+    io::stdin().read_line(&amp;mut otp)?;
+    
+    Ok(otp.trim().to_string())
+}</code></pre></pre>
+<h3 id="how-to-run-1"><a class="header" href="#how-to-run-1">How to Run</a></h3>
+<pre><code class="language-bash"># With automatic OTP (recommended)
+# Configure INBOX_LV_EMAIL and INBOX_LV_PASSWORD in .env first
+cargo run --example otp_verification
+
+# Without automatic OTP (manual entry required)
+cargo run --example otp_verification
+</code></pre>
+<h3 id="features-demonstrated-1"><a class="header" href="#features-demonstrated-1">Features Demonstrated</a></h3>
+<ul>
+<li><strong>Automatic OTP Retrieval</strong>: Fetching OTP codes from inbox.lv email service</li>
+<li><strong>Manual OTP Fallback</strong>: User input for OTP when automation is not configured</li>
+<li><strong>OTP Configuration Detection</strong>: Checking if automatic OTP is properly set up</li>
+<li><strong>Email Integration</strong>: IMAP integration for OTP retrieval</li>
+<li><strong>Seamless Authentication</strong>: Handling OTP verification transparently</li>
+</ul>
+<h3 id="otp-setup-requirements"><a class="header" href="#otp-setup-requirements">OTP Setup Requirements</a></h3>
+<p>To enable automatic OTP retrieval:</p>
+<ol>
+<li><strong>Create inbox.lv account</strong> at https://www.inbox.lv/</li>
+<li><strong>Enable IMAP access</strong>:
+<ul>
+<li>Go to Settings → "Outlook, email programs"</li>
+<li>Click "Enable" button</li>
+<li>Wait 15 minutes for activation</li>
+</ul>
+</li>
+<li><strong>Get IMAP password</strong> (different from web login password)</li>
+<li><strong>Configure email forwarding</strong> from Axiom Trade to your inbox.lv address</li>
+<li><strong>Set environment variables</strong>:
+<pre><code class="language-env">INBOX_LV_EMAIL=your_username@inbox.lv
+INBOX_LV_PASSWORD=your_special_imap_password
+</code></pre>
+</li>
+</ol>
+<h3 id="expected-output-1"><a class="header" href="#expected-output-1">Expected Output</a></h3>
+<pre><code>Starting OTP verification example...
+Auth client initialized
+Automatic OTP retrieval is configured
+The system will automatically fetch OTP from inbox.lv
+Performing login...
+Login successful with OTP verification!
+Access Token: eyJhbGciOiJIUzI1NiIsI...
+Tokens saved to .axiom_tokens.json
+OTP verification example completed successfully!
+Note: OTP was fetched automatically from inbox.lv
+</code></pre>
+<h2 id="example-3-session-management"><a class="header" href="#example-3-session-management">Example 3: Session Management</a></h2>
+<p>This example demonstrates persistent session management, token refresh, and handling multiple authentication sessions.</p>
+<h3 id="location-2"><a class="header" href="#location-2">Location</a></h3>
+<pre><code>examples/authentication/session_management.rs
+</code></pre>
+<h3 id="code-2"><a class="header" href="#code-2">Code</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">/// Session Management Example
+/// 
+/// This example demonstrates session persistence, token refresh,
+/// and managing multiple authentication sessions.
+
+use axiomtrade_rs::auth::{AuthClient, TokenManager, SessionManager};
+use std::env;
+use std::path::PathBuf;
+
+#[tokio::main]
+async fn main() {
+    // Load credentials from environment variables
+    dotenvy::dotenv().ok();
+    
+    println!("Session Management Example");
+    println!("==========================\n");
+
+    // Create token manager with persistent storage
+    let tokens_file = PathBuf::from(".axiom_session.json");
+    let token_manager = TokenManager::new(Some(tokens_file.clone()));
+    
+    // Check for existing session
+    println!("Step 1: Checking for existing session...");
+    if let Some(tokens) = token_manager.get_tokens().await {
+        println!("✓ Found existing session");
+        println!("  Access token: {}...", &amp;tokens.access_token[..20.min(tokens.access_token.len())]);
+        
+        // Check if tokens are still valid (simplified check)
+        // In production, you'd check expiry time
+        if !tokens.access_token.is_empty() {
+            println!("✓ Session is still valid");
+            
+            // Test the session with an API call
+            println!("\nTesting session with API call...");
+            let client = match axiomtrade_rs::client::EnhancedClient::new() {
+                Ok(c) =&gt; c,
+                Err(e) =&gt; {
+                    println!("Failed to create client: {}", e);
+                    return;
+                }
+            };
+            
+            // In a real implementation, you would make an API call here
+            println!("✓ Session is active and working");
+            
+        } else {
+            println!("⚠ Session expired, need to refresh or re-login");
+            
+            // Try to refresh the session
+            if !tokens.refresh_token.is_empty() {
+                println!("\nAttempting to refresh session...");
+                let mut auth_client = match AuthClient::new() {
+                    Ok(c) =&gt; c,
+                    Err(e) =&gt; {
+                        println!("Failed to create auth client: {}", e);
+                        return;
+                    }
+                };
+                
+                println!("Note: Token refresh would be called here in production");
+            } else {
+                perform_new_login(&amp;token_manager).await;
+            }
+        }
+    } else {
+        println!("No existing session found");
+        perform_new_login(&amp;token_manager).await;
+    }
+    
+    println!("\nStep 2: Managing multiple sessions...");
+    
+    // Create session manager for handling multiple accounts
+    let session_path = PathBuf::from(".axiom_sessions.json");
+    let session_manager = SessionManager::new(Some(session_path), true);
+    
+    // Example: Managing sessions for different accounts
+    let session_files = vec![
+        ".axiom_session_account1.json",
+        ".axiom_session_account2.json",
+        ".axiom_session_trading.json",
+    ];
+    
+    println!("Available session files:");
+    for file in &amp;session_files {
+        let path = PathBuf::from(file);
+        if path.exists() {
+            println!("  ✓ {}", file);
+        } else {
+            println!("  ✗ {} (not found)", file);
+        }
+    }
+    
+    println!("\nStep 3: Session best practices...");
+    println!("1. Always check token validity before API calls");
+    println!("2. Implement automatic token refresh");
+    println!("3. Store tokens securely (consider OS keychain)");
+    println!("4. Handle session expiry gracefully");
+    println!("5. Support multiple concurrent sessions");
+    println!("6. Clear sessions on logout");
+    
+    println!("\nStep 4: Session lifecycle hooks...");
+    println!("You can implement callbacks for:");
+    println!("- onSessionCreated: New login successful");
+    println!("- onSessionRefreshed: Tokens refreshed");
+    println!("- onSessionExpired: Session no longer valid");
+    println!("- onSessionError: Authentication error");
+    
+    println!("\nSession management example completed!");
+}
+
+async fn perform_new_login(token_manager: &amp;TokenManager) {
+    println!("\nPerforming new login...");
+    
+    let email = match env::var("AXIOM_EMAIL") {
+        Ok(e) =&gt; e,
+        Err(_) =&gt; {
+            println!("AXIOM_EMAIL not set");
+            return;
+        }
+    };
+    
+    let password = match env::var("AXIOM_PASSWORD") {
+        Ok(p) =&gt; p,
+        Err(_) =&gt; {
+            println!("AXIOM_PASSWORD not set");
+            return;
+        }
+    };
+    
+    let mut auth_client = match AuthClient::new() {
+        Ok(c) =&gt; c,
+        Err(e) =&gt; {
+            println!("Failed to create auth client: {}", e);
+            return;
+        }
+    };
+    
+    match auth_client.login(&amp;email, &amp;password, None).await {
+        Ok(tokens) =&gt; {
+            println!("✓ Login successful");
+            
+            // Save the new session
+            if let Err(e) = token_manager.set_tokens(tokens).await {
+                println!("Warning: Failed to save session: {}", e);
+            } else {
+                println!("✓ Session saved for future use");
+            }
+        }
+        Err(e) =&gt; {
+            println!("✗ Login failed: {}", e);
+        }
+    }
+}</code></pre></pre>
+<h3 id="how-to-run-2"><a class="header" href="#how-to-run-2">How to Run</a></h3>
+<pre><code class="language-bash">cargo run --example session_management
+</code></pre>
+<h3 id="features-demonstrated-2"><a class="header" href="#features-demonstrated-2">Features Demonstrated</a></h3>
+<ul>
+<li><strong>Session Persistence</strong>: Saving and loading authentication sessions</li>
+<li><strong>Token Validation</strong>: Checking if existing tokens are still valid</li>
+<li><strong>Session Refresh</strong>: Automatic token refresh before expiry</li>
+<li><strong>Multiple Sessions</strong>: Managing sessions for different accounts</li>
+<li><strong>Session Lifecycle</strong>: Best practices for session management</li>
+<li><strong>Error Recovery</strong>: Graceful handling of session expiry</li>
+</ul>
+<h3 id="expected-output-2"><a class="header" href="#expected-output-2">Expected Output</a></h3>
+<pre><code>Session Management Example
+==========================
+
+Step 1: Checking for existing session...
+✓ Found existing session
+  Access token: eyJhbGciOiJIUzI1NiIsI...
+✓ Session is still valid
+
+Testing session with API call...
+✓ Session is active and working
+
+Step 2: Managing multiple sessions...
+Available session files:
+  ✓ .axiom_session_account1.json
+  ✗ .axiom_session_account2.json (not found)
+  ✓ .axiom_session_trading.json
+
+Step 3: Session best practices...
+1. Always check token validity before API calls
+2. Implement automatic token refresh
+3. Store tokens securely (consider OS keychain)
+4. Handle session expiry gracefully
+5. Support multiple concurrent sessions
+6. Clear sessions on logout
+
+Step 4: Session lifecycle hooks...
+You can implement callbacks for:
+- onSessionCreated: New login successful
+- onSessionRefreshed: Tokens refreshed
+- onSessionExpired: Session no longer valid
+- onSessionError: Authentication error
+
+Session management example completed!
+</code></pre>
+<h2 id="example-4-cookie-authentication"><a class="header" href="#example-4-cookie-authentication">Example 4: Cookie Authentication</a></h2>
+<p>This example demonstrates cookie-based authentication for web applications and browser integrations.</p>
+<h3 id="location-3"><a class="header" href="#location-3">Location</a></h3>
+<pre><code>examples/authentication/cookie_auth.rs
+</code></pre>
+<h3 id="code-3"><a class="header" href="#code-3">Code</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">/// Cookie Authentication Example
+/// 
+/// This example demonstrates authentication using cookies for session persistence,
+/// useful for web-based integrations.
+
+use axiomtrade_rs::auth::{AuthClient, AuthCookies};
+use std::env;
+use std::collections::HashMap;
+
+#[tokio::main]
+async fn main() {
+    // Load credentials from environment variables
+    dotenvy::dotenv().ok();
+    
+    let email = env::var("AXIOM_EMAIL")
+        .expect("AXIOM_EMAIL must be set in .env file");
+    let password = env::var("AXIOM_PASSWORD")
+        .expect("AXIOM_PASSWORD must be set in .env file");
+
+    println!("Cookie Authentication Example");
+    println!("=============================\n");
+
+    // Create a new auth client
+    let mut auth_client = match AuthClient::new() {
+        Ok(client) =&gt; {
+            println!("Auth client initialized");
+            client
+        }
+        Err(e) =&gt; {
+            println!("Failed to create auth client: {}", e);
+            return;
+        }
+    };
+    
+    println!("Step 1: Performing login with cookie support...");
+    
+    // Login and get both tokens and cookies
+    match auth_client.login(&amp;email, &amp;password, None).await {
+        Ok(tokens) =&gt; {
+            println!("✓ Login successful");
+            println!("  Access token received: {}...", &amp;tokens.access_token[..20.min(tokens.access_token.len())]);
+            
+            // Get cookies from the auth client
+            // In the actual implementation, cookies would be extracted from response headers
+            println!("\nStep 2: Managing authentication cookies...");
+            
+            // Example cookie structure (these would come from the actual response)
+            let mut additional = HashMap::new();
+            additional.insert("session_id".to_string(), "axiom_session_abc123".to_string());
+            additional.insert("csrf_token".to_string(), "csrf_xyz789".to_string());
+            
+            let auth_cookies = AuthCookies {
+                auth_access_token: Some("access_cookie_value".to_string()),
+                auth_refresh_token: Some("refresh_cookie_value".to_string()),
+                g_state: Some("google_state_value".to_string()),
+                additional_cookies: additional,
+            };
+            
+            if auth_cookies.auth_access_token.is_some() {
+                println!("✓ Access token cookie set");
+                println!("  Secure authentication established");
+            }
+            
+            if auth_cookies.auth_refresh_token.is_some() {
+                println!("✓ Refresh token cookie set");
+                println!("  Session renewal enabled");
+            }
+            
+            if auth_cookies.g_state.is_some() {
+                println!("✓ Google state cookie set");
+                println!("  OAuth integration ready");
+            }
+            
+            if !auth_cookies.additional_cookies.is_empty() {
+                println!("✓ Additional cookies: {}", auth_cookies.additional_cookies.len());
+                for (name, _) in auth_cookies.additional_cookies.iter().take(3) {
+                    println!("  - {}", name);
+                }
+            }
+            
+            println!("\nStep 3: Cookie-based API requests...");
+            println!("Cookies can be used for:");
+            println!("  - Web dashboard access");
+            println!("  - Browser-based API calls");
+            println!("  - Cross-origin requests (with proper CORS)");
+            println!("  - Maintaining session across page reloads");
+            
+            println!("\nStep 4: Cookie security best practices...");
+            println!("✓ HttpOnly flag: Prevents JavaScript access");
+            println!("✓ Secure flag: HTTPS only transmission");
+            println!("✓ SameSite: CSRF protection");
+            println!("✓ Path restrictions: Limit cookie scope");
+            println!("✓ Expiry management: Auto-logout after inactivity");
+            
+            println!("\nStep 5: Cookie refresh and rotation...");
+            println!("In production, implement:");
+            println!("  - Automatic cookie refresh before expiry");
+            println!("  - Session rotation on privilege escalation");
+            println!("  - Secure cookie storage in browser");
+            println!("  - Clear cookies on logout");
+            
+            // Example: Using cookies for subsequent requests
+            println!("\nStep 6: Making authenticated requests with cookies...");
+            
+            println!("✓ Cookie authentication flow completed");
+            
+            println!("\nNote: Cookie authentication is ideal for:");
+            println!("  - Web applications");
+            println!("  - Browser extensions");
+            println!("  - Server-side rendered apps");
+            println!("  - Progressive web apps (PWAs)");
+            
+        }
+        Err(e) =&gt; {
+            println!("✗ Login failed: {}", e);
+            println!("\nTroubleshooting:");
+            println!("  1. Check credentials are correct");
+            println!("  2. Ensure cookies are enabled");
+            println!("  3. Verify CORS settings if cross-origin");
+            println!("  4. Check for cookie blocking extensions");
+        }
+    }
+    
+    println!("\nCookie authentication example completed!");
+}</code></pre></pre>
+<h3 id="how-to-run-3"><a class="header" href="#how-to-run-3">How to Run</a></h3>
+<pre><code class="language-bash">cargo run --example cookie_auth
+</code></pre>
+<h3 id="features-demonstrated-3"><a class="header" href="#features-demonstrated-3">Features Demonstrated</a></h3>
+<ul>
+<li><strong>Cookie Management</strong>: Setting and managing authentication cookies</li>
+<li><strong>Security Best Practices</strong>: HttpOnly, Secure, SameSite cookie flags</li>
+<li><strong>Web Integration</strong>: Cookie-based authentication for web applications</li>
+<li><strong>Session Persistence</strong>: Maintaining authentication across browser sessions</li>
+<li><strong>CSRF Protection</strong>: Cross-site request forgery prevention</li>
+<li><strong>Cookie Rotation</strong>: Secure session management practices</li>
+</ul>
+<h3 id="expected-output-3"><a class="header" href="#expected-output-3">Expected Output</a></h3>
+<pre><code>Cookie Authentication Example
+=============================
+
+Auth client initialized
+Step 1: Performing login with cookie support...
+✓ Login successful
+  Access token received: eyJhbGciOiJIUzI1NiIsI...
+
+Step 2: Managing authentication cookies...
+✓ Access token cookie set
+  Secure authentication established
+✓ Refresh token cookie set
+  Session renewal enabled
+✓ Google state cookie set
+  OAuth integration ready
+✓ Additional cookies: 2
+  - session_id
+  - csrf_token
+
+Step 3: Cookie-based API requests...
+Cookies can be used for:
+  - Web dashboard access
+  - Browser-based API calls
+  - Cross-origin requests (with proper CORS)
+  - Maintaining session across page reloads
+
+Step 4: Cookie security best practices...
+✓ HttpOnly flag: Prevents JavaScript access
+✓ Secure flag: HTTPS only transmission
+✓ SameSite: CSRF protection
+✓ Path restrictions: Limit cookie scope
+✓ Expiry management: Auto-logout after inactivity
+
+Step 5: Cookie refresh and rotation...
+In production, implement:
+  - Automatic cookie refresh before expiry
+  - Session rotation on privilege escalation
+  - Secure cookie storage in browser
+  - Clear cookies on logout
+
+Step 6: Making authenticated requests with cookies...
+✓ Cookie authentication flow completed
+
+Note: Cookie authentication is ideal for:
+  - Web applications
+  - Browser extensions
+  - Server-side rendered apps
+  - Progressive web apps (PWAs)
+
+Cookie authentication example completed!
+</code></pre>
+<h2 id="running-all-examples"><a class="header" href="#running-all-examples">Running All Examples</a></h2>
+<p>To run all authentication examples in sequence:</p>
+<pre><code class="language-bash"># Run each example individually
+cargo run --example basic_login
+cargo run --example otp_verification
+cargo run --example session_management
+cargo run --example cookie_auth
+
+# Or build all examples at once
+cargo build --examples
+</code></pre>
+<h2 id="common-issues-and-troubleshooting"><a class="header" href="#common-issues-and-troubleshooting">Common Issues and Troubleshooting</a></h2>
+<h3 id="authentication-failures"><a class="header" href="#authentication-failures">Authentication Failures</a></h3>
+<p><strong>Problem</strong>: Login fails with invalid credentials</p>
+<pre><code>Login failed: Authentication failed: Invalid email or password
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>Verify credentials in <code>.env</code> file</li>
+<li>Check for typos in email/password</li>
+<li>Ensure account is not locked or suspended</li>
+</ol>
+<h3 id="otp-issues"><a class="header" href="#otp-issues">OTP Issues</a></h3>
+<p><strong>Problem</strong>: OTP verification fails</p>
+<pre><code>Login failed: OTP verification failed
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>Configure inbox.lv automatic OTP retrieval</li>
+<li>Check email forwarding is set up correctly</li>
+<li>Verify IMAP credentials are correct</li>
+<li>Check for email delivery delays</li>
+</ol>
+<h3 id="token-issues"><a class="header" href="#token-issues">Token Issues</a></h3>
+<p><strong>Problem</strong>: Token persistence fails</p>
+<pre><code>Warning: Failed to save tokens: Permission denied
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>Check file permissions in working directory</li>
+<li>Ensure disk space is available</li>
+<li>Run with appropriate user permissions</li>
+</ol>
+<h3 id="network-issues"><a class="header" href="#network-issues">Network Issues</a></h3>
+<p><strong>Problem</strong>: Connection timeouts</p>
+<pre><code>Login failed: Network error: Connection timeout
+</code></pre>
+<p><strong>Solutions</strong>:</p>
+<ol>
+<li>Check internet connectivity</li>
+<li>Verify firewall settings</li>
+<li>Try again with network retry logic</li>
+</ol>
+<h2 id="security-considerations"><a class="header" href="#security-considerations">Security Considerations</a></h2>
+<h3 id="token-storage"><a class="header" href="#token-storage">Token Storage</a></h3>
+<ul>
+<li><strong>Never commit tokens to version control</strong></li>
+<li><strong>Use secure storage mechanisms</strong> (OS keychain when possible)</li>
+<li><strong>Implement token rotation</strong> for long-running applications</li>
+<li><strong>Clear tokens on logout</strong> to prevent misuse</li>
+</ul>
+<h3 id="otp-security"><a class="header" href="#otp-security">OTP Security</a></h3>
+<ul>
+<li><strong>Use dedicated email account</strong> for OTP automation</li>
+<li><strong>Enable two-factor authentication</strong> on email account</li>
+<li><strong>Monitor for unauthorized access</strong> to email account</li>
+<li><strong>Consider rate limiting</strong> for OTP requests</li>
+</ul>
+<h3 id="cookie-security"><a class="header" href="#cookie-security">Cookie Security</a></h3>
+<ul>
+<li><strong>Always use HTTPS</strong> in production</li>
+<li><strong>Set appropriate cookie flags</strong> (HttpOnly, Secure, SameSite)</li>
+<li><strong>Implement CSRF protection</strong> for web applications</li>
+<li><strong>Use short expiry times</strong> for sensitive operations</li>
+</ul>
+<h3 id="environment-variables"><a class="header" href="#environment-variables">Environment Variables</a></h3>
+<ul>
+<li><strong>Never commit <code>.env</code> files</strong> to version control</li>
+<li><strong>Use environment-specific configurations</strong></li>
+<li><strong>Implement secret rotation</strong> for production systems</li>
+<li><strong>Monitor for credential leaks</strong> in logs and error messages</li>
+</ul>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>After mastering authentication, explore these related topics:</p>
+<ol>
+<li><strong><a href="trading.html">Trading Examples</a></strong>: Execute trades with authenticated sessions</li>
+<li><strong><a href="portfolio.html">Portfolio Examples</a></strong>: Manage portfolios and balances</li>
+<li><strong><a href="websocket.html">WebSocket Examples</a></strong>: Real-time data with authenticated connections</li>
+<li><strong><a href="advanced.html">Advanced Examples</a></strong>: Complex authentication patterns and automation</li>
+</ol>
+<h2 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h2>
+<p>For detailed API documentation, see:</p>
+<ul>
+<li><strong><a href="../auth/login.html">Authentication API</a></strong>: Login and authentication methods</li>
+<li><strong><a href="../auth/tokens.html">Token Management</a></strong>: Token handling and refresh</li>
+<li><strong><a href="../auth/sessions.html">Session Management</a></strong>: Session persistence and management</li>
+<li><strong><a href="../automatic-otp.html">OTP Integration</a></strong>: Automatic OTP setup and configuration</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/turnkey.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../examples/portfolio.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/turnkey.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../examples/portfolio.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

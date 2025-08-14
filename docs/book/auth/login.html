@@ -1,0 +1,759 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Login &amp; Sessions - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/auth/login.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="login-and-sessions"><a class="header" href="#login-and-sessions">Login and Sessions</a></h1>
+<p>This guide covers the complete authentication and session management system in axiomtrade-rs, including basic login, OTP verification, cookie-based authentication, and comprehensive error handling.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The authentication system in axiomtrade-rs provides a robust, secure login mechanism with automatic OTP fetching, cookie-based session persistence, and comprehensive token management. The system is designed to handle the two-step authentication process required by Axiom Trade's API.</p>
+<h2 id="basic-login-flow"><a class="header" href="#basic-login-flow">Basic Login Flow</a></h2>
+<p>The standard login process involves two steps:</p>
+<ol>
+<li><strong>Password Verification</strong>: Submit email and hashed password to get an OTP JWT token</li>
+<li><strong>OTP Verification</strong>: Submit the OTP code to complete authentication and receive access tokens</li>
+</ol>
+<h3 id="simple-login-example"><a class="header" href="#simple-login-example">Simple Login Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::auth::AuthClient;
+use std::env;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Load environment variables
+    dotenvy::dotenv().ok();
+    
+    let email = env::var("AXIOM_EMAIL")?;
+    let password = env::var("AXIOM_PASSWORD")?;
+
+    // Create auth client
+    let mut auth_client = AuthClient::new()?;
+    
+    // Perform login (automatic OTP if configured)
+    let tokens = auth_client.login(&amp;email, &amp;password, None).await?;
+    
+    println!("Login successful!");
+    println!("Access token: {}...", &amp;tokens.access_token[..20]);
+    
+    Ok(())
+}</code></pre></pre>
+<h3 id="manual-otp-entry"><a class="header" href="#manual-otp-entry">Manual OTP Entry</a></h3>
+<p>If automatic OTP fetching is not configured, you can provide the OTP manually:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use std::io::{self, Write};
+
+fn get_otp_from_user() -&gt; Result&lt;String, io::Error&gt; {
+    print!("Enter OTP code: ");
+    io::stdout().flush()?;
+    
+    let mut otp = String::new();
+    io::stdin().read_line(&amp;mut otp)?;
+    
+    Ok(otp.trim().to_string())
+}
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut auth_client = AuthClient::new()?;
+    
+    // Get OTP from user if auto-fetch not configured
+    let otp_code = if env::var("INBOX_LV_EMAIL").is_ok() {
+        None  // Auto-fetch enabled
+    } else {
+        Some(get_otp_from_user()?)
+    };
+    
+    let tokens = auth_client.login(&amp;email, &amp;password, otp_code).await?;
+    
+    Ok(())
+}</code></pre></pre>
+<h2 id="login-with-otp"><a class="header" href="#login-with-otp">Login with OTP</a></h2>
+<p>The system supports automatic OTP fetching from inbox.lv email accounts when properly configured.</p>
+<h3 id="automatic-otp-configuration"><a class="header" href="#automatic-otp-configuration">Automatic OTP Configuration</a></h3>
+<p>Set up environment variables for automatic OTP fetching:</p>
+<pre><code class="language-env"># Axiom Trade credentials
+AXIOM_EMAIL=your.email@example.com
+AXIOM_PASSWORD=your_password
+
+# Inbox.lv credentials for OTP auto-fetching
+INBOX_LV_EMAIL=your_username@inbox.lv
+INBOX_LV_PASSWORD=your_imap_password
+</code></pre>
+<h3 id="otp-verification-example"><a class="header" href="#otp-verification-example">OTP Verification Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::auth::AuthClient;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut auth_client = AuthClient::new()?;
+    
+    // Check if auto-OTP is configured
+    let auto_otp_configured = env::var("INBOX_LV_EMAIL").is_ok() 
+        &amp;&amp; env::var("INBOX_LV_PASSWORD").is_ok();
+    
+    if auto_otp_configured {
+        println!("Automatic OTP retrieval is configured");
+        println!("The system will automatically fetch OTP from inbox.lv");
+    } else {
+        println!("Manual OTP entry will be required");
+    }
+    
+    // Login with automatic OTP handling
+    let tokens = auth_client.login(&amp;email, &amp;password, None).await?;
+    
+    println!("Login successful with OTP verification!");
+    
+    Ok(())
+}</code></pre></pre>
+<h3 id="full-login-result"><a class="header" href="#full-login-result">Full Login Result</a></h3>
+<p>Use <code>login_full()</code> to get complete authentication information including Turnkey credentials:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let login_result = auth_client.login_full(&amp;email, &amp;password, None).await?;
+
+// Access tokens
+let tokens = login_result.tokens;
+
+// Turnkey credentials for wallet operations
+if let Some(turnkey) = login_result.turnkey_credentials {
+    println!("Turnkey Organization ID: {}", turnkey.organization_id);
+    println!("Turnkey User ID: {}", turnkey.user_id);
+    println!("Client Secret: {}...", &amp;turnkey.client_secret[..8]);
+}
+
+// User information
+if let Some(user) = login_result.user_info {
+    println!("User ID: {:?}", user.id);
+    println!("Email: {:?}", user.email);
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="cookie-based-authentication"><a class="header" href="#cookie-based-authentication">Cookie-Based Authentication</a></h2>
+<p>The authentication system automatically manages HTTP cookies for session persistence, which is particularly useful for web-based integrations.</p>
+<h3 id="cookie-management"><a class="header" href="#cookie-management">Cookie Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::auth::{AuthClient, AuthCookies};
+use std::collections::HashMap;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut auth_client = AuthClient::new()?;
+    
+    // Login and get tokens
+    let tokens = auth_client.login(&amp;email, &amp;password, None).await?;
+    
+    // Cookies are automatically managed by the HTTP client
+    // The auth client maintains cookie store with:
+    // - auth-access-token (HttpOnly)
+    // - auth-refresh-token (HttpOnly) 
+    // - g_state (Google OAuth state)
+    // - Additional session cookies
+    
+    println!("Authentication cookies are automatically managed");
+    
+    Ok(())
+}</code></pre></pre>
+<h3 id="cookie-security-features"><a class="header" href="#cookie-security-features">Cookie Security Features</a></h3>
+<p>The authentication system implements several security best practices for cookies:</p>
+<ul>
+<li><strong>HttpOnly Flag</strong>: Prevents JavaScript access to authentication cookies</li>
+<li><strong>Secure Flag</strong>: Ensures cookies are only transmitted over HTTPS</li>
+<li><strong>SameSite Protection</strong>: Provides CSRF protection</li>
+<li><strong>Path Restrictions</strong>: Limits cookie scope to appropriate paths</li>
+<li><strong>Automatic Expiry</strong>: Manages cookie lifecycle and cleanup</li>
+</ul>
+<h3 id="making-authenticated-requests"><a class="header" href="#making-authenticated-requests">Making Authenticated Requests</a></h3>
+<p>The <code>AuthClient</code> provides methods for making authenticated API requests with automatic cookie handling:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use reqwest::Method;
+use serde_json::json;
+
+// Make authenticated request with automatic cookie handling
+let response = auth_client.make_authenticated_request(
+    Method::GET,
+    "https://api.axiom.trade/portfolio/balance",
+    None
+).await?;
+
+// Make authenticated POST request with JSON body
+let body = json!({
+    "token_address": "So11111111111111111111111111111111111111112",
+    "amount": "1000000"
+});
+
+let response = auth_client.make_authenticated_request(
+    Method::POST,
+    "https://api.axiom.trade/trade/buy",
+    Some(body)
+).await?;
+<span class="boring">}</span></code></pre></pre>
+<h2 id="session-management"><a class="header" href="#session-management">Session Management</a></h2>
+<p>The system provides comprehensive session management with automatic token refresh and persistence.</p>
+<h3 id="token-persistence"><a class="header" href="#token-persistence">Token Persistence</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::auth::{TokenManager, AuthClient};
+use std::path::PathBuf;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Create token manager with persistent storage
+    let tokens_file = PathBuf::from(".axiom_tokens.json");
+    let token_manager = TokenManager::new(Some(tokens_file));
+    
+    // Check for existing session
+    if let Some(existing_tokens) = token_manager.get_tokens().await {
+        println!("Found existing session");
+        
+        if !existing_tokens.is_expired() {
+            println!("Session is still valid");
+            // Use existing tokens
+        } else {
+            println!("Session expired, need to refresh");
+            // Refresh or re-login
+        }
+    } else {
+        println!("No existing session, performing new login");
+        
+        let mut auth_client = AuthClient::new()?;
+        let tokens = auth_client.login(&amp;email, &amp;password, None).await?;
+        
+        // Save tokens for future use
+        token_manager.set_tokens(tokens).await?;
+    }
+    
+    Ok(())
+}</code></pre></pre>
+<h3 id="automatic-token-refresh"><a class="header" href="#automatic-token-refresh">Automatic Token Refresh</a></h3>
+<p>The authentication client automatically handles token refresh when making API requests:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Tokens are automatically refreshed when needed
+let mut auth_client = AuthClient::new()?;
+
+// This will automatically refresh tokens if they're expired
+let valid_tokens = auth_client.ensure_valid_authentication().await?;
+
+println!("Guaranteed valid tokens: {}...", &amp;valid_tokens.access_token[..20]);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="multiple-session-management"><a class="header" href="#multiple-session-management">Multiple Session Management</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::auth::SessionManager;
+
+// Manage multiple sessions for different accounts
+let session_manager = SessionManager::new(
+    Some(PathBuf::from(".axiom_sessions.json")), 
+    true  // Enable encryption
+);
+
+// Example session files for different purposes
+let session_files = vec![
+    ".axiom_session_trading.json",
+    ".axiom_session_portfolio.json",
+    ".axiom_session_notifications.json",
+];
+
+for session_file in session_files {
+    let path = PathBuf::from(session_file);
+    if path.exists() {
+        println!("Found session: {}", session_file);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>The authentication system provides comprehensive error handling for various failure scenarios.</p>
+<h3 id="authentication-error-types"><a class="header" href="#authentication-error-types">Authentication Error Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::auth::error::AuthError;
+
+match auth_client.login(&amp;email, &amp;password, None).await {
+    Ok(tokens) =&gt; {
+        println!("Login successful");
+    }
+    Err(AuthError::InvalidCredentials) =&gt; {
+        println!("Invalid email or password");
+    }
+    Err(AuthError::InvalidOtp) =&gt; {
+        println!("Invalid OTP code");
+    }
+    Err(AuthError::OtpRequired) =&gt; {
+        println!("OTP required but not provided");
+    }
+    Err(AuthError::TokenExpired) =&gt; {
+        println!("Authentication token has expired");
+    }
+    Err(AuthError::TokenNotFound) =&gt; {
+        println!("No authentication token found");
+    }
+    Err(AuthError::NetworkError(e)) =&gt; {
+        println!("Network error: {}", e);
+    }
+    Err(AuthError::EmailError(msg)) =&gt; {
+        println!("Email fetcher error: {}", msg);
+    }
+    Err(e) =&gt; {
+        println!("Other authentication error: {}", e);
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="comprehensive-error-handling-example"><a class="header" href="#comprehensive-error-handling-example">Comprehensive Error Handling Example</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::auth::{AuthClient, AuthError};
+
+async fn robust_login(email: &amp;str, password: &amp;str) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let mut auth_client = AuthClient::new()
+        .map_err(|e| format!("Failed to create auth client: {}", e))?;
+    
+    let max_retries = 3;
+    let mut attempts = 0;
+    
+    loop {
+        attempts += 1;
+        
+        match auth_client.login(email, password, None).await {
+            Ok(tokens) =&gt; {
+                println!("Login successful on attempt {}", attempts);
+                return Ok(());
+            }
+            Err(AuthError::NetworkError(e)) if attempts &lt; max_retries =&gt; {
+                println!("Network error on attempt {}, retrying: {}", attempts, e);
+                tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+                continue;
+            }
+            Err(AuthError::InvalidCredentials) =&gt; {
+                return Err("Invalid credentials - check email and password".into());
+            }
+            Err(AuthError::OtpRequired) =&gt; {
+                return Err("OTP required but auto-fetching not configured".into());
+            }
+            Err(AuthError::EmailError(msg)) =&gt; {
+                return Err(format!("Email OTP fetching failed: {}", msg).into());
+            }
+            Err(e) =&gt; {
+                return Err(format!("Login failed: {}", e).into());
+            }
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="recovery-strategies"><a class="header" href="#recovery-strategies">Recovery Strategies</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn handle_authentication_failure(
+    auth_client: &amp;mut AuthClient,
+    error: AuthError
+) -&gt; Result&lt;(), AuthError&gt; {
+    match error {
+        AuthError::TokenExpired =&gt; {
+            // Try to refresh tokens
+            match auth_client.refresh_tokens().await {
+                Ok(_) =&gt; {
+                    println!("Tokens refreshed successfully");
+                    Ok(())
+                }
+                Err(_) =&gt; {
+                    println!("Token refresh failed, need to re-login");
+                    Err(AuthError::NotAuthenticated)
+                }
+            }
+        }
+        AuthError::NetworkError(_) =&gt; {
+            // Implement exponential backoff
+            tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
+            Err(error)
+        }
+        AuthError::OtpRequired =&gt; {
+            println!("Configure automatic OTP fetching:");
+            println!("1. Create inbox.lv account");
+            println!("2. Set INBOX_LV_EMAIL and INBOX_LV_PASSWORD");
+            println!("3. Forward Axiom OTP emails to inbox.lv");
+            Err(error)
+        }
+        _ =&gt; Err(error)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="complete-example-production-login"><a class="header" href="#complete-example-production-login">Complete Example: Production Login</a></h2>
+<p>Here's a complete example demonstrating production-ready authentication with all features:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::auth::{AuthClient, TokenManager, AuthError};
+use axiomtrade_rs::client::EnhancedClient;
+use std::env;
+use std::path::PathBuf;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Load environment variables
+    dotenvy::dotenv().ok();
+    
+    let email = env::var("AXIOM_EMAIL")?;
+    let password = env::var("AXIOM_PASSWORD")?;
+    
+    // Set up persistent token storage
+    let tokens_file = PathBuf::from(".axiom_session.json");
+    let token_manager = TokenManager::new(Some(tokens_file));
+    
+    // Check for existing valid session
+    if let Some(tokens) = token_manager.get_tokens().await {
+        if !tokens.is_expired() {
+            println!("Using existing valid session");
+            
+            // Test the session with an API call
+            let client = EnhancedClient::new()?;
+            match client.get_portfolio().await {
+                Ok(_) =&gt; {
+                    println!("Session validated successfully");
+                    return Ok(());
+                }
+                Err(_) =&gt; {
+                    println!("Session invalid, performing fresh login");
+                }
+            }
+        }
+    }
+    
+    // Perform fresh login
+    println!("Performing authentication...");
+    let mut auth_client = AuthClient::new()?;
+    
+    // Check OTP configuration
+    let auto_otp = env::var("INBOX_LV_EMAIL").is_ok() 
+        &amp;&amp; env::var("INBOX_LV_PASSWORD").is_ok();
+    
+    if auto_otp {
+        println!("Automatic OTP fetching enabled");
+    } else {
+        println!("Manual OTP entry may be required");
+    }
+    
+    // Login with comprehensive error handling
+    let login_result = match auth_client.login_full(&amp;email, &amp;password, None).await {
+        Ok(result) =&gt; result,
+        Err(AuthError::InvalidCredentials) =&gt; {
+            return Err("Invalid credentials - check AXIOM_EMAIL and AXIOM_PASSWORD".into());
+        }
+        Err(AuthError::OtpRequired) if !auto_otp =&gt; {
+            return Err("OTP required but auto-fetching not configured. Set up inbox.lv integration.".into());
+        }
+        Err(AuthError::EmailError(msg)) =&gt; {
+            return Err(format!("OTP email fetching failed: {}", msg).into());
+        }
+        Err(e) =&gt; {
+            return Err(format!("Authentication failed: {}", e).into());
+        }
+    };
+    
+    println!("Login successful!");
+    
+    // Save tokens for future sessions
+    token_manager.set_tokens(login_result.tokens.clone()).await?;
+    println!("Session saved for future use");
+    
+    // Display authentication details
+    if let Some(turnkey) = &amp;login_result.turnkey_credentials {
+        println!("Turnkey wallet access enabled:");
+        println!("  Organization: {}", turnkey.organization_id);
+        println!("  User: {}", turnkey.user_id);
+    }
+    
+    if let Some(user) = &amp;login_result.user_info {
+        if let Some(email) = &amp;user.email {
+            println!("Authenticated as: {}", email);
+        }
+    }
+    
+    // Test authenticated API access
+    let client = EnhancedClient::new()?;
+    match client.get_portfolio().await {
+        Ok(portfolio) =&gt; {
+            println!("Portfolio access confirmed");
+            println!("Ready for trading operations");
+        }
+        Err(e) =&gt; {
+            println!("Warning: Portfolio access failed: {}", e);
+        }
+    }
+    
+    Ok(())
+}</code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<ul>
+<li>Always use environment variables for credentials</li>
+<li>Enable automatic OTP fetching to reduce manual intervention</li>
+<li>Store tokens securely with appropriate file permissions</li>
+<li>Implement proper session cleanup on logout</li>
+<li>Use HTTPS for all API communications</li>
+</ul>
+<h3 id="performance"><a class="header" href="#performance">Performance</a></h3>
+<ul>
+<li>Reuse existing valid sessions when possible</li>
+<li>Implement automatic token refresh to avoid re-authentication</li>
+<li>Cache authentication state appropriately</li>
+<li>Handle network failures with exponential backoff</li>
+</ul>
+<h3 id="reliability"><a class="header" href="#reliability">Reliability</a></h3>
+<ul>
+<li>Implement comprehensive error handling for all scenarios</li>
+<li>Use multiple API endpoints for redundancy</li>
+<li>Implement proper retry logic for transient failures</li>
+<li>Monitor authentication success rates and failures</li>
+</ul>
+<h3 id="development"><a class="header" href="#development">Development</a></h3>
+<ul>
+<li>Use separate credentials for development and production</li>
+<li>Log authentication events for debugging</li>
+<li>Test authentication flows thoroughly</li>
+<li>Document credential setup procedures for team members</li>
+</ul>
+<p>This comprehensive authentication system provides a robust foundation for all Axiom Trade API operations, with automatic session management, secure credential handling, and production-ready error handling.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../automatic-otp.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../auth/tokens.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../automatic-otp.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../auth/tokens.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

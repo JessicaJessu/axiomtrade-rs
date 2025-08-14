@@ -1,0 +1,750 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Environment Setup - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/environment-setup.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="environment-setup"><a class="header" href="#environment-setup">Environment Setup</a></h1>
+<p>This guide covers all aspects of configuring your environment for axiomtrade-rs, including required credentials, automated setup tools, and security best practices.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>axiomtrade-rs requires specific environment variables to function properly. You can configure these using:</p>
+<ul>
+<li><strong>Automated setup utility</strong> - Interactive tool for guided configuration</li>
+<li><strong>Manual .env file creation</strong> - Direct file editing</li>
+<li><strong>Environment variable validation</strong> - Built-in verification tools</li>
+</ul>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<p>For immediate setup, run the interactive configuration tool:</p>
+<pre><code class="language-bash">cargo run --example environment_setup
+</code></pre>
+<p>This tool will guide you through the entire configuration process, including credential setup, OTP automation, and validation testing.</p>
+<h2 id="required-environment-variables"><a class="header" href="#required-environment-variables">Required Environment Variables</a></h2>
+<h3 id="core-authentication-variables"><a class="header" href="#core-authentication-variables">Core Authentication Variables</a></h3>
+<p>These variables are required for basic functionality:</p>
+<pre><code class="language-env"># Axiom Trade account credentials
+AXIOM_EMAIL=your-axiom-email@domain.com
+AXIOM_PASSWORD=your-axiom-password
+</code></pre>
+<h3 id="optional-otp-automation-variables"><a class="header" href="#optional-otp-automation-variables">Optional OTP Automation Variables</a></h3>
+<p>For automatic OTP retrieval (eliminates manual code entry):</p>
+<pre><code class="language-env"># inbox.lv IMAP credentials for automatic OTP
+INBOX_LV_EMAIL=your-username@inbox.lv
+INBOX_LV_PASSWORD=your-special-imap-password
+</code></pre>
+<p><strong>Note</strong>: The <code>INBOX_LV_PASSWORD</code> is a special IMAP password, not your regular web login password.</p>
+<h3 id="additional-configuration-options"><a class="header" href="#additional-configuration-options">Additional Configuration Options</a></h3>
+<pre><code class="language-env"># Optional: API endpoints (uses defaults if not specified)
+AXIOM_API_BASE_URL=https://api.axiom.trade
+AXIOM_WS_URL=wss://api.axiom.trade/ws
+
+# Optional: Logging level
+RUST_LOG=debug
+</code></pre>
+<h2 id="setup-methods"><a class="header" href="#setup-methods">Setup Methods</a></h2>
+<h3 id="method-1-automated-setup-tool"><a class="header" href="#method-1-automated-setup-tool">Method 1: Automated Setup Tool</a></h3>
+<p>The interactive setup tool provides guided configuration with proper validation:</p>
+<pre><code class="language-bash">cargo run --example environment_setup
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Interactive credential collection</li>
+<li>Automatic special character escaping</li>
+<li>Environment validation</li>
+<li>Configuration testing</li>
+<li>Backup creation for existing files</li>
+</ul>
+<p><strong>Sample interaction:</strong></p>
+<pre><code>axiomtrade-rs Environment Setup Helper
+This tool will help you configure your environment for the library
+
+❌ No .env file found
+Let's create one with the required configuration
+
+=== Axiom Trade Credentials ===
+Axiom Trade email: user@example.com
+Axiom Trade password: [secure input]
+
+=== Optional: Automatic OTP Setup ===
+To enable automatic OTP, you need an inbox.lv account
+Leave blank to skip automatic OTP (you'll enter codes manually)
+Set up automatic OTP? (y/n): y
+
+See examples/setup/auto_otp_setup.md for inbox.lv setup instructions
+inbox.lv email (username@inbox.lv): myuser@inbox.lv
+inbox.lv IMAP password: [secure input]
+
+✓ Configuration file created successfully
+</code></pre>
+<h3 id="method-2-legacy-setup-utility"><a class="header" href="#method-2-legacy-setup-utility">Method 2: Legacy Setup Utility</a></h3>
+<p>The older setup utility from <code>oldstuff/setup_env.rs</code> provides similar functionality:</p>
+<pre><code class="language-bash">cd oldstuff
+cargo run --bin setup_env
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Advanced password escaping</li>
+<li>Secure file permissions (Unix systems)</li>
+<li>Comprehensive validation</li>
+<li>Detailed troubleshooting guidance</li>
+</ul>
+<h3 id="method-3-manual-configuration"><a class="header" href="#method-3-manual-configuration">Method 3: Manual Configuration</a></h3>
+<p>Create a <code>.env</code> file in your project root directory:</p>
+<pre><code class="language-bash"># Create the file
+touch .env
+
+# Set secure permissions (Unix/Linux/macOS)
+chmod 600 .env
+</code></pre>
+<p>Add the required variables:</p>
+<pre><code class="language-env"># axiomtrade-rs Environment Configuration
+
+# Axiom Trade Credentials
+AXIOM_EMAIL=your-email@domain.com
+AXIOM_PASSWORD=your-password
+
+# Optional: Automatic OTP via inbox.lv
+INBOX_LV_EMAIL=your-username@inbox.lv
+INBOX_LV_PASSWORD=your-imap-password
+
+# Optional: Additional Configuration
+# AXIOM_API_BASE_URL=https://api.axiom.trade
+# AXIOM_WS_URL=wss://api.axiom.trade/ws
+# RUST_LOG=debug
+</code></pre>
+<h2 id="using-the-setup-environment-utility"><a class="header" href="#using-the-setup-environment-utility">Using the Setup Environment Utility</a></h2>
+<p>The environment setup utility provides comprehensive configuration management:</p>
+<h3 id="initial-setup"><a class="header" href="#initial-setup">Initial Setup</a></h3>
+<pre><code class="language-bash">cargo run --example environment_setup
+</code></pre>
+<p>When no <code>.env</code> file exists, the tool will:</p>
+<ol>
+<li>Guide you through credential entry</li>
+<li>Offer optional OTP automation setup</li>
+<li>Create a properly formatted <code>.env</code> file</li>
+<li>Provide next steps for testing</li>
+</ol>
+<h3 id="updating-existing-configuration"><a class="header" href="#updating-existing-configuration">Updating Existing Configuration</a></h3>
+<p>If you already have a <code>.env</code> file:</p>
+<pre><code class="language-bash">cargo run --example environment_setup
+</code></pre>
+<p>The tool offers options to:</p>
+<ul>
+<li><strong>Test current configuration</strong> - Validate all settings</li>
+<li><strong>Update configuration</strong> - Modify specific sections</li>
+<li><strong>View configuration guide</strong> - Display help information</li>
+<li><strong>Reset configuration</strong> - Start fresh</li>
+</ul>
+<h3 id="configuration-testing"><a class="header" href="#configuration-testing">Configuration Testing</a></h3>
+<p>The utility includes built-in testing:</p>
+<pre><code class="language-bash"># Test all configuration
+cargo run --example environment_setup
+# Choose option 1: Test current configuration
+</code></pre>
+<p>Testing includes:</p>
+<ul>
+<li>Environment variable validation</li>
+<li>IMAP connection testing (if configured)</li>
+<li>Basic authentication verification</li>
+<li>OTP automation validation</li>
+</ul>
+<h2 id="automatic-otp-setup"><a class="header" href="#automatic-otp-setup">Automatic OTP Setup</a></h2>
+<p>For seamless authentication without manual OTP entry, configure automatic OTP retrieval via inbox.lv:</p>
+<h3 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h3>
+<ol>
+<li><strong>inbox.lv account</strong> - Free email service with IMAP support</li>
+<li><strong>IMAP access enabled</strong> - Must be activated in inbox.lv settings</li>
+<li><strong>Email forwarding configured</strong> - Axiom Trade OTP emails to inbox.lv</li>
+</ol>
+<h3 id="setup-process"><a class="header" href="#setup-process">Setup Process</a></h3>
+<ol>
+<li>
+<p><strong>Create inbox.lv account</strong>:</p>
+<ul>
+<li>Visit <a href="https://www.inbox.lv/">https://www.inbox.lv/</a></li>
+<li>Register a new account</li>
+<li>Note your full email: <code>username@inbox.lv</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Enable IMAP access</strong>:</p>
+<pre><code>Settings → "Outlook, email programs" → Enable
+Direct URL: https://email.inbox.lv/prefs?group=enable_pop3
+Wait 15 minutes for activation
+</code></pre>
+</li>
+<li>
+<p><strong>Configure email forwarding</strong>:</p>
+<ul>
+<li>Log into Axiom Trade account</li>
+<li>Update notification email to your inbox.lv address</li>
+<li>Ensure OTP emails are forwarded</li>
+</ul>
+</li>
+<li>
+<p><strong>Get IMAP password</strong>:</p>
+<ul>
+<li>Return to inbox.lv settings after 15 minutes</li>
+<li>Copy the special IMAP/SMTP password</li>
+<li>This is different from your web login password</li>
+</ul>
+</li>
+<li>
+<p><strong>Configure environment variables</strong>:</p>
+<pre><code class="language-env">INBOX_LV_EMAIL=your-username@inbox.lv
+INBOX_LV_PASSWORD=your-special-imap-password
+</code></pre>
+</li>
+<li>
+<p><strong>Test the setup</strong>:</p>
+<pre><code class="language-bash">cargo run --example test_auto_otp
+</code></pre>
+</li>
+</ol>
+<p>For detailed setup instructions, see: <code>examples/setup/auto_otp_setup.md</code></p>
+<h2 id="manual-env-configuration"><a class="header" href="#manual-env-configuration">Manual .env Configuration</a></h2>
+<h3 id="file-creation"><a class="header" href="#file-creation">File Creation</a></h3>
+<pre><code class="language-bash"># Create .env file in project root
+touch .env
+
+# Set restrictive permissions (recommended)
+chmod 600 .env  # Unix/Linux/macOS only
+</code></pre>
+<h3 id="variable-format"><a class="header" href="#variable-format">Variable Format</a></h3>
+<p>Use proper formatting to handle special characters:</p>
+<pre><code class="language-env"># Simple values (no spaces or special characters)
+AXIOM_EMAIL=user@example.com
+
+# Values with special characters (use quotes)
+AXIOM_PASSWORD="my-complex-password!@#$"
+
+# Values with spaces (use quotes)
+SOME_VALUE="value with spaces"
+
+# Avoid these characters without quotes: $ ` " ' \ # space
+</code></pre>
+<h3 id="special-character-handling"><a class="header" href="#special-character-handling">Special Character Handling</a></h3>
+<p>The library's <code>EnvLoader</code> properly handles special characters:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Values are automatically parsed correctly
+let password = env::var("AXIOM_PASSWORD")?; // Works with special chars
+<span class="boring">}</span></code></pre></pre>
+<p><strong>Characters requiring quotes</strong>:</p>
+<ul>
+<li>Spaces: <code>"password with spaces"</code></li>
+<li>Dollar signs: <code>"password$with$dollars"</code></li>
+<li>Quotes: <code>"password\"with\"quotes"</code></li>
+<li>Backslashes: <code>"password\\with\\backslashes"</code></li>
+</ul>
+<h2 id="security-best-practices"><a class="header" href="#security-best-practices">Security Best Practices</a></h2>
+<h3 id="credential-management"><a class="header" href="#credential-management">Credential Management</a></h3>
+<ol>
+<li>
+<p><strong>Use strong passwords</strong>:</p>
+<ul>
+<li>12+ characters with mixed case, numbers, symbols</li>
+<li>Unique passwords for each service</li>
+<li>Consider using a password manager</li>
+</ul>
+</li>
+<li>
+<p><strong>Protect credential files</strong>:</p>
+<pre><code class="language-bash"># Set restrictive permissions
+chmod 600 .env
+
+# Verify permissions
+ls -la .env  # Should show: -rw-------
+</code></pre>
+</li>
+<li>
+<p><strong>Never commit credentials</strong>:</p>
+<pre><code class="language-bash"># Ensure .env is in .gitignore
+echo ".env" &gt;&gt; .gitignore
+</code></pre>
+</li>
+</ol>
+<h3 id="network-security"><a class="header" href="#network-security">Network Security</a></h3>
+<ol>
+<li><strong>Use secure connections</strong> - axiomtrade-rs uses HTTPS/WSS by default</li>
+<li><strong>Verify certificates</strong> - Built-in certificate validation</li>
+<li><strong>Monitor authentication</strong> - Log successful/failed attempts</li>
+<li><strong>Rotate credentials regularly</strong> - Update passwords periodically</li>
+</ol>
+<h3 id="production-environment"><a class="header" href="#production-environment">Production Environment</a></h3>
+<ol>
+<li>
+<p><strong>Environment isolation</strong>:</p>
+<pre><code class="language-bash"># Different .env files for different environments
+.env.development
+.env.staging  
+.env.production
+</code></pre>
+</li>
+<li>
+<p><strong>Secret management</strong>:</p>
+<ul>
+<li>Consider using secret management services</li>
+<li>Use environment variables in production</li>
+<li>Avoid storing secrets in container images</li>
+</ul>
+</li>
+<li>
+<p><strong>Access control</strong>:</p>
+<ul>
+<li>Limit access to credential files</li>
+<li>Use service accounts where appropriate</li>
+<li>Implement proper logging and monitoring</li>
+</ul>
+</li>
+</ol>
+<h2 id="configuration-validation"><a class="header" href="#configuration-validation">Configuration Validation</a></h2>
+<h3 id="built-in-validation"><a class="header" href="#built-in-validation">Built-in Validation</a></h3>
+<p>Test your configuration using the provided tools:</p>
+<pre><code class="language-bash"># Comprehensive testing
+cargo run --example environment_setup
+# Choose: Test current configuration
+
+# OTP-specific testing
+cargo run --example test_auto_otp
+
+# Basic authentication testing
+cargo run --example basic_login
+</code></pre>
+<h3 id="manual-validation"><a class="header" href="#manual-validation">Manual Validation</a></h3>
+<p>Verify variables are loaded correctly:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::env;
+
+fn validate_config() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Load environment variables
+    dotenvy::dotenv().ok();
+    
+    // Check required variables
+    let email = env::var("AXIOM_EMAIL")?;
+    let password = env::var("AXIOM_PASSWORD")?;
+    
+    println!("Email configured: {}", email);
+    println!("Password configured: [{}]", "*".repeat(password.len()));
+    
+    // Check optional OTP variables
+    if let (Ok(otp_email), Ok(_otp_pass)) = (
+        env::var("INBOX_LV_EMAIL"),
+        env::var("INBOX_LV_PASSWORD")
+    ) {
+        println!("OTP automation configured for: {}", otp_email);
+    } else {
+        println!("Manual OTP entry will be required");
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="environment-variable-priority"><a class="header" href="#environment-variable-priority">Environment Variable Priority</a></h3>
+<p>The library loads variables in this order (last wins):</p>
+<ol>
+<li>Process environment variables</li>
+<li><code>.env</code> file in current directory</li>
+<li><code>.env</code> file in parent directories (recursive search)</li>
+</ol>
+<p>Override specific variables for testing:</p>
+<pre><code class="language-bash"># Override for single command
+AXIOM_EMAIL=test@example.com cargo run --example basic_login
+
+# Export for session
+export RUST_LOG=debug
+cargo run --example environment_setup
+</code></pre>
+<h2 id="command-line-instructions"><a class="header" href="#command-line-instructions">Command Line Instructions</a></h2>
+<h3 id="setup-commands"><a class="header" href="#setup-commands">Setup Commands</a></h3>
+<pre><code class="language-bash"># Initial environment setup
+cargo run --example environment_setup
+
+# Legacy setup utility
+cd oldstuff &amp;&amp; cargo run --bin setup_env
+
+# Test automatic OTP setup
+cargo run --example test_auto_otp
+
+# Test basic authentication
+cargo run --example basic_login
+</code></pre>
+<h3 id="validation-commands"><a class="header" href="#validation-commands">Validation Commands</a></h3>
+<pre><code class="language-bash"># Validate environment loading
+cargo test utils::env_loader::tests
+
+# Test password handling
+cargo run --example test_password
+
+# Check configuration completeness
+cargo run --example environment_setup
+# Choose option 1: Test current configuration
+</code></pre>
+<h3 id="development-commands"><a class="header" href="#development-commands">Development Commands</a></h3>
+<pre><code class="language-bash"># Enable debug logging
+export RUST_LOG=debug
+cargo run --example your_example
+
+# Test with different environment
+AXIOM_EMAIL=different@email.com cargo run --example basic_login
+
+# Run with production config
+cargo run --release --example trading_bot
+</code></pre>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="common-issues"><a class="header" href="#common-issues">Common Issues</a></h3>
+<h4 id="environment-variables-not-found"><a class="header" href="#environment-variables-not-found">"Environment variables not found"</a></h4>
+<pre><code class="language-bash"># Check if .env file exists
+ls -la .env
+
+# Verify file contents (be careful with passwords)
+head .env
+
+# Run setup tool
+cargo run --example environment_setup
+</code></pre>
+<h4 id="imap-connection-failed"><a class="header" href="#imap-connection-failed">"IMAP connection failed"</a></h4>
+<pre><code class="language-bash"># Test IMAP configuration
+cargo run --example test_auto_otp
+
+# Check inbox.lv setup
+# 1. Verify IMAP is enabled (wait 15 minutes after enabling)
+# 2. Confirm you're using IMAP password, not web password
+# 3. Check email address spelling
+</code></pre>
+<h4 id="authentication-failed"><a class="header" href="#authentication-failed">"Authentication failed"</a></h4>
+<pre><code class="language-bash"># Verify credentials by logging into Axiom Trade website
+# Update credentials using setup tool
+cargo run --example environment_setup
+# Choose option 2: Update configuration
+</code></pre>
+<h4 id="special-characters-in-password"><a class="header" href="#special-characters-in-password">"Special characters in password"</a></h4>
+<pre><code class="language-bash"># Use the automated setup tool for proper escaping
+cargo run --example environment_setup
+
+# Or manually quote the value in .env:
+AXIOM_PASSWORD="password-with-special-chars!@#$"
+</code></pre>
+<h3 id="debug-steps"><a class="header" href="#debug-steps">Debug Steps</a></h3>
+<ol>
+<li>
+<p><strong>Check environment loading</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::env;
+dotenvy::dotenv().ok();
+for (key, value) in env::vars() {
+    if key.starts_with("AXIOM_") || key.starts_with("INBOX_") {
+        println!("{}: {}", key, if key.contains("PASSWORD") { "[HIDDEN]" } else { &amp;value });
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+</li>
+<li>
+<p><strong>Test individual components</strong>:</p>
+<pre><code class="language-bash"># Test just environment loading
+cargo test env_loader
+
+# Test just IMAP (if configured)
+cargo run --example test_auto_otp
+
+# Test just authentication
+cargo run --example basic_login
+</code></pre>
+</li>
+<li>
+<p><strong>Enable verbose logging</strong>:</p>
+<pre><code class="language-bash">export RUST_LOG=axiomtrade_rs=debug
+cargo run --example your_example
+</code></pre>
+</li>
+</ol>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>After completing environment setup:</p>
+<ol>
+<li>
+<p><strong>Test authentication</strong>:</p>
+<pre><code class="language-bash">cargo run --example basic_login
+</code></pre>
+</li>
+<li>
+<p><strong>Explore examples</strong>:</p>
+<pre><code class="language-bash">ls examples/
+cargo run --example portfolio_monitoring
+</code></pre>
+</li>
+<li>
+<p><strong>Build your application</strong>:</p>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::AxiomClient;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Environment is automatically loaded
+    let client = AxiomClient::new().await?;
+    // Your application logic here
+    Ok(())
+}</code></pre></pre>
+</li>
+<li>
+<p><strong>Review additional documentation</strong>:</p>
+<ul>
+<li><a href="auth/login.html">Authentication Guide</a></li>
+<li><a href="automatic-otp.html">Automatic OTP Setup</a></li>
+<li><a href="examples/trading.html">Trading Examples</a></li>
+<li><a href="best-practices/security.html">Security Best Practices</a></li>
+</ul>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="quick-start.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="automatic-otp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="quick-start.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="automatic-otp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="editor.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>

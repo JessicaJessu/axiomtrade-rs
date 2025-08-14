@@ -1,0 +1,1034 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Trading Operations - axiomtrade-rs Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Complete guide to using the axiomtrade-rs Solana trading SDK">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">axiomtrade-rs Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/vibheksoni/axiomtrade-rs/edit/master/docs/src/api/trading.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="trading-operations"><a class="header" href="#trading-operations">Trading Operations</a></h1>
+<p>The Axiom Trade trading API provides comprehensive trading functionality for Solana tokens with built-in risk management, slippage protection, and MEV (Maximum Extractable Value) safeguards. This guide covers all trading operations, order types, and best practices for safe and efficient trading.</p>
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ul>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#buy-operations">Buy Operations</a></li>
+<li><a href="#sell-operations">Sell Operations</a></li>
+<li><a href="#swap-operations">Swap Operations</a></li>
+<li><a href="#price-quotes">Price Quotes</a></li>
+<li><a href="#slippage-and-mev-protection">Slippage and MEV Protection</a></li>
+<li><a href="#order-types-and-parameters">Order Types and Parameters</a></li>
+<li><a href="#trading-limits">Trading Limits</a></li>
+<li><a href="#transaction-simulation">Transaction Simulation</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#best-practices">Best Practices</a></li>
+<li><a href="#security-considerations">Security Considerations</a></li>
+</ul>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<pre><pre class="playground"><code class="language-rust edition2024">use axiomtrade_rs::api::trading::TradingClient;
+
+#[tokio::main]
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Initialize trading client
+    let mut trading_client = TradingClient::new()?;
+    
+    // Example: Buy USDC with SOL
+    let usdc_mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+    let amount_sol = 0.1;
+    
+    let order = trading_client
+        .buy_token(usdc_mint, amount_sol, Some(1.0))
+        .await?;
+    
+    println!("Buy order executed: {}", order.signature);
+    Ok(())
+}</code></pre></pre>
+<h2 id="buy-operations"><a class="header" href="#buy-operations">Buy Operations</a></h2>
+<p>Buy operations allow you to purchase tokens using SOL as the base currency. The API handles routing through the best available liquidity sources.</p>
+<h3 id="basic-buy"><a class="header" href="#basic-buy">Basic Buy</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Buy tokens with SOL
+let order_response = trading_client
+    .buy_token(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC mint
+        0.1,                                              // 0.1 SOL
+        Some(1.0)                                         // 1% slippage
+    )
+    .await?;
+
+println!("Transaction signature: {}", order_response.signature);
+println!("Tokens received: {}", order_response.amount_out);
+println!("Price per token: ${}", order_response.price_per_token);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="buy-with-custom-parameters"><a class="header" href="#buy-with-custom-parameters">Buy with Custom Parameters</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::models::trading::BuyOrderRequest;
+
+// Get a quote first to check the expected output
+let quote = trading_client
+    .get_quote(
+        "So11111111111111111111111111111111111111112", // Native SOL
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        0.1,
+        Some(0.5)  // 0.5% slippage for quote
+    )
+    .await?;
+
+println!("Expected USDC output: {}", quote.out_amount);
+println!("Price impact: {:.2}%", quote.price_impact);
+
+// Execute buy if satisfied with quote
+if quote.price_impact &lt; 2.0 {  // Only if price impact is less than 2%
+    let order = trading_client
+        .buy_token(
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            0.1,
+            Some(0.5)  // Conservative slippage
+        )
+        .await?;
+    
+    println!("Buy executed successfully!");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="buy-order-parameters"><a class="header" href="#buy-order-parameters">Buy Order Parameters</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>token_mint</code></td><td><code>&amp;str</code></td><td>Token mint address to buy</td><td>Required</td></tr>
+<tr><td><code>amount_sol</code></td><td><code>f64</code></td><td>Amount of SOL to spend</td><td>Required</td></tr>
+<tr><td><code>slippage_percent</code></td><td><code>Option&lt;f64&gt;</code></td><td>Maximum slippage tolerance</td><td>5.0%</td></tr>
+<tr><td><code>priority_fee</code></td><td><code>Option&lt;f64&gt;</code></td><td>Priority fee in SOL</td><td>Auto-calculated</td></tr>
+</tbody></table>
+</div>
+<h2 id="sell-operations"><a class="header" href="#sell-operations">Sell Operations</a></h2>
+<p>Sell operations convert your token holdings back to SOL through optimal routing.</p>
+<h3 id="basic-sell"><a class="header" href="#basic-sell">Basic Sell</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sell tokens for SOL
+let order_response = trading_client
+    .sell_token(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC mint
+        10.0,                                             // 10 USDC
+        Some(1.0)                                         // 1% slippage
+    )
+    .await?;
+
+println!("SOL received: {}", order_response.amount_out);
+println!("Transaction fee: {}", order_response.fee);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="sell-with-price-checking"><a class="header" href="#sell-with-price-checking">Sell with Price Checking</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Check current price before selling
+let quote = trading_client
+    .get_quote(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        "So11111111111111111111111111111111111111112",   // Native SOL
+        10.0,
+        Some(1.0)
+    )
+    .await?;
+
+println!("Expected SOL output: {}", quote.out_amount);
+println!("Current SOL/USDC rate: {:.6}", quote.out_amount / 10.0);
+
+// Proceed with sell if price is acceptable
+let min_sol_expected = 0.08; // Minimum SOL we want to receive
+if quote.out_amount &gt;= min_sol_expected {
+    let order = trading_client
+        .sell_token(
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            10.0,
+            Some(1.0)
+        )
+        .await?;
+    
+    println!("Sell executed: {} SOL received", order.amount_out);
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="sell-order-parameters"><a class="header" href="#sell-order-parameters">Sell Order Parameters</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>token_mint</code></td><td><code>&amp;str</code></td><td>Token mint address to sell</td><td>Required</td></tr>
+<tr><td><code>amount_tokens</code></td><td><code>f64</code></td><td>Amount of tokens to sell</td><td>Required</td></tr>
+<tr><td><code>slippage_percent</code></td><td><code>Option&lt;f64&gt;</code></td><td>Maximum slippage tolerance</td><td>5.0%</td></tr>
+<tr><td><code>priority_fee</code></td><td><code>Option&lt;f64&gt;</code></td><td>Priority fee in SOL</td><td>Auto-calculated</td></tr>
+</tbody></table>
+</div>
+<h2 id="swap-operations"><a class="header" href="#swap-operations">Swap Operations</a></h2>
+<p>Swap operations allow direct token-to-token exchanges without using SOL as an intermediary.</p>
+<h3 id="basic-token-swap"><a class="header" href="#basic-token-swap">Basic Token Swap</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Swap USDC to BONK
+let order_response = trading_client
+    .swap_tokens(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", // BONK
+        5.0,                                              // 5 USDC
+        Some(2.0)                                         // 2% slippage
+    )
+    .await?;
+
+println!("BONK tokens received: {}", order_response.amount_out);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="multi-route-swap-analysis"><a class="header" href="#multi-route-swap-analysis">Multi-Route Swap Analysis</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get detailed routing information
+let quote = trading_client
+    .get_quote(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", // BONK
+        100.0,
+        Some(1.0)
+    )
+    .await?;
+
+println!("Swap route analysis:");
+println!("Input: {} USDC", quote.in_amount);
+println!("Output: {} BONK", quote.out_amount);
+println!("Price impact: {:.2}%", quote.price_impact);
+println!("Total fees: {} USDC", quote.fee);
+
+// Analyze routing steps
+for (i, step) in quote.route.iter().enumerate() {
+    println!("Route step {}: {} -&gt; {} via {}", 
+        i + 1, 
+        step.input_mint[..8].to_string() + "...",
+        step.output_mint[..8].to_string() + "...",
+        step.amm
+    );
+    println!("  Fee: {}", step.fee_amount);
+}
+
+// Execute swap if acceptable
+if quote.price_impact &lt; 3.0 {
+    let order = trading_client
+        .swap_tokens(
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+            100.0,
+            Some(1.0)
+        )
+        .await?;
+    
+    println!("Swap completed successfully!");
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="swap-order-parameters"><a class="header" href="#swap-order-parameters">Swap Order Parameters</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>from_mint</code></td><td><code>&amp;str</code></td><td>Source token mint address</td><td>Required</td></tr>
+<tr><td><code>to_mint</code></td><td><code>&amp;str</code></td><td>Destination token mint address</td><td>Required</td></tr>
+<tr><td><code>amount</code></td><td><code>f64</code></td><td>Amount of source tokens</td><td>Required</td></tr>
+<tr><td><code>slippage_percent</code></td><td><code>Option&lt;f64&gt;</code></td><td>Maximum slippage tolerance</td><td>5.0%</td></tr>
+<tr><td><code>priority_fee</code></td><td><code>Option&lt;f64&gt;</code></td><td>Priority fee in SOL</td><td>Auto-calculated</td></tr>
+</tbody></table>
+</div>
+<h2 id="price-quotes"><a class="header" href="#price-quotes">Price Quotes</a></h2>
+<p>Always get a quote before executing trades to understand pricing, fees, and market impact.</p>
+<h3 id="getting-accurate-quotes"><a class="header" href="#getting-accurate-quotes">Getting Accurate Quotes</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Get a comprehensive quote
+let quote = trading_client
+    .get_quote(
+        "So11111111111111111111111111111111111111112",   // SOL
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
+        1.0,        // 1 SOL
+        Some(0.5)   // 0.5% slippage
+    )
+    .await?;
+
+println!("Quote Analysis:");
+println!("  Input: {} SOL", quote.in_amount);
+println!("  Output: {} USDC", quote.out_amount);
+println!("  Exchange rate: {} USDC per SOL", quote.out_amount / quote.in_amount);
+println!("  Price impact: {:.3}%", quote.price_impact);
+println!("  Platform fee: {} SOL", quote.fee);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="quote-response-structure"><a class="header" href="#quote-response-structure">Quote Response Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct QuoteResponse {
+    pub input_mint: String,     // Source token mint
+    pub output_mint: String,    // Destination token mint
+    pub in_amount: f64,         // Input amount
+    pub out_amount: f64,        // Expected output amount
+    pub price_impact: f64,      // Price impact percentage
+    pub fee: f64,               // Total fees
+    pub route: Vec&lt;RouteStep&gt;,  // Routing information
+}
+
+pub struct RouteStep {
+    pub amm: String,            // AMM/DEX name (e.g., "Raydium", "Orca")
+    pub input_mint: String,     // Input token for this step
+    pub output_mint: String,    // Output token for this step
+    pub in_amount: f64,         // Input amount for this step
+    pub out_amount: f64,        // Output amount for this step
+    pub fee_amount: f64,        // Fee for this step
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="slippage-and-mev-protection"><a class="header" href="#slippage-and-mev-protection">Slippage and MEV Protection</a></h2>
+<p>Axiom Trade includes built-in protection against slippage and MEV attacks.</p>
+<h3 id="understanding-slippage"><a class="header" href="#understanding-slippage">Understanding Slippage</a></h3>
+<p>Slippage occurs when the actual execution price differs from the expected price due to market movement or liquidity constraints.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Conservative slippage for large trades
+let large_trade_slippage = 0.1; // 0.1% for liquid tokens
+
+// Standard slippage for normal trades
+let normal_slippage = 0.5; // 0.5%
+
+// Higher slippage for small/illiquid tokens
+let high_slippage = 2.0; // 2.0%
+
+// Example with different slippage scenarios
+async fn execute_trade_with_slippage_analysis(
+    client: &amp;mut TradingClient,
+    token_mint: &amp;str,
+    amount: f64
+) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    
+    // Test different slippage levels
+    let slippage_levels = vec![0.1, 0.5, 1.0, 2.0];
+    
+    for slippage in slippage_levels {
+        match client.get_quote(
+            "So11111111111111111111111111111111111111112",
+            token_mint,
+            amount,
+            Some(slippage)
+        ).await {
+            Ok(quote) =&gt; {
+                println!("Slippage {:.1}%: Output {} tokens, Impact {:.3}%", 
+                    slippage, quote.out_amount, quote.price_impact);
+            }
+            Err(e) =&gt; {
+                println!("Slippage {:.1}%: Failed - {}", slippage, e);
+            }
+        }
+    }
+    
+    // Execute with conservative slippage
+    let order = client.buy_token(token_mint, amount, Some(0.5)).await?;
+    println!("Trade executed with 0.5% slippage tolerance");
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="mev-protection"><a class="header" href="#mev-protection">MEV Protection</a></h3>
+<p>Axiom Trade automatically implements MEV protection strategies:</p>
+<ol>
+<li><strong>Private Mempool</strong>: Transactions are routed through private mempools</li>
+<li><strong>Bundle Protection</strong>: Orders are bundled to prevent front-running</li>
+<li><strong>Optimal Timing</strong>: Executes at optimal times to minimize MEV exposure</li>
+<li><strong>Route Optimization</strong>: Uses routes that minimize MEV vulnerability</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// MEV protection is automatically enabled
+// No additional configuration required
+
+let order = trading_client
+    .buy_token(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        1.0,
+        Some(0.5)
+    )
+    .await?;
+
+// The system automatically:
+// - Routes through protected channels
+// - Uses optimal AMM combinations
+// - Implements timing strategies
+// - Protects against sandwich attacks
+<span class="boring">}</span></code></pre></pre>
+<h2 id="order-types-and-parameters"><a class="header" href="#order-types-and-parameters">Order Types and Parameters</a></h2>
+<h3 id="order-status-types"><a class="header" href="#order-status-types">Order Status Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum OrderStatus {
+    Success,    // Order completed successfully
+    Failed,     // Order failed to execute
+    Pending,    // Order is being processed
+    Cancelled,  // Order was cancelled
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="order-response-structure"><a class="header" href="#order-response-structure">Order Response Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct OrderResponse {
+    pub signature: String,          // Transaction signature
+    pub status: OrderStatus,        // Order status
+    pub transaction_type: OrderType, // Buy, Sell, or Swap
+    pub token_mint: String,         // Token mint address
+    pub amount_in: f64,             // Input amount
+    pub amount_out: f64,            // Output amount received
+    pub price_per_token: f64,       // Effective price per token
+    pub total_sol: f64,             // Total SOL involved
+    pub fee: f64,                   // Transaction fee
+    pub timestamp: i64,             // Execution timestamp
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="priority-fees"><a class="header" href="#priority-fees">Priority Fees</a></h3>
+<p>Priority fees help ensure faster transaction processing during network congestion.</p>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Auto-calculated priority fee (recommended)
+let order = trading_client
+    .buy_token(token_mint, amount, Some(1.0))
+    .await?;
+
+// Priority fees are automatically adjusted based on:
+// - Current network congestion
+// - Transaction urgency
+// - Historical gas patterns
+// - Market volatility
+<span class="boring">}</span></code></pre></pre>
+<h2 id="trading-limits"><a class="header" href="#trading-limits">Trading Limits</a></h2>
+<p>Understanding and respecting trading limits ensures consistent API access.</p>
+<h3 id="getting-current-limits"><a class="header" href="#getting-current-limits">Getting Current Limits</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let limits = trading_client.get_trading_limits().await?;
+
+println!("Trading Limits:");
+println!("  Minimum SOL per trade: {}", limits.min_sol_amount);
+println!("  Maximum SOL per trade: {}", limits.max_sol_amount);
+println!("  Maximum slippage: {}%", limits.max_slippage_percent);
+println!("  Default slippage: {}%", limits.default_slippage_percent);
+println!("  Priority fee: {} lamports", limits.priority_fee_lamports);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="limit-structure"><a class="header" href="#limit-structure">Limit Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TradingLimits {
+    pub min_sol_amount: f64,           // Minimum SOL per trade (0.01)
+    pub max_sol_amount: f64,           // Maximum SOL per trade (100.0)
+    pub max_slippage_percent: f64,     // Maximum allowed slippage (50.0%)
+    pub default_slippage_percent: f64, // Default slippage (5.0%)
+    pub priority_fee_lamports: u64,    // Default priority fee (5000)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="respecting-limits"><a class="header" href="#respecting-limits">Respecting Limits</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn safe_trade_execution(
+    client: &amp;mut TradingClient,
+    token_mint: &amp;str,
+    amount: f64,
+    slippage: f64
+) -&gt; Result&lt;OrderResponse, Box&lt;dyn std::error::Error&gt;&gt; {
+    
+    // Check limits before trading
+    let limits = client.get_trading_limits().await?;
+    
+    // Validate amount
+    if amount &lt; limits.min_sol_amount {
+        return Err(format!("Amount {} below minimum {}", 
+            amount, limits.min_sol_amount).into());
+    }
+    
+    if amount &gt; limits.max_sol_amount {
+        return Err(format!("Amount {} exceeds maximum {}", 
+            amount, limits.max_sol_amount).into());
+    }
+    
+    // Validate slippage
+    let safe_slippage = if slippage &gt; limits.max_slippage_percent {
+        limits.default_slippage_percent
+    } else {
+        slippage
+    };
+    
+    // Execute trade
+    let order = client.buy_token(token_mint, amount, Some(safe_slippage)).await?;
+    Ok(order)
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="transaction-simulation"><a class="header" href="#transaction-simulation">Transaction Simulation</a></h2>
+<p>Simulate transactions before execution to verify expected outcomes.</p>
+<h3 id="basic-simulation"><a class="header" href="#basic-simulation">Basic Simulation</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Note: You would typically get the transaction data from a quote or prepare step
+let transaction_base64 = "base64_encoded_transaction_data";
+
+let simulation = trading_client
+    .simulate_transaction(&amp;transaction_base64)
+    .await?;
+
+if simulation.success {
+    println!("Simulation successful!");
+    println!("Compute units consumed: {}", simulation.units_consumed);
+    
+    // Analyze logs for detailed information
+    for log in &amp;simulation.logs {
+        if log.contains("Program log:") {
+            println!("  {}", log);
+        }
+    }
+} else {
+    println!("Simulation failed: {}", 
+        simulation.error.unwrap_or_else(|| "Unknown error".to_string()));
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="simulation-response-structure"><a class="header" href="#simulation-response-structure">Simulation Response Structure</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct TransactionSimulation {
+    pub success: bool,              // Whether simulation succeeded
+    pub error: Option&lt;String&gt;,      // Error message if failed
+    pub logs: Vec&lt;String&gt;,          // Transaction logs
+    pub units_consumed: u64,        // Compute units used
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h2>
+<p>Comprehensive error handling for robust trading applications.</p>
+<h3 id="error-types"><a class="header" href="#error-types">Error Types</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum TradingError {
+    AuthError(AuthError),           // Authentication issues
+    NetworkError(reqwest::Error),   // Network connectivity problems
+    InvalidTokenMint(String),       // Invalid token address
+    InsufficientBalance(String),    // Not enough tokens/SOL
+    SlippageExceeded(String),       // Slippage tolerance exceeded
+    TransactionFailed(String),      // Transaction execution failed
+    ApiError(String),               // General API errors
+    ParsingError(String),           // Data parsing issues
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="error-handling-examples"><a class="header" href="#error-handling-examples">Error Handling Examples</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use axiomtrade_rs::api::trading::TradingError;
+
+async fn handle_trading_errors(
+    client: &amp;mut TradingClient
+) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    
+    match client.buy_token("invalid_mint", 0.1, Some(1.0)).await {
+        Ok(order) =&gt; {
+            println!("Trade successful: {}", order.signature);
+        }
+        Err(TradingError::InvalidTokenMint(msg)) =&gt; {
+            println!("Invalid token address: {}", msg);
+        }
+        Err(TradingError::InsufficientBalance(msg)) =&gt; {
+            println!("Insufficient balance: {}", msg);
+        }
+        Err(TradingError::SlippageExceeded(msg)) =&gt; {
+            println!("Slippage exceeded: {}", msg);
+            // Retry with higher slippage tolerance
+        }
+        Err(TradingError::NetworkError(e)) =&gt; {
+            println!("Network error: {}", e);
+            // Implement retry logic
+        }
+        Err(e) =&gt; {
+            println!("Other error: {}", e);
+        }
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="retry-logic"><a class="header" href="#retry-logic">Retry Logic</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{sleep, Duration};
+
+async fn execute_with_retry(
+    client: &amp;mut TradingClient,
+    token_mint: &amp;str,
+    amount: f64,
+    max_retries: u32
+) -&gt; Result&lt;OrderResponse, TradingError&gt; {
+    
+    let mut attempts = 0;
+    
+    loop {
+        match client.buy_token(token_mint, amount, Some(1.0)).await {
+            Ok(order) =&gt; return Ok(order),
+            Err(TradingError::NetworkError(_)) if attempts &lt; max_retries =&gt; {
+                attempts += 1;
+                println!("Network error, retrying ({}/{})", attempts, max_retries);
+                sleep(Duration::from_millis(1000 * attempts as u64)).await;
+            }
+            Err(TradingError::SlippageExceeded(_)) if attempts &lt; max_retries =&gt; {
+                attempts += 1;
+                let higher_slippage = 1.0 + (0.5 * attempts as f64);
+                println!("Retrying with {}% slippage", higher_slippage);
+                
+                match client.buy_token(token_mint, amount, Some(higher_slippage)).await {
+                    Ok(order) =&gt; return Ok(order),
+                    Err(e) =&gt; {
+                        if attempts &gt;= max_retries {
+                            return Err(e);
+                        }
+                    }
+                }
+            }
+            Err(e) =&gt; return Err(e),
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<h3 id="1-always-get-quotes-first"><a class="header" href="#1-always-get-quotes-first">1. Always Get Quotes First</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Good practice: Check quote before trading
+let quote = trading_client.get_quote(from_mint, to_mint, amount, Some(1.0)).await?;
+
+if quote.price_impact &lt; 2.0 {  // Acceptable price impact
+    let order = trading_client.swap_tokens(from_mint, to_mint, amount, Some(1.0)).await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-use-appropriate-slippage"><a class="header" href="#2-use-appropriate-slippage">2. Use Appropriate Slippage</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Slippage guidelines by token type
+let slippage = match token_type {
+    "major" =&gt; 0.1,    // BTC, ETH, SOL, USDC - very liquid
+    "popular" =&gt; 0.5,  // Popular tokens with good liquidity
+    "standard" =&gt; 1.0, // Standard tokens
+    "small" =&gt; 2.0,    // Smaller tokens with less liquidity
+    _ =&gt; 5.0,          // Very small or new tokens
+};
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-implement-proper-error-handling"><a class="header" href="#3-implement-proper-error-handling">3. Implement Proper Error Handling</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn robust_trading_function(
+    client: &amp;mut TradingClient,
+    token_mint: &amp;str,
+    amount: f64
+) -&gt; Result&lt;String, String&gt; {
+    
+    // Validate inputs
+    if amount &lt;= 0.0 {
+        return Err("Amount must be positive".to_string());
+    }
+    
+    // Check trading limits
+    let limits = client.get_trading_limits().await
+        .map_err(|e| format!("Failed to get limits: {}", e))?;
+    
+    if amount &lt; limits.min_sol_amount || amount &gt; limits.max_sol_amount {
+        return Err(format!("Amount {} outside limits [{}, {}]", 
+            amount, limits.min_sol_amount, limits.max_sol_amount));
+    }
+    
+    // Get quote first
+    let quote = client.get_quote(
+        "So11111111111111111111111111111111111111112",
+        token_mint,
+        amount,
+        Some(1.0)
+    ).await.map_err(|e| format!("Failed to get quote: {}", e))?;
+    
+    // Check price impact
+    if quote.price_impact &gt; 5.0 {
+        return Err(format!("Price impact too high: {:.2}%", quote.price_impact));
+    }
+    
+    // Execute trade
+    let order = client.buy_token(token_mint, amount, Some(1.0)).await
+        .map_err(|e| format!("Trade failed: {}", e))?;
+    
+    Ok(order.signature)
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="4-monitor-transaction-status"><a class="header" href="#4-monitor-transaction-status">4. Monitor Transaction Status</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn execute_and_monitor(
+    client: &amp;mut TradingClient,
+    token_mint: &amp;str,
+    amount: f64
+) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    
+    let order = client.buy_token(token_mint, amount, Some(1.0)).await?;
+    
+    match order.status {
+        OrderStatus::Success =&gt; {
+            println!("✅ Trade completed successfully");
+            println!("   Signature: {}", order.signature);
+            println!("   Tokens received: {}", order.amount_out);
+            println!("   Fee paid: {}", order.fee);
+        }
+        OrderStatus::Pending =&gt; {
+            println!("⏳ Trade is pending confirmation");
+            println!("   Monitor signature: {}", order.signature);
+        }
+        OrderStatus::Failed =&gt; {
+            println!("❌ Trade failed");
+            return Err("Trade execution failed".into());
+        }
+        OrderStatus::Cancelled =&gt; {
+            println!("🚫 Trade was cancelled");
+        }
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="5-implement-rate-limiting"><a class="header" href="#5-implement-rate-limiting">5. Implement Rate Limiting</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tokio::time::{sleep, Duration, Instant};
+
+struct RateLimiter {
+    last_request: Instant,
+    min_interval: Duration,
+}
+
+impl RateLimiter {
+    fn new(requests_per_second: f64) -&gt; Self {
+        Self {
+            last_request: Instant::now(),
+            min_interval: Duration::from_secs_f64(1.0 / requests_per_second),
+        }
+    }
+    
+    async fn wait_if_needed(&amp;mut self) {
+        let elapsed = self.last_request.elapsed();
+        if elapsed &lt; self.min_interval {
+            sleep(self.min_interval - elapsed).await;
+        }
+        self.last_request = Instant::now();
+    }
+}
+
+// Usage
+let mut rate_limiter = RateLimiter::new(2.0); // 2 requests per second
+
+for trade in trades {
+    rate_limiter.wait_if_needed().await;
+    let result = trading_client.buy_token(&amp;trade.mint, trade.amount, Some(1.0)).await;
+    // Handle result...
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="security-considerations"><a class="header" href="#security-considerations">Security Considerations</a></h2>
+<h3 id="1-token-validation"><a class="header" href="#1-token-validation">1. Token Validation</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn validate_token_mint(mint: &amp;str) -&gt; Result&lt;(), String&gt; {
+    // Check length
+    if mint.len() &lt; 32 || mint.len() &gt; 44 {
+        return Err("Invalid mint address length".to_string());
+    }
+    
+    // Check characters
+    if !mint.chars().all(|c| c.is_ascii_alphanumeric()) {
+        return Err("Invalid characters in mint address".to_string());
+    }
+    
+    // Add known token validation
+    let known_scam_tokens = vec![
+        // Add known scam token addresses
+    ];
+    
+    if known_scam_tokens.contains(&amp;mint) {
+        return Err("Token flagged as potential scam".to_string());
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="2-amount-validation"><a class="header" href="#2-amount-validation">2. Amount Validation</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn validate_trade_amount(amount: f64, balance: f64) -&gt; Result&lt;(), String&gt; {
+    if amount &lt;= 0.0 {
+        return Err("Amount must be positive".to_string());
+    }
+    
+    if amount.is_nan() || amount.is_infinite() {
+        return Err("Invalid amount value".to_string());
+    }
+    
+    if amount &gt; balance * 0.95 {  // Keep 5% buffer
+        return Err("Amount too close to total balance".to_string());
+    }
+    
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="3-slippage-protection"><a class="header" href="#3-slippage-protection">3. Slippage Protection</a></h3>
+<pre><pre class="playground"><code class="language-rust edition2024"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn calculate_safe_slippage(
+    amount: f64,
+    token_liquidity: f64,
+    market_volatility: f64
+) -&gt; f64 {
+    let base_slippage = 0.5; // 0.5% base
+    
+    // Adjust for trade size relative to liquidity
+    let size_impact = (amount / token_liquidity) * 100.0;
+    let size_adjustment = if size_impact &gt; 1.0 { size_impact } else { 0.0 };
+    
+    // Adjust for market volatility
+    let volatility_adjustment = market_volatility * 0.5;
+    
+    // Cap at reasonable maximum
+    let total_slippage = base_slippage + size_adjustment + volatility_adjustment;
+    total_slippage.min(5.0) // Never exceed 5%
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This comprehensive guide covers all aspects of trading operations with the Axiom Trade API. Always test with small amounts first and implement proper error handling and security measures in production applications.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../api/portfolio.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../api/market-data.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../api/portfolio.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../api/market-data.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/custom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
