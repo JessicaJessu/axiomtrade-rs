@@ -227,7 +227,7 @@ When adding examples:
 
 - Open an issue for bugs or features
 - Start a discussion for questions
-- Email vibheksoni@proton.me for security issues
+- Email vibheksoni@engineer.com for security issues
 
 ## Recognition
 

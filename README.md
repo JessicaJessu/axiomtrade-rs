@@ -260,7 +260,7 @@ cargo run --example basic_login
 
 ### Commercial Support
 
-Professional support, custom features, and consulting available. Contact: vibheksoni@proton.me
+Professional support, custom features, and consulting available. Contact: vibheksoni@engineer.com
 
 ## Funding
 
@@ -281,7 +281,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Security
 
-Found a security issue? Please email vibheksoni@proton.me directly instead of using the issue tracker.
+Found a security issue? Please email vibheksoni@engineer.com directly instead of using the issue tracker.
 
 ## Roadmap
 
