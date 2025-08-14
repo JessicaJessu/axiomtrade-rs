@@ -152,7 +152,7 @@ imap = "2.4"
 native-tls = "0.2"
 num-bigint = "0.4"
 num-traits = "0.2"
-p256 = { version = "0.13", features = ["ecdsa"] }
+p256 = { version = "0.13", features = ["ecdsa"], default-features = false }
 pbkdf2 = "0.12"
 rand = "0.8"
 regex = "1.10"
