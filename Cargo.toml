@@ -24,9 +24,6 @@ exclude = [
     "axiom-trade-site/"
 ]
 
-[[example]]
-name = "setup_env"
-path = "setup_env.rs"
 
 [lib]
 name = "axiomtrade_rs"
@@ -129,6 +126,10 @@ path = "examples/advanced/high_frequency_trading.rs"
 [[example]]
 name = "environment_setup"
 path = "examples/setup/environment_setup.rs"
+
+[[example]]
+name = "setup_env"
+path = "examples/setup/setup_env.rs"
 
 [[example]]
 name = "test_auto_otp"
